@@ -14,10 +14,10 @@ Although you can use them, for a more unique website, replace these images with 
     <title>myTrolley</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles -->
-    <link href="css/custom.css" rel="stylesheet">
+    <link href="../static/css/custom.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -59,7 +59,7 @@ Although you can use them, for a more unique website, replace these images with 
                         <a href="scanner.html">Scanner </a>
                     </li>
                     <li>
-                    <li class="active dropdown">
+                    <li class="dropdown">
                         <a href="ourproduct.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="ourproduct.html">Our Products</a></li>
@@ -70,14 +70,13 @@ Although you can use them, for a more unique website, replace these images with 
                         </ul>
                     </li>
                     <li>
-                        <a href="#">Help</a>
+                        <a href="help.html">Help</a>
                     </li>
-					<li class="dropdown">
+					<li class="active dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></a>
 						<ul class="dropdown-menu" aria-labelledby="about-us">
-							<li class="active"><a href="signup.html" target="_self"> Sign Up</a></li>
-                            <li><a href="login.html" target="_self"> Login</a></li>
-                            <li><a href="creditpointsystem.html" target="_self">Credit Point System</a></li>
+                            <li class="active"><a href="creditpointsystem.html" target="_self">Credit Point System</a></li>
+                            <li><a href="modifyuser.html" target="_self">Modify Account</a></li>
 						</ul>
 					</li>
                     
@@ -86,29 +85,85 @@ Although you can use them, for a more unique website, replace these images with 
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container -->
     </nav>
-    </br>
 </br>
 </br>
 </br>
-    <form action="/action_page.php">
-  <div class="container">
-    <label><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+ <h3 align="center">Rules</h3>
+    <table style="width:50%" align="center" id="t01">
+  <tr>
+    <th>Good behaviour</th>
+    <th>Points</th> 
+  </tr>
+  <tr>
+    <td>Each trolley return completed</td>
+    <td>+1</td> 
+  </tr>
+  <tr>
+    <td>Damaged trolley reported</td>
+    <td>+2</td> 
+  </tr>
+  <tr>
+    <td>Lost trolley reported</td>
+    <td>+3</td> 
+  </tr>
+  <tr>
+    <td>Share your return trolley to Facebook(first time)</td>
+    <td>+1</td> 
+  </tr>
+</table>
+</br>
+<table style="width:50%" align="center" id="t01">
+  <tr>
+    <th>Illegal behaviour</th>
+    <th>Points</th> 
+  </tr>
+  <tr>
+    <td>Trolley not locked properly</td>
+    <td>-50</td> 
+  </tr>
+  <tr>
+    <td>Illegal parked trolley</td>
+    <td>-50</td> 
+  </tr>
+  <tr>
+    <td>Unauthorised lock on the trolley</td>
+    <td>Reduced to 0</td> 
+  </tr>
+  <tr>
+    <td>Trolley damaged</td>
+    <td>Reduced to 0</td> 
+  </tr>
+</table>
+</br>
+ <p align="center"> About Credit Points</p>
+</br>
+ <p align="center">1.Trolley credits are used to maintain and encourage good behaviour among trolley users.</p>
+ <p align="center">2.After signing up with our Trolley app, you are rewarded with 100 Trolley credits.</p>
+ <p align="center">3.If there is any problem with your Trolley credits, please contact us via our <a>Help</a> page.</p>
+ 
+ <button id="button"> Click here to exchange for rewards </button>
 
-    <label><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
 
-    <label><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
-    <input type="checkbox" checked="checked"> Remember me
-    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
-
-    <div class="clearfix">
-      <button type="submit" class="signupbtn">Sign Up</button>
-    </div>
-  </div>
-</form>
-	
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
 	<!-- Footer -->
     <footer class="page-footer">
     
@@ -131,16 +186,16 @@ Although you can use them, for a more unique website, replace these images with 
     </footer>
 
     <!-- jQuery -->
-    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="../static/js/jquery-1.11.3.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="js/jquery.easing.min.js"></script>
+    <script src="../static/js/jquery.easing.min.js"></script>
     
     <!-- Custom Javascript -->
-    <script src="js/custom.js"></script>
+    <script src="../static/js/custom.js"></script>
 
 </body>
 
