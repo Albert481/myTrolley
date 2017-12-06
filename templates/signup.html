@@ -34,58 +34,10 @@ Although you can use them, for a more unique website, replace these images with 
 <body>
 
     <!-- Navigation -->
-    <nav id="siteNav" class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Logo and responsive toggle -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">
-                	<span class="glyphicon glyphicon-shopping-cart"></span> 
-                	myTrolley
-                </a>
-            </div>
-            <!-- Navbar links -->
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li>
-                        <a href="scanner.html">Scanner </a>
-                    </li>
-                    <li>
-                    <li class="active dropdown">
-                        <a href="ourproduct.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="ourproduct.html">Our Products</a></li>
-                            <li><a href="popularitem.html">Weekly Popular Items</a></li>
-                            <li><a href="healthyrecipe.html">Healthy Recipes</a></li>
-                            <li><a href="healthevent.html">Healthy Events</a></li>
-                            <li><a href="search.html">Search</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">Help</a>
-                    </li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></a>
-						<ul class="dropdown-menu" aria-labelledby="about-us">
-							<li class="active"><a href="signup.html" target="_self"> Sign Up</a></li>
-                            <li><a href="login.html" target="_self"> Login</a></li>
-                            <li><a href="creditpointsystem.html" target="_self">Credit Point System</a></li>
-						</ul>
-					</li>
-                    
-                </ul>
-                
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container -->
-    </nav>
+    <div class="container-fluid">
+        {% include 'includes/_navbar.html' %}
+        {% block body %}{% endblock %}
+    </div>
     </br>
 </br>
 </br>

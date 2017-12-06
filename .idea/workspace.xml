@@ -1,85 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="02f1e964-6868-4290-9c6d-e5c2a058ea1f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Website/_DS_Store" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Website/css/_DS_Store" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Website/images/_DS_Store" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Website/js/_DS_Store" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/creditpointsystem.html" afterPath="$PROJECT_DIR$/templates/creditpointsystem.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/css/bootstrap.css" afterPath="$PROJECT_DIR$/static/css/bootstrap.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/css/bootstrap.min.css" afterPath="$PROJECT_DIR$/static/css/bootstrap.min.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/css/custom.css" afterPath="$PROJECT_DIR$/static/css/custom.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/css/help.css" afterPath="$PROJECT_DIR$/static/css/help.css" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/email.html" afterPath="$PROJECT_DIR$/templates/email.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/faq.html" afterPath="$PROJECT_DIR$/templates/faq.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/feedback.html" afterPath="$PROJECT_DIR$/templates/feedback.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/fonts/glyphicons-halflings-regular.eot" afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.eot" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/fonts/glyphicons-halflings-regular.svg" afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.svg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/fonts/glyphicons-halflings-regular.ttf" afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.ttf" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/fonts/glyphicons-halflings-regular.woff" afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.woff" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/fonts/glyphicons-halflings-regular.woff2" afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.woff2" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/healthevent.html" afterPath="$PROJECT_DIR$/templates/healthevent.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/healthyrecipe.html" afterPath="$PROJECT_DIR$/templates/healthyrecipe.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/help.html" afterPath="$PROJECT_DIR$/templates/help.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/Enable-store-NTUC-Fairprice-4.jpg" afterPath="$PROJECT_DIR$/static/images/Enable-store-NTUC-Fairprice-4.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/HealthEvent/eventA.jpg" afterPath="$PROJECT_DIR$/static/images/HealthEvent/eventA.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/HealthEvent/eventB.png" afterPath="$PROJECT_DIR$/static/images/HealthEvent/eventB.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/HealthEvent/eventC.png" afterPath="$PROJECT_DIR$/static/images/HealthEvent/eventC.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/HealthEvent/eventD.jpg" afterPath="$PROJECT_DIR$/static/images/HealthEvent/eventD.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/HealthyRecipe/ZespriLollies.jpg" afterPath="$PROJECT_DIR$/static/images/HealthyRecipe/ZespriLollies.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/HealthyRecipe/ZespriSmoothie.jpg" afterPath="$PROJECT_DIR$/static/images/HealthyRecipe/ZespriSmoothie.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/NTUC Trolley Abuse.jpg" afterPath="$PROJECT_DIR$/static/images/NTUC Trolley Abuse.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/Online-QR-Code-Scanner.png" afterPath="$PROJECT_DIR$/static/images/Online-QR-Code-Scanner.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/Points-Icon-700px.png" afterPath="$PROJECT_DIR$/static/images/Points-Icon-700px.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/10896998_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/10896998_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/11869588_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/11869588_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/11870319_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/11870319_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/12164168_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/12164168_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/12228635_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/12228635_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/13000321_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/13000321_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/13044104_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/13044104_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/13052575_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/13052575_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/13088208_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/13088208_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/13097800_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/13097800_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/13102605_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/13102605_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/260050_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/260050_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/ProductItem/93964_M1.jpg" afterPath="$PROJECT_DIR$/static/images/ProductItem/93964_M1.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/Supermarket-trolley-shopping-cart.jpg" afterPath="$PROJECT_DIR$/static/images/Supermarket-trolley-shopping-cart.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/abandoned-trolley.png" afterPath="$PROJECT_DIR$/static/images/abandoned-trolley.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/avatar_null.png" afterPath="$PROJECT_DIR$/static/images/avatar_null.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/concert.jpg" afterPath="$PROJECT_DIR$/static/images/concert.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/guides_blue.png" afterPath="$PROJECT_DIR$/static/images/guides_blue.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/header.jpg" afterPath="$PROJECT_DIR$/static/images/header.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/img_avatar2.png" afterPath="$PROJECT_DIR$/static/images/img_avatar2.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/iphone.jpg" afterPath="$PROJECT_DIR$/static/images/iphone.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/microphone.jpg" afterPath="$PROJECT_DIR$/static/images/microphone.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/misplaced trolley.png" afterPath="$PROJECT_DIR$/static/images/misplaced trolley.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/pencil_sharpener.jpg" afterPath="$PROJECT_DIR$/static/images/pencil_sharpener.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/qrscanner.png" afterPath="$PROJECT_DIR$/static/images/qrscanner.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/usericon.png" afterPath="$PROJECT_DIR$/static/images/usericon.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/images/writing.jpg" afterPath="$PROJECT_DIR$/static/images/writing.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/index.html" afterPath="$PROJECT_DIR$/templates/index.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/js/bootstrap.js" afterPath="$PROJECT_DIR$/static/js/bootstrap.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/js/bootstrap.min.js" afterPath="$PROJECT_DIR$/static/js/bootstrap.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/js/custom.js" afterPath="$PROJECT_DIR$/static/js/custom.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/js/ie10-viewport-bug-workaround.js" afterPath="$PROJECT_DIR$/static/js/ie10-viewport-bug-workaround.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/js/jquery-1.11.3.min.js" afterPath="$PROJECT_DIR$/static/js/jquery-1.11.3.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/js/jquery-2.2.3.min.js" afterPath="$PROJECT_DIR$/static/js/jquery-2.2.3.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/js/jquery.easing.min.js" afterPath="$PROJECT_DIR$/static/js/jquery.easing.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/js/jquery.mycart.js" afterPath="$PROJECT_DIR$/static/js/jquery.mycart.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/js/jquery.mycart.min.js" afterPath="$PROJECT_DIR$/static/js/jquery.mycart.min.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/login.html" afterPath="$PROJECT_DIR$/templates/login.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/modifyuser.html" afterPath="$PROJECT_DIR$/templates/modifyuser.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/ourproduct - test.html" afterPath="$PROJECT_DIR$/templates/ourproduct - test.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/ourproduct.html" afterPath="$PROJECT_DIR$/templates/ourproduct.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/popularitem.html" afterPath="$PROJECT_DIR$/templates/popularitem.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/rewardsystem.html" afterPath="$PROJECT_DIR$/templates/rewardsystem.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/scanner.html" afterPath="$PROJECT_DIR$/templates/scanner.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/search.html" afterPath="$PROJECT_DIR$/templates/search.html" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Website/signup.html" afterPath="$PROJECT_DIR$/templates/signup.html" />
+    <list default="true" id="02f1e964-6868-4290-9c6d-e5c2a058ea1f" name="Default" comment="- Restructured">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/run.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/includes/_navbar.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Website-20171130.iml" afterPath="$PROJECT_DIR$/.idea/Website-20171130.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/healthevent.html" afterPath="$PROJECT_DIR$/templates/healthevent.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/healthyrecipe.html" afterPath="$PROJECT_DIR$/templates/healthyrecipe.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/help.html" afterPath="$PROJECT_DIR$/templates/help.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/index.html" afterPath="$PROJECT_DIR$/templates/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/login.html" afterPath="$PROJECT_DIR$/templates/login.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/ourproduct.html" afterPath="$PROJECT_DIR$/templates/ourproduct.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/popularitem.html" afterPath="$PROJECT_DIR$/templates/popularitem.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/scanner.html" afterPath="$PROJECT_DIR$/templates/scanner.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/search.html" afterPath="$PROJECT_DIR$/templates/search.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/signup.html" afterPath="$PROJECT_DIR$/templates/signup.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -88,8 +25,40 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/smarttrolley$run.coverage" NAME="run Coverage Results" MODIFIED="1512538348459" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/templates/scanner.html" />
+        <option value="$PROJECT_DIR$/run.py" />
+        <option value="$PROJECT_DIR$/templates/healthevent.html" />
+        <option value="$PROJECT_DIR$/templates/healthyrecipe.html" />
+        <option value="$PROJECT_DIR$/templates/help.html" />
+        <option value="$PROJECT_DIR$/templates/login.html" />
+        <option value="$PROJECT_DIR$/templates/ourproduct.html" />
+        <option value="$PROJECT_DIR$/templates/popularitem.html" />
+        <option value="$PROJECT_DIR$/templates/search.html" />
+        <option value="$PROJECT_DIR$/templates/signup.html" />
+        <option value="$PROJECT_DIR$/templates/includes/_navbar.html" />
+      </list>
+    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -98,10 +67,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="809" />
-    <option name="y" value="14" />
-    <option name="width" value="1034" />
-    <option name="height" value="1030" />
+    <option name="x" value="513" />
+    <option name="y" value="111" />
+    <option name="width" value="1307" />
+    <option name="height" value="949" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -119,7 +88,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -131,12 +99,14 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../LibrarySystem" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -159,6 +129,31 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="Python.run">
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Website-20171130" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Python.run" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
@@ -170,18 +165,26 @@
       <option name="presentableId" value="Default" />
       <updated>1512096924939</updated>
     </task>
+    <task id="LOCAL-00001" summary="Restructured contents into static and templates folder">
+      <created>1512465285206</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1512465285206</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="809" y="14" width="1034" height="1030" extended-state="0" />
+    <frame x="513" y="111" width="1307" height="949" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3238189" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22265323" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997763" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3210332" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -202,8 +205,134 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Restructured contents into static and templates folder" />
+    <option name="LAST_COMMIT_MESSAGE" value="Restructured contents into static and templates folder" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="38" column="10" lean-forward="true" selection-start-line="38" selection-start-column="10" selection-end-line="38" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/scanner.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="36" column="33" lean-forward="true" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/creditpointsystem.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="65" column="48" lean-forward="true" selection-start-line="65" selection-start-column="48" selection-end-line="65" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/signup.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="39" column="10" lean-forward="false" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/search.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="33" column="10" lean-forward="false" selection-start-line="33" selection-start-column="10" selection-end-line="33" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/popularitem.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="33" column="10" lean-forward="false" selection-start-line="33" selection-start-column="10" selection-end-line="33" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ourproduct.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="34" column="10" lean-forward="false" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/help.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="61" column="10" lean-forward="false" selection-start-line="61" selection-start-column="10" selection-end-line="61" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/healthyrecipe.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="33" column="10" lean-forward="false" selection-start-line="33" selection-start-column="10" selection-end-line="33" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/healthevent.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="33" column="10" lean-forward="false" selection-start-line="33" selection-start-column="10" selection-end-line="33" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/faq.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/email.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="39" column="10" lean-forward="false" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/includes/_navbar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-73">
+          <caret line="43" column="38" lean-forward="false" selection-start-line="43" selection-start-column="38" selection-end-line="43" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="903">
+          <caret line="43" column="39" lean-forward="true" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>
