@@ -1,22 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="02f1e964-6868-4290-9c6d-e5c2a058ea1f" name="Default" comment="- Restructured">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/run.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/includes/_navbar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Website-20171130.iml" afterPath="$PROJECT_DIR$/.idea/Website-20171130.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="02f1e964-6868-4290-9c6d-e5c2a058ea1f" name="Default" comment="- Restructured navbar into pages">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/healthevent.html" afterPath="$PROJECT_DIR$/templates/healthevent.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/healthyrecipe.html" afterPath="$PROJECT_DIR$/templates/healthyrecipe.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/help.html" afterPath="$PROJECT_DIR$/templates/help.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/index.html" afterPath="$PROJECT_DIR$/templates/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/login.html" afterPath="$PROJECT_DIR$/templates/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/ourproduct.html" afterPath="$PROJECT_DIR$/templates/ourproduct.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/popularitem.html" afterPath="$PROJECT_DIR$/templates/popularitem.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/scanner.html" afterPath="$PROJECT_DIR$/templates/scanner.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/search.html" afterPath="$PROJECT_DIR$/templates/search.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/signup.html" afterPath="$PROJECT_DIR$/templates/signup.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -172,7 +158,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512465285206</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="- Restructured">
+      <created>1512538780930</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1512538780930</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -207,7 +200,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Restructured contents into static and templates folder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Restructured contents into static and templates folder" />
+    <MESSAGE value="- Restructured" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Restructured" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
