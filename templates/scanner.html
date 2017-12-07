@@ -1,223 +1,68 @@
-<!DOCTYPE html>
-<!-- Template by Quackit.com -->
-<!-- Images by various sources under the Creative Commons CC0 license and/or the Creative Commons Zero license. 
-Although you can use them, for a more unique website, replace these images with your own. -->
-<html lang="en">
+{% extends 'layout.html' %}
+{% block title %}Scanner{% endblock %}
 
-<head>
+{% block body %}
+<!-- Content -->
+<section class="content" style="background-color: #E6E6FA">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <input type=text size=16 placeholder="Trolley ID" class=qrcode-text><label class=qrcode-text-btn>
+                <input type=file accept="image/*" capture=environment onclick="return showQRIntro();" onchange="openQRCamera(this);" tabindex=-1></label>
+                <input type=button value="Go" disabled>
+                <img class="img-responsive img center-block" src="../static/images/qrscanner.png" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="section-header">Scanner</h2>
+                <p class="lead text-muted">Please allow your device to use camera for your web browser. <br><font size="2">*The QR scanner will not work on computer/laptops.</font></p>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+                <a href="#popup1" class="btn btn-info btn-lg">Enter Trolley ID</a>
+                <div id="popup1" class="overlay">
+                    <div class="popup">
+                        <a href="#" class="close">&times;</a>
+                        <div class="content" align="center">
+                            <p align="center">Please enter the trolley ID number.</p>
+                            <div style="width: 50%" align="center">
+                                <form action="">
+                                    <input type="number" name="bikeid"><br>
+                                    <input align="center" type="submit" value="Unlock">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <title>myTrolley - Scanner</title>
+                <a href="#popup2" class="btn btn-success btn-lg">Help</a>
+                <div id="popup2" class="overlay">
+                    <div class="popup">
+                        <a href="#" class="close">&times;</a>
+                        <div class="content">
+                            <p align="center"><strong>Unlock -- Scan the QR code</strong></p>
+                            <p align="center">Scan QR code on the trolley to unlock</p>
+                            <p align="center"><strong>Unlock -- Enter trolley ID</strong></p>
+                            <p align="center">Ensure you entered the correct Trolley ID</p>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles -->
-    <link href="../static/css/custom.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <![endif]-->
-
-    <!-- Custom Fonts from Google -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <style>
-        input, label {vertical-align:middle}
-        .qrcode-text {padding-right:1.7em; margin-right:0}
-        .qrcode-text-btn {display:inline-block; background:url(//dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg) 50% 50% no-repeat; height:1em; width:1.7em; margin-left:-1.7em; cursor:pointer}
-        .qrcode-text-btn > input[type=file] {position:absolute; overflow:hidden; width:1px; height:1px; opacity:0}
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            transition: opacity 500ms;
-            visibility: hidden;
-            opacity: 0;
-            }
-        .overlay:target {
-            visibility: visible;
-            opacity: 1;
-            }
-
-        .popup {
-            margin: 70px auto;
-            padding: 20px;
-            top: 10%;
-            background: #fff;
-            border-radius: 5px;
-            width: 30%;
-            position: relative;
-            transition: all 5s ease-in-out;
-            }
-
-        .popup h2 {
-            margin-top: 0;
-            color: #333;
-            font-family: Tahoma, Arial, sans-serif;
-            }
-        .popup .close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            transition: all 200ms;
-            font-size: 30px;
-            font-weight: bold;
-            text-decoration: none;
-            color: #333;
-            }
-        .popup .close:hover {
-            color: #06D85F;
-            }
-        .popup .content {
-            max-height: 30%;
-            overflow: auto;
-            }
-
-        @media screen and (max-width: 700px){
-            .box{
-            width: 70%;
-            }
-            .popup{
-            width: 70%;
-            }
-        }
-
-        input[type=button], input[type=submit], input[type=reset] {
-            background-color: #00cc00;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            padding: 16px 32px;
-            text-decoration: none;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-
-        input[type=number] {
-            width: 100%;
-            height: 20px;
-            padding: 12px 20px;
-            box-sizing: border-box;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            background-color: #f8f8f8;
-            font-size: 16px;
-            resize: none;
-        }
-
-        button {
-            border-radius: 4px;
-            background-color: green;
-            font-size: 16px;
-            resize: none;
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <div class="container-fluid">
-        {% include 'includes/_navbar.html' %}
-        {% block body %}{% endblock %}
-    </div>
-
-	<!-- Content -->
-    <section class="content" style="background-color: #E6E6FA">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <input type=text size=16 placeholder="Trolley ID" class=qrcode-text><label class=qrcode-text-btn>
-                    <input type=file accept="image/*" capture=environment onclick="return showQRIntro();" onchange="openQRCamera(this);" tabindex=-1></label>
-                    <input type=button value="Go" disabled>
-                    <img class="img-responsive img center-block" src="../static/images/qrscanner.png" alt="">
+                <a href="#popup3" class="fancy-btn open btn btn-danger btn-lg">Report</a>
+                <div id="popup3" class="overlay">
+                    <div class="popup">
+                        <a href="#" class="close">&times;</a>
+                        <div class="content">
+                            <button>Faulty Trolley</button>
+                            <button>Report Misuse</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                	<h2 class="section-header">Scanner</h2>
-                	<p class="lead text-muted">Please allow your device to use camera for your web browser. <br><font size="2">*The QR scanner will not work on computer/laptops.</font></p>
 
-                    <a href="#popup1" class="btn btn-info btn-lg">Enter Trolley ID</a>
-                    <div id="popup1" class="overlay">
-                        <div class="popup">
-                            <a href="#" class="close">&times;</a>
-                            <div class="content" align="center">
-                                <p align="center">Please enter the trolley ID number.</p>
-                                <div style="width: 50%" align="center">
-                                    <form action="">
-                                        <input type="number" name="bikeid"><br>
-                                        <input align="center" type="submit" value="Unlock">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                	<a href="#popup2" class="btn btn-success btn-lg">Help</a>
-                    <div id="popup2" class="overlay">
-                        <div class="popup">
-                            <a href="#" class="close">&times;</a>
-                            <div class="content">
-                                <p align="center"><strong>Unlock -- Scan the QR code</strong></p>
-                                <p align="center">Scan QR code on the trolley to unlock</p>
-                                <p align="center"><strong>Unlock -- Enter trolley ID</strong></p>
-                                <p align="center">Ensure you entered the correct Trolley ID</p>
-                            </div>
-                        </div>
-                    </div>
-
-                	<a href="#popup3" class="fancy-btn open btn btn-danger btn-lg">Report</a>
-                    <div id="popup3" class="overlay">
-                        <div class="popup">
-                            <a href="#" class="close">&times;</a>
-                            <div class="content">
-                                <button>Faulty Trolley</button>
-                                <button>Report Misuse</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>                
-                
-            </div>
         </div>
-    </section>
-	<!-- Footer -->
-    <footer class="page-footer">
-    
-        <!-- Contact Us -->
-        <div class="contact">
-            <div class="container">
-                <h2 class="section-heading">Contact Us</h2>
-                <p><span class="glyphicon glyphicon-earphone"></span>
-                    <br>
-                    61234567</p>
-                <p><span class="glyphicon glyphicon-envelope"></span>
-                    <br>
-                    myTrolley@gmail.com</p>
-            </div>
-        </div>
-        	
-        <!-- Copyright etc -->
-        <div class="small-print">
-        	<div class="container">
-        		<p>Copyright &copy; myTrolley.tk 2017</p>
-        	</div>
-        </div>
-        
-    </footer>
+    </div>
+</section>
+{% endblock %}
 
     <!-- jQuery -->
     <script src="../static/js/jquery-1.11.3.min.js"></script>
@@ -252,6 +97,4 @@ Although you can use them, for a more unique website, replace these images with 
             return confirm("Use your camera to take a picture of a QR code.");
         }
     </script>
-</body>
 
-</html>
