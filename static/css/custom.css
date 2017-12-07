@@ -135,7 +135,7 @@ header .header-content .header-content-inner p {
 .promo a:visited,
 .promo a:hover,
 .promo a:active {
-    color: white;
+    color: deeppink;
 	text-shadow: 0px 0px 40px black;
     text-decoration: none;
 }
@@ -159,20 +159,23 @@ header .header-content .header-content-inner p {
 }
 
 .item-1 {
-	background: url('../images/writing.jpg');
+	background: url('../images/Points-Icon-700px.png');
 	}
 	
 .item-2 {
-	background: url('../images/concert.jpg');
+	background: url('../images/Online-QR-Code-Scanner.png');
 	}
 	
 .item-3 {
-	background: url('../images/pencil_sharpener.jpg');
+	background: url('../images/Enable-store-NTUC-Fairprice-4.jpg');
 	}
-		
+.item-4{
+    background: url('../images/guides_blue.png');
+}
 .item-1,
 .item-2,
-.item-3 {
+.item-3,
+.item-4{
 	background-size: cover;
 	background-position: 50% 50%;
 	}
