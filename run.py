@@ -39,6 +39,18 @@ def signup():
 def login():
     return render_template('login.html')
 
+@app.route('/modifyuser')
+def modifyuser():
+    return render_template('modifyuser.html')
+
+@app.route('/credit')
+def creditpointsystem():
+    return render_template('creditpointsystem.html')
+
+@app.route('/reward')
+def reward():
+    return render_template('rewardsystem.html')
+
 @app.route('/help')
 def help():
     return render_template('help.html')
