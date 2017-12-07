@@ -30,6 +30,11 @@ Although you can use them, for a more unique website, replace these images with 
     <!-- Custom Fonts from Google -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <style>
+        input, label {vertical-align:middle}
+        .qrcode-text {padding-right:1.7em; margin-right:0}
+        .qrcode-text-btn {display:inline-block; background:url(//dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg) 50% 50% no-repeat; height:1em; width:1.7em; margin-left:-1.7em; cursor:pointer}
+        .qrcode-text-btn > input[type=file] {position:absolute; overflow:hidden; width:1px; height:1px; opacity:0}
+
         .overlay {
             position: fixed;
             top: 0;
@@ -111,6 +116,13 @@ Although you can use them, for a more unique website, replace these images with 
             font-size: 16px;
             resize: none;
         }
+
+        button {
+            border-radius: 4px;
+            background-color: green;
+            font-size: 16px;
+            resize: none;
+        }
     </style>
 </head>
 
@@ -126,10 +138,15 @@ Although you can use them, for a more unique website, replace these images with 
     <section class="content" style="background-color: #E6E6FA">
         <div class="container">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
+                    <input type=text size=16 placeholder="Trolley ID" class=qrcode-text><label class=qrcode-text-btn>
+                    <input type=file accept="image/*" capture=environment onclick="return showQRIntro();" onchange="openQRCamera(this);" tabindex=-1></label>
+                    <input type=button value="Go" disabled>
                     <img class="img-responsive img center-block" src="../static/images/qrscanner.png" alt="">
                 </div>
-                <div class="col-sm-6">
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
                 	<h2 class="section-header">Scanner</h2>
                 	<p class="lead text-muted">Please allow your device to use camera for your web browser. <br><font size="2">*The QR scanner will not work on computer/laptops.</font></p>
 
@@ -162,7 +179,16 @@ Although you can use them, for a more unique website, replace these images with 
                         </div>
                     </div>
 
-                	<button class="fancy-btn open btn btn-danger btn-lg">Report</button>
+                	<a href="#popup3" class="fancy-btn open btn btn-danger btn-lg">Report</a>
+                    <div id="popup3" class="overlay">
+                        <div class="popup">
+                            <a href="#" class="close">&times;</a>
+                            <div class="content">
+                                <button>Faulty Trolley</button>
+                                <button>Report Misuse</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>                
                 
             </div>
@@ -205,6 +231,27 @@ Although you can use them, for a more unique website, replace these images with 
     <!-- Custom Javascript -->
     <script src="../static/js/custom.js"></script>
 
+    <script>
+        function openQRCamera(node) {
+            var reader = new FileReader();
+            reader.onload = function() {
+            node.value = "";
+            qrcode.callback = function(res) {
+              if(res instanceof Error) {
+                alert("No QR code found. Please make sure the QR code is within the camera's frame and try again.");
+              } else {
+                node.parentNode.previousElementSibling.value = res;
+              }
+            };
+            qrcode.decode(reader.result);
+            };
+            reader.readAsDataURL(node.files[0]);
+        }
+
+        function showQRIntro() {
+            return confirm("Use your camera to take a picture of a QR code.");
+        }
+    </script>
 </body>
 
 </html>
