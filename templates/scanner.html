@@ -22,13 +22,96 @@ Although you can use them, for a more unique website, replace these images with 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <![endif]-->
 
     <!-- Custom Fonts from Google -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    
+    <style>
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+            }
+        .overlay:target {
+            visibility: visible;
+            opacity: 1;
+            }
+
+        .popup {
+            margin: 70px auto;
+            padding: 20px;
+            top: 10%;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            position: relative;
+            transition: all 5s ease-in-out;
+            }
+
+        .popup h2 {
+            margin-top: 0;
+            color: #333;
+            font-family: Tahoma, Arial, sans-serif;
+            }
+        .popup .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            transition: all 200ms;
+            font-size: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+            }
+        .popup .close:hover {
+            color: #06D85F;
+            }
+        .popup .content {
+            max-height: 30%;
+            overflow: auto;
+            }
+
+        @media screen and (max-width: 700px){
+            .box{
+            width: 70%;
+            }
+            .popup{
+            width: 70%;
+            }
+        }
+
+        input[type=button], input[type=submit], input[type=reset] {
+            background-color: #00cc00;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        input[type=number] {
+            width: 100%;
+            height: 20px;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            resize: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -49,9 +132,37 @@ Although you can use them, for a more unique website, replace these images with 
                 <div class="col-sm-6">
                 	<h2 class="section-header">Scanner</h2>
                 	<p class="lead text-muted">Please allow your device to use camera for your web browser. <br><font size="2">*The QR scanner will not work on computer/laptops.</font></p>
-					<a href="#" class="btn btn-info btn-lg">Enter Trolley ID</a>
-                	<a href="#" class="btn btn-success btn-lg">Help</a>
-                	<a href="#" class="btn btn-danger btn-lg">Report</a>
+
+                    <a href="#popup1" class="btn btn-info btn-lg">Enter Trolley ID</a>
+                    <div id="popup1" class="overlay">
+                        <div class="popup">
+                            <a href="#" class="close">&times;</a>
+                            <div class="content" align="center">
+                                <p align="center">Please enter the trolley ID number.</p>
+                                <div style="width: 50%" align="center">
+                                    <form action="">
+                                        <input type="number" name="bikeid"><br>
+                                        <input align="center" type="submit" value="Unlock">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                	<a href="#popup2" class="btn btn-success btn-lg">Help</a>
+                    <div id="popup2" class="overlay">
+                        <div class="popup">
+                            <a href="#" class="close">&times;</a>
+                            <div class="content">
+                                <p align="center"><strong>Unlock -- Scan the QR code</strong></p>
+                                <p align="center">Scan QR code on the trolley to unlock</p>
+                                <p align="center"><strong>Unlock -- Enter trolley ID</strong></p>
+                                <p align="center">Ensure you entered the correct Trolley ID</p>
+                            </div>
+                        </div>
+                    </div>
+
+                	<button class="fancy-btn open btn btn-danger btn-lg">Report</button>
                 </div>                
                 
             </div>
