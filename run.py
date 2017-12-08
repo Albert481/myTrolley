@@ -55,6 +55,18 @@ def reward():
 def help():
     return render_template('help.html')
 
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
+
+@app.route('/email')
+def email():
+    return render_template('email.html')
+
+@app.route('/feedback')
+def feedback():
+    return render_template('feedback.html')
+
 if __name__ == '__main__':
     app.run()
 
