@@ -10,7 +10,7 @@ default_app = firebase_admin.initialize_app(cred, {
 
 root = db.reference()
 
-@app.route('/home')
+@app.route('/')
 def home():
     return render_template('index.html')
 
