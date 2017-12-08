@@ -1,6 +1,7 @@
-
+{% extends 'layout.html' %}
 {% block title %}Scanner{% endblock %}
 
+{% block head %}
     <style type="text/css">
         body {
             width: 100%;
@@ -132,6 +133,8 @@
 
     </script>
 
+{% endblock %}
+
 {% block body %}
 <div id="main">
     <div id="mainbody">
@@ -140,9 +143,9 @@
                 <td valign="top" align="center" width="50%">
                     <table class="tsel" border="0">
                         <tr>
-                            <td><img class="selector" id="webcamimg" src="vid.png" onclick="setwebcam()" align="left"/>
+                            <td><img class="selector" id="webcamimg" src="../static/images/vid.png" onclick="setwebcam()" align="left"/>
                             </td>
-                            <td><img class="selector" id="qrimg" src="cam.png" onclick="setimg()" align="right"/></td>
+                            <td><img class="selector" id="qrimg" src="../static/images/cam.png" onclick="setimg()" align="right"/></td>
                         </tr>
                         <tr>
                             <td colspan="2" align="center">
@@ -151,11 +154,6 @@
                             </td>
                         </tr>
                     </table>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" align="center">
-                    <img src="down.png"/>
                 </td>
             </tr>
             <tr>
@@ -176,7 +174,60 @@
         </script>
     </div>&nbsp;
 </div>
+<div class="row">
+    <div class="col-sm-12">
+        <h2 class="section-header">Scanner</h2>
+        <p class="lead text-muted">Please allow your device to use camera for your web browser. <br><font
+                size="2">*The QR scanner will not work on computer/laptops.</font></p>
+
+        <a href="#popup1" class="btn btn-info btn-lg">Enter Trolley ID</a>
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <a href="#" class="close">&times;</a>
+                <div class="content" align="center">
+                    <p align="center">Please enter the trolley ID number.</p>
+                    <div style="width: 50%" align="center">
+                        <form action="">
+                            <input type="number" name="bikeid"><br>
+                            <input align="center" type="submit" value="Unlock">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#popup2" class="btn btn-success btn-lg">Help</a>
+        <div id="popup2" class="overlay">
+            <div class="popup">
+                <a href="#" class="close">&times;</a>
+                <div class="content">
+                    <p align="center"><strong>Unlock -- Scan the QR code</strong></p>
+                    <p align="center">Scan QR code on the trolley to unlock</p>
+                    <p align="center"><strong>Unlock -- Enter trolley ID</strong></p>
+                    <p align="center">Ensure you entered the correct Trolley ID</p>
+                </div>
+            </div>
+        </div>
+
+        <a href="#popup3" class="fancy-btn open btn btn-danger btn-lg">Report</a>
+        <div id="popup3" class="overlay">
+            <div class="popup">
+                <a href="#" class="close">&times;</a>
+                <div class="content">
+                    <button>Faulty Trolley</button>
+                    <button>Report Misuse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 <canvas id="qr-canvas" width="800" height="600"></canvas>
 <script type="text/javascript">load();</script>
+
 {% endblock %}
+
+
+
 
