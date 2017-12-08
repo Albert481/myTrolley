@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 
-@app.route('/home')
+@app.route('/')
 def home():
     return render_template('index.html')
 
@@ -38,6 +38,18 @@ def signup():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+@app.route('/modifyuser')
+def modifyuser():
+    return render_template('modifyuser.html')
+
+@app.route('/credit')
+def creditpointsystem():
+    return render_template('creditpointsystem.html')
+
+@app.route('/reward')
+def reward():
+    return render_template('rewardsystem.html')
 
 @app.route('/help')
 def help():

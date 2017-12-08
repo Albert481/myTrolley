@@ -1,43 +1,10 @@
-﻿<!DOCTYPE html>
-<!-- Template by Quackit.com -->
-<!-- Images by various sources under the Creative Commons CC0 license and/or the Creative Commons Zero license. 
-Although you can use them, for a more unique website, replace these images with your own. -->
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>myTrolley - Products</title>
-    <!-- Bootstrap Core CSS -->
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/css/help.css" rel="stylesheet">
-    <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles -->
-    <link href="../static/css/custom.css" rel="stylesheet">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Custom Fonts from Google -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
-   
-</head>
-
-<body>
-    <!-- Navigation -->
-    <div class="container-fluid">
-        {% include 'includes/_navbar.html' %}
-        {% block body %}{% endblock %}
-    </div>
+﻿{% extends 'layout.html' %}
+{% block title %}Products{% endblock %}
 
 
-    
+    {% block body %}
+    <!-- Content -->
     <style>
-        
 
         .prod-info-main {
             border: 1px solid #CEEFFF;
@@ -49,17 +16,8 @@ Although you can use them, for a more unique website, replace these images with 
             box-shadow: 0 1px 1px 0 rgba(21,180,255,0.5);
         }
 
-            .prod-info-main .product-image {
-                background-color: #EBF8FE;
-                display: block;
-                min-height: 238px;
-                overflow: hidden;
-                position: relative;
-                border: 1px solid #CEEFFF;
-                padding-top: 40px;
-            }
 
-            .prod-info-main .product-deatil {
+            .prod-info-main .product-detail {
                 border-bottom: 1px solid #dfe5e9;
                 padding-bottom: 17px;
                 padding-left: 16px;
@@ -68,7 +26,7 @@ Although you can use them, for a more unique website, replace these images with 
                 background: #fff
             }
 
-        .product-content .product-deatil h5 a {
+        .product-content .product-detail h5 a {
             color: #2f383d;
             font-size: 15px;
             line-height: 19px;
@@ -77,13 +35,13 @@ Although you can use them, for a more unique website, replace these images with 
             margin-left: 0
         }
 
-        .prod-info-main .product-deatil h5 a span {
+        .prod-info-main .product-detail h5 a span {
             color: #9aa7af;
             display: block;
             font-size: 13px
         }
 
-        .prod-info-main .product-deatil span.tag1 {
+        .prod-info-main .product-detail span.tag1 {
             border-radius: 50%;
             color: #fff;
             font-size: 15px;
@@ -96,18 +54,6 @@ Although you can use them, for a more unique website, replace these images with 
             width: 50px
         }
 
-        .prod-info-main .product-deatil span.sale {
-            background-color: #21c2f8
-        }
-
-        .prod-info-main .product-deatil span.discount {
-            background-color: #71e134
-        }
-
-        .prod-info-main .product-deatil span.hot {
-            background-color: #fa9442
-        }
-
         .prod-info-main .description {
             font-size: 12.5px;
             line-height: 20px;
@@ -115,39 +61,8 @@ Although you can use them, for a more unique website, replace these images with 
             background: #fff
         }
 
-        .prod-info-main .product-info {
-            padding: 11px 19px 10px 20px
-        }
-
-            .prod-info-main .product-info a.add-to-cart {
-                color: #2f383d;
-                font-size: 13px;
-                padding-left: 16px
-            }
-
-        .prod-info-main name.a {
-            padding: 5px 10px;
-            margin-left: 16px
-        }
-
-        .product-info.smart-form .btn {
-            padding: 6px 12px;
-            margin-left: 12px;
-            margin-top: -10px
-        }
-
-        .load-more-btn {
-            background-color: #21c2f8;
-            border-bottom: 2px solid #037ca5;
-            border-radius: 2px;
-            border-top: 2px solid #0cf;
-            margin-top: 20px;
-            padding: 9px 0;
-            width: 100%
-        }
-
-        .product-block .product-deatil p.price-container span,
-        .prod-info-main .product-deatil p.price-container span,
+        .product-block .product-detail p.price-container span,
+        .prod-info-main .product-detail p.price-container span,
         .shipping table tbody tr td p.price-container span,
         .shopping-items table tbody tr td p.price-container span {
             color: #21c2f8;
@@ -160,153 +75,48 @@ Although you can use them, for a more unique website, replace these images with 
             margin-top: 15px;
         }
 
-        .prod-wrap .product-image span.tag2 {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            padding: 10px 0;
-            color: #fff;
-            font-size: 11px;
-            text-align: center
-        }
-
-        .prod-wrap .product-image span.tag3 {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            width: 60px;
-            height: 36px;
-            border-radius: 50%;
-            padding: 10px 0;
-            color: #fff;
-            font-size: 11px;
-            text-align: center
-        }
-
-        .prod-wrap .product-image span.sale {
-            background-color: #57889c;
-        }
-
-        .prod-wrap .product-image span.hot {
-            background-color: #a90329;
-        }
-
-        .prod-wrap .product-image span.special {
-            background-color: #3B6764;
-        }
-
-        .shop-btn {
-            position: relative
-        }
-
-            .shop-btn > span {
-                background: #a90329;
-                display: inline-block;
-                font-size: 10px;
-                box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
-                font-weight: 700;
-                border-radius: 50%;
-                padding: 2px 4px 3px !important;
-                text-align: center;
-                line-height: normal;
-                width: 19px;
-                top: -7px;
-                left: -7px
-            }
-
-        .product-deatil hr {
+        .product-detail hr {
             padding: 0 0 5px !important
         }
 
-        .product-deatil .glyphicon {
-            color: #3276b1
-        }
 
-        .product-deatil .product-image {
-            border-right: 0px solid #fff !important
-        }
-
-        .product-deatil .name {
+        .product-detail .name {
             margin-top: 0;
             margin-bottom: 0
         }
 
-            .product-deatil .name small {
+            .product-detail .name small {
                 display: block
             }
 
-            .product-deatil .name a {
+            .product-detail .name a {
                 margin-left: 0
             }
 
-        .product-deatil .price-container {
+        .product-detail .price-container {
             font-size: 24px;
             margin: 0;
             font-weight: 300;
         }
 
-            .product-deatil .price-container small {
+            .product-detail .price-container small {
                 font-size: 12px;
             }
 
-        .product-deatil .fa-2x {
+        .product-detail .fa-2x {
             font-size: 16px !important
         }
 
-            .product-deatil .fa-2x > h5 {
+            .product-detail .fa-2x > h5 {
                 font-size: 12px;
                 margin: 0
             }
 
-            .product-deatil .fa-2x + a,
-            .product-deatil .fa-2x + a + a {
+            .product-detail .fa-2x + a,
+            .product-detail .fa-2x + a + a {
                 font-size: 13px
             }
 
-        .product-deatil .certified {
-            margin-top: 10px
-        }
-
-            .product-deatil .certified ul {
-                padding-left: 0
-            }
-
-                .product-deatil .certified ul li:not(first-child) {
-                    margin-left: -3px
-                }
-
-                .product-deatil .certified ul li {
-                    display: inline-block;
-                    background-color: #f9f9f9;
-                    padding: 13px 19px
-                }
-
-                    .product-deatil .certified ul li:first-child {
-                        border-right: none
-                    }
-
-                    .product-deatil .certified ul li a {
-                        text-align: left;
-                        font-size: 12px;
-                        color: #6d7a83;
-                        line-height: 16px;
-                        text-decoration: none
-                    }
-
-                        .product-deatil .certified ul li a span {
-                            display: block;
-                            color: #21c2f8;
-                            font-size: 13px;
-                            font-weight: 700;
-                            text-align: center
-                        }
-
-        .product-deatil .message-text {
-            width: calc(100% - 70px)
-        }
 
         @media only screen and (min-width:1024px) {
             .prod-info-main div[class*=col-md-4] {
@@ -325,13 +135,6 @@ Although you can use them, for a more unique website, replace these images with 
                 padding: 0 13px 0 0
             }
 
-            .prod-info-main .product-image {
-                border-right: 1px solid #dfe5e9
-            }
-
-            .prod-info-main .product-info {
-                position: relative
-            }
         }
     </style>
     <section class="content" >
@@ -348,12 +151,12 @@ Although you can use them, for a more unique website, replace these images with 
                     <div class="prod-info-main prod-wrap clearfix">
                         <div class="row">
                             <div class="col-md-5 col-sm-12 col-xs-12">
-                                <div class="product-image">
-                                    <img src="../static/images/ProductItem/10896998_M1.jpg" class="img-responsive">
-                                </div>
+
+                                    <img src="../static/images/ProductItem/10896998_M1.jpg" class="img-responsive" style="align:center;">
+
                             </div>
                             <div class="col-md-7 col-sm-12 col-xs-12">
-                                <div class="product-deatil">
+                                <div class="product-detail">
                                     <h5 class="name">
                                         <a href="#">Premium Fuji Apple 4S<span>Fruits</span></a>
                                     </h5>
@@ -363,14 +166,6 @@ Although you can use them, for a more unique website, replace these images with 
                                 <div class="description">
                                     <p>Country of Origin: China</p>
                                 </div>
-                                <div class="product-info smart-form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>
-                                            <a href="javascript:void(0);" class="btn btn-info">More info</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -380,12 +175,10 @@ Although you can use them, for a more unique website, replace these images with 
                     <div class="prod-info-main prod-wrap clearfix">
                         <div class="row">
                             <div class="col-md-5 col-sm-12 col-xs-12">
-                                <div class="product-image">
-                                    <img src="../static/images/ProductItem/13102605_M1.jpg" class="img-responsive">
-                                </div>
+                                    <img src="../static/images/ProductItem/13102605_M1.jpg" class="img-responsive" style="align:center;">
                             </div>
                             <div class="col-md-7 col-sm-12 col-xs-12">
-                                <div class="product-deatil">
+                                <div class="product-detail">
                                     <h5 class="name">
                                         <a href="#">Sumifru Banana 700G<span>Fruits</span></a>
                                     </h5>
@@ -395,14 +188,6 @@ Although you can use them, for a more unique website, replace these images with 
                                 <div class="description">
                                     <p>Country of Origin: Philippines </p>
                                 </div>
-                                <div class="product-info smart-form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>
-                                            <a href="javascript:void(0);" class="btn btn-info">More info</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -412,12 +197,10 @@ Although you can use them, for a more unique website, replace these images with 
                     <div class="prod-info-main prod-wrap clearfix">
                         <div class="row">
                             <div class="col-md-5 col-sm-12 col-xs-12">
-                                <div class="product-image">
-                                    <img src="../static/images/ProductItem/13088208_M1.jpg" class="img-responsive">
-                                </div>
+                                    <img src="../static/images/ProductItem/13088208_M1.jpg" class="img-responsive" style="align:center;">
                             </div>
                             <div class="col-md-7 col-sm-12 col-xs-12">
-                                <div class="product-deatil">
+                                <div class="product-detail">
                                     <h5 class="name">
                                         <a href="#">Pasar Golden Pear 4S<span>Fruits</span></a>
                                     </h5>
@@ -426,14 +209,6 @@ Although you can use them, for a more unique website, replace these images with 
                                 </div>
                                 <div class="description">
                                     <p>Country of Origin: China</p>
-                                </div>
-                                <div class="product-info smart-form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>
-                                            <a href="javascript:void(0);" class="btn btn-info">More info</a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -444,12 +219,10 @@ Although you can use them, for a more unique website, replace these images with 
                         <div class="prod-info-main prod-wrap clearfix">
                             <div class="row">
                                 <div class="col-md-5 col-sm-12 col-xs-12">
-                                    <div class="product-image">
-                                        <img src="../static/images/ProductItem/13052575_M1.jpg" class="img-responsive">
-                                    </div>
+                                        <img src="../static/images/ProductItem/13052575_M1.jpg"  class="img-responsive" style="align:center;">
                                 </div>
                                 <div class="col-md-7 col-sm-12 col-xs-12">
-                                    <div class="product-deatil">
+                                    <div class="product-detail">
                                         <h5 class="name">
                                             <a href="#">Sunkist Orange - Bag 1.3KG<span>Fruits</span></a>
                                         </h5>
@@ -458,14 +231,6 @@ Although you can use them, for a more unique website, replace these images with 
                                     </div>
                                     <div class="description">
                                         <p>Country of Origin: Australia</p>
-                                    </div>
-                                    <div class="product-info smart-form">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>
-                                                <a href="javascript:void(0);" class="btn btn-info">More info</a>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -477,12 +242,12 @@ Although you can use them, for a more unique website, replace these images with 
                     <div class="prod-info-main prod-wrap clearfix">
                         <div class="row">
                             <div class="col-md-5 col-sm-12 col-xs-12">
-                                <div class="product-image">
-                                    <img src="../static/images/ProductItem/12228635_M1.jpg" class="img-responsive">
-                                </div>
+
+                                    <img src="../static/images/ProductItem/12228635_M1.jpg" class="img-responsive" style="align:center;">
+
                             </div>
                             <div class="col-md-7 col-sm-12 col-xs-12">
-                                <div class="product-deatil">
+                                <div class="product-detail">
                                     <h5 class="name">
                                         <a href="#">Fresh Tomatoes 600G<span>Vegetables</span></a>
                                     </h5>
@@ -492,14 +257,6 @@ Although you can use them, for a more unique website, replace these images with 
                                 <div class="description">
                                     <p>Country of Origin: Malaysia</p>
                                 </div>
-                                <div class="product-info smart-form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>
-                                            <a href="javascript:void(0);" class="btn btn-info">More info</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -509,12 +266,10 @@ Although you can use them, for a more unique website, replace these images with 
                     <div class="prod-info-main prod-wrap clearfix">
                         <div class="row">
                             <div class="col-md-5 col-sm-12 col-xs-12">
-                                <div class="product-image">
-                                    <img src="../static/images/ProductItem/13000321_M1.jpg" class="img-responsive">
-                                </div>
+                                    <img src="../static/images/ProductItem/13000321_M1.jpg"  class="img-responsive" style="align:center;">
                             </div>
                             <div class="col-md-7 col-sm-12 col-xs-12">
-                                <div class="product-deatil">
+                                <div class="product-detail">
                                     <h5 class="name">
                                         <a href="#">Pasar Carrots 500G<span>Vegetables</span></a>
                                     </h5>
@@ -524,14 +279,6 @@ Although you can use them, for a more unique website, replace these images with 
                                 <div class="description">
                                     <p>Country of Origin: Australia</p>
                                 </div>
-                                <div class="product-info smart-form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>
-                                            <a href="javascript:void(0);" class="btn btn-info">More info</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -541,12 +288,12 @@ Although you can use them, for a more unique website, replace these images with 
                     <div class="prod-info-main prod-wrap clearfix">
                         <div class="row">
                             <div class="col-md-5 col-sm-12 col-xs-12">
-                                <div class="product-image">
-                                    <img src="../static/images/ProductItem/11869588_M1.jpg" class="img-responsive">
-                                </div>
+
+                                    <img src="../static/images/ProductItem/11869588_M1.jpg"  class="img-responsive" style="align:center;">
+
                             </div>
                             <div class="col-md-7 col-sm-12 col-xs-12">
-                                <div class="product-deatil">
+                                <div class="product-detail">
                                     <h5 class="name">
                                         <a href="#">Pasar Cucumber 500G<span>Vegetables</span></a>
                                     </h5>
@@ -556,14 +303,6 @@ Although you can use them, for a more unique website, replace these images with 
                                 <div class="description">
                                     <p>Country of Origin: Thailand</p>
                                 </div>
-                                <div class="product-info smart-form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>
-                                            <a href="javascript:void(0);" class="btn btn-info">More info</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -573,12 +312,10 @@ Although you can use them, for a more unique website, replace these images with 
                     <div class="prod-info-main prod-wrap clearfix">
                         <div class="row">
                             <div class="col-md-5 col-sm-12 col-xs-12">
-                                <div class="product-image">
-                                    <img src="../static/images/ProductItem/10352771_M1.jpg" class="img-responsive">
-                                </div>
+                                    <img src="../static/images/ProductItem/10352771_M1.jpg"  class="img-responsive" style="align:center;">
                             </div>
                             <div class="col-md-7 col-sm-12 col-xs-12">
-                                <div class="product-deatil">
+                                <div class="product-detail">
                                     <h5 class="name">
                                         <a href="#">Pasar Local Lettuce 220G<span>Vegetables</span></a>
                                     </h5>
@@ -588,14 +325,6 @@ Although you can use them, for a more unique website, replace these images with 
                                 <div class="description">
                                     <p>Country of Origin: Malaysia</p>
                                 </div>
-                                <div class="product-info smart-form">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <a href="javascript:void(0);" class="btn btn-danger">Add to cart</a>
-                                            <a href="javascript:void(0);" class="btn btn-info">More info</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -604,31 +333,17 @@ Although you can use them, for a more unique website, replace these images with 
             </div>
         </div>
         </section>
+    {% endblock %}
 
-                <!-- Footer -->
-                <footer class="page-footer">
 
-                    <!-- Copyright etc -->
-                    <div class="small-print">
-                        <div class="container">
-                            <p>Copyright &copy; myTrolley.tk 2017</p>
-                        </div>
-                    </div>
+            <!-- jQuery -->
+            <script src="../static/js/jquery-1.11.3.min.js"></script>
 
-                </footer>
+            <!-- Bootstrap Core JavaScript -->
+            <script src="../static/js/bootstrap.min.js"></script>
 
-                <!-- jQuery -->
-                <script src="../static/js/jquery-1.11.3.min.js"></script>
+            <!-- Plugin JavaScript -->
+            <script src="../static/js/jquery.easing.min.js"></script>
 
-                <!-- Bootstrap Core JavaScript -->
-                <script src="../static/js/bootstrap.min.js"></script>
-
-                <!-- Plugin JavaScript -->
-                <script src="../static/js/jquery.easing.min.js"></script>
-
-                <!-- Custom Javascript -->
-                <script src="../static/js/custom.js"></script>
-
-</body>
-
-</html>
+            <!-- Custom Javascript -->
+            <script src="../static/js/custom.js"></script>

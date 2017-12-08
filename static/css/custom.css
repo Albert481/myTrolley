@@ -8,6 +8,7 @@ body {
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
+    border-bottom: 1px solid #ddd;
 }
 
 th {
@@ -135,7 +136,7 @@ header .header-content .header-content-inner p {
 .promo a:visited,
 .promo a:hover,
 .promo a:active {
-    color: white;
+    color: deeppink;
 	text-shadow: 0px 0px 40px black;
     text-decoration: none;
 }
@@ -159,20 +160,23 @@ header .header-content .header-content-inner p {
 }
 
 .item-1 {
-	background: url('../images/writing.jpg');
+	background: url('../images/Points-Icon-700px.png');
 	}
 	
 .item-2 {
-	background: url('../images/concert.jpg');
+	background: url('../images/Online-QR-Code-Scanner.png');
 	}
 	
 .item-3 {
-	background: url('../images/pencil_sharpener.jpg');
+	background: url('../images/Enable-store-NTUC-Fairprice-4.jpg');
 	}
-		
+.item-4{
+    background: url('../images/guides_blue.png');
+}
 .item-1,
 .item-2,
-.item-3 {
+.item-3,
+.item-4{
 	background-size: cover;
 	background-position: 50% 50%;
 	}
@@ -514,4 +518,98 @@ span.psw {
     .cancelbtn {
         width: 100%;
     }
+}
+
+input, label {vertical-align:middle}
+.qrcode-text {padding-right:1.7em; margin-right:0}
+.qrcode-text-btn {display:inline-block; background:url(//dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg) 50% 50% no-repeat; height:1em; width:1.7em; margin-left:-1.7em; cursor:pointer}
+.qrcode-text-btn > input[type=file] {position:absolute; overflow:hidden; width:1px; height:1px; opacity:0}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    }
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+    }
+
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    top: 10%;
+    background: #fff;
+    border-radius: 5px;
+    width: 30%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    }
+
+.popup h2 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+    }
+.popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+    }
+.popup .close:hover {
+    color: #06D85F;
+    }
+.popup .content {
+    max-height: 30%;
+    overflow: auto;
+    }
+
+@media screen and (max-width: 700px){
+    .box{
+    width: 70%;
+    }
+    .popup{
+    width: 70%;
+    }
+}
+
+input[type=button], input[type=submit], input[type=reset] {
+    background-color: #00cc00;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+input[type=number] {
+    width: 100%;
+    height: 20px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+}
+
+button {
+    border-radius: 4px;
+    background-color: green;
+    font-size: 16px;
+    resize: none;
 }
