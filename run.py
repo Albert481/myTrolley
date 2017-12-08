@@ -1,7 +1,14 @@
-from flask import Flask, render_template, request
-
+from flask import Flask, render_template, request, flash, redirect, url_for
+from firebase_admin import credentials, db
+import firebase_admin
 app = Flask(__name__)
 
+cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
+default_app = firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://smarttrolley-c024a.firebaseio.com/'
+})
+
+root = db.reference()
 
 @app.route('/')
 def home():
@@ -56,5 +63,6 @@ def help():
     return render_template('help.html')
 
 if __name__ == '__main__':
+    app.secret_key = 'secret123'
     app.run()
 
