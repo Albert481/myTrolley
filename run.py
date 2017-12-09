@@ -50,6 +50,22 @@ def popularitem():
 def healthyrecipe():
     return render_template('healthyrecipe.html')
 
+@app.route('/recipe1')
+def recipe1():
+    return render_template('recipe_orange_apple_pear_juice.html')
+
+@app.route('/recipe2')
+def recipe2():
+    return render_template('recipe_creamy_banana_pudding')
+
+@app.route('/recipe3')
+def recipe3():
+    return render_template('recipe_lettuce_cumber_tomato_salad.html')
+
+@app.route('/recipe4')
+def recipe4():
+    return render_template('recipe_crunchy_carrot_apple_salad.html')
+
 @app.route('/healthevent')
 def healthevent():
     return render_template('healthevent.html')
