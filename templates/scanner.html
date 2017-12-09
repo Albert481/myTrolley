@@ -137,6 +137,7 @@
 
 {% block body %}
 {% from "includes/_formhelper.html" import render_field %}
+
 <div id="main">
     <div id="mainbody">
         <table class="tsel" border="0" width="100%">
@@ -188,7 +189,10 @@
                 <div align="center">
                     <p align="center">Please enter the trolley ID number.</p>
                     <div style="width: 50%" align="center">
-
+                        <form class="form-horizontal" method="POST" action="/scanner">
+                            {{ render_field(form.trolleyid, class_="form-control") }}
+                            <input type="submit" value="Unlock" class="btn btn-info"/>
+                        </form>
                     </div>
                 </div>
             </div>
