@@ -56,7 +56,7 @@ def recipe1():
 
 @app.route('/recipe2')
 def recipe2():
-    return render_template('recipe_creamy_banana_pudding')
+    return render_template('recipe_creamy_banana_pudding.html')
 
 @app.route('/recipe3')
 def recipe3():
