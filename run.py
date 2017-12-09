@@ -10,33 +10,42 @@ default_app = firebase_admin.initialize_app(cred, {
 
 root = db.reference()
 
+troll = db.reference('trolleys')
+
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-@app.route('/scanner')
-def scanner():
-    trolleys = root.child('trolleys').get()
-    form = ScannerForm(request.form)
-    name = form.trolleyid.data
-    for trolleyid in trolleys:
-        eachtrolley = trolleys[trolleyid]
-
-        if eachtrolley['status'] == 'A':
-            if name == eachtrolley:
-                flash('Trolley unlocked', 'success')
-            else:
-                flash('Trolley ID not in database', 'danger')
-
-        elif eachtrolley['status'] == 'B':
-            flash('Trolley needs repair', 'danger')
-
-    return render_template('scanner.html')
-
 class ScannerForm(Form):
     trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=150), validators.number_range(min=0000, max=9999), validators.DataRequired()])
+
+@app.route('/scanner', methods=['GET','POST'])
+def scanner():
+    trolleys = troll.get()
+    form = ScannerForm(request.form)
+    calledname = form.trolleyid.data
+    found = False
+    if request.method == 'POST':
+        for trolleyid in trolleys.items():
+            if trolleyid[1]['name'] == calledname:
+                if trolleyid[1]['status'] == 'A':
+                    print('Trolley unlocked')
+                    flash('Trolley unlocked', 'success')
+                    found = True
+                    break
+
+                elif trolleyid[1]['status'] == 'B':
+                    print('Trolley needs repair')
+                    flash('Trolley needs repair', 'danger')
+                    found = True
+                    break
+        if found == False:
+            print('Trolley ID not in database')
+            flash('Trolley ID not in database', 'danger')
+
+    return render_template('scanner.html', form=form)
 
 @app.route('/ourproduct')
 def ourproduct():
