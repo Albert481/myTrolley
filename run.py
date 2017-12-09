@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from firebase_admin import credentials, db
+from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators
 import firebase_admin
-app = Flask(__name__)
+from firebase_admin import credentials, db, storage
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -10,13 +10,33 @@ default_app = firebase_admin.initialize_app(cred, {
 
 root = db.reference()
 
+app = Flask(__name__)
+
 @app.route('/')
 def home():
     return render_template('index.html')
 
 @app.route('/scanner')
 def scanner():
+    trolleys = root.child('trolleys').get()
+    form = ScannerForm(request.form)
+    name = form.trolleyid.data
+    for trolleyid in trolleys:
+        eachtrolley = trolleys[trolleyid]
+
+        if eachtrolley['status'] == 'A':
+            if name == eachtrolley:
+                flash('Trolley unlocked', 'success')
+            else:
+                flash('Trolley ID not in database', 'danger')
+
+        elif eachtrolley['status'] == 'B':
+            flash('Trolley needs repair', 'danger')
+
     return render_template('scanner.html')
+
+class ScannerForm(Form):
+    trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=150), validators.number_range(min=0000, max=9999), validators.DataRequired()])
 
 @app.route('/ourproduct')
 def ourproduct():

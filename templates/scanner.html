@@ -136,6 +136,7 @@
 {% endblock %}
 
 {% block body %}
+{% from "includes/_formhelper.html" import render_field %}
 <div id="main">
     <div id="mainbody">
         <table class="tsel" border="0" width="100%">
@@ -178,19 +179,16 @@
     <div class="col-sm-12">
         <h2 class="section-header">Scanner</h2>
         <p class="lead text-muted">Please allow your device to use camera for your web browser. <br><font
-                size="2">*The QR scanner will not work on computer/laptops.</font></p>
+                size="2">*The QR scanner will not work on a computer.</font></p>
 
         <a href="#popup1" class="btn btn-info btn-lg">Enter Trolley ID</a>
         <div id="popup1" class="overlay">
             <div class="popup">
                 <a href="#" class="close">&times;</a>
-                <div class="content" align="center">
+                <div align="center">
                     <p align="center">Please enter the trolley ID number.</p>
                     <div style="width: 50%" align="center">
-                        <form action="">
-                            <input type="number" name="bikeid"><br>
-                            <input align="center" type="submit" value="Unlock">
-                        </form>
+
                     </div>
                 </div>
             </div>
@@ -200,7 +198,7 @@
         <div id="popup2" class="overlay">
             <div class="popup">
                 <a href="#" class="close">&times;</a>
-                <div class="content">
+                <div>
                     <p align="center"><strong>Unlock -- Scan the QR code</strong></p>
                     <p align="center">Scan QR code on the trolley to unlock</p>
                     <p align="center"><strong>Unlock -- Enter trolley ID</strong></p>
@@ -213,7 +211,7 @@
         <div id="popup3" class="overlay">
             <div class="popup">
                 <a href="#" class="close">&times;</a>
-                <div class="content">
+                <div>
                     <button>Faulty Trolley</button>
                     <button>Report Misuse</button>
                 </div>
