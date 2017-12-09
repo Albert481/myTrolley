@@ -158,10 +158,6 @@ header .header-content .header-content-inner p {
     display: inline-block;
     vertical-align: middle;
 }
-
-.item-1 {
-	background: url('../images/Points-Icon-700px.png');
-	}
 	
 .item-2 {
 	background: url('../images/Online-QR-Code-Scanner.png');
@@ -170,9 +166,7 @@ header .header-content .header-content-inner p {
 .item-3 {
 	background: url('../images/Enable-store-NTUC-Fairprice-4.jpg');
 	}
-.item-4{
-    background: url('../images/guides_blue.png');
-}
+
 .item-1,
 .item-2,
 .item-3,
