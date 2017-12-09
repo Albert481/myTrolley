@@ -1,7 +1,7 @@
 ﻿{% extends 'layout.html' %}
 {% block title %}Search{% endblock %}
 
-{% block body %}
+{% block head %}
     <style>
         * {
             box-sizing: border-box;
@@ -34,11 +34,13 @@
                 border-bottom: 1px solid #ddd;
             }
 
-                #myTable tr.header, #myTable tr:hover {
-                    background-color: #f1f1f1;
-                }
+            #myTable tr.header, #myTable tr:hover {
+                background-color: #f1f1f1;
+            }
     </style>
-    <!-- Page Content -->
+{% endblock %}
+
+{% block body %}
     <section class="content">
         <div class="container">
             <div class="row">
@@ -116,8 +118,7 @@
             </div>
         </div>
     </section>
-        <!-- /.container -->
-    {% endblock %}
+{% endblock %}
 
         <!-- jQuery -->
         <script src="../static/js/jquery-1.11.3.min.js"></script>
