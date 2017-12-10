@@ -1,99 +1,260 @@
 {% extends 'layout.html' %}
 {% block title %}Scanner{% endblock %}
 
-{% block body %}
-<!-- Content -->
-<section class="content" style="background-color: #E6E6FA">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <input type=text size=16 placeholder="Trolley ID" class=qrcode-text><label class=qrcode-text-btn>
-                <input type=file accept="image/*" capture=environment onclick="return showQRIntro();" onchange="openQRCamera(this);" tabindex=-1></label>
-                <input type=button value="Go" disabled>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <h2 class="section-header">Scanner</h2>
-                <p class="lead text-muted">Please allow your device to use camera for your web browser. <br><font size="2">*The QR scanner will not work on computer/laptops.</font></p>
+{% block head %}
+    <style type="text/css">
+        body {
+            width: 100%;
+            text-align: center;
+        }
 
-                <a href="#popup1" class="btn btn-info btn-lg">Enter Trolley ID</a>
-                <div id="popup1" class="overlay">
-                    <div class="popup">
-                        <a href="#" class="close">&times;</a>
-                        <div class="content" align="center">
-                            <p align="center">Please enter the trolley ID number.</p>
-                            <div style="width: 50%" align="center">
-                                <form action="">
-                                    <input type="number" name="bikeid"><br>
-                                    <input align="center" type="submit" value="Unlock">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        img {
+            border: 0;
+        }
 
-                <a href="#popup2" class="btn btn-success btn-lg">Help</a>
-                <div id="popup2" class="overlay">
-                    <div class="popup">
-                        <a href="#" class="close">&times;</a>
-                        <div class="content">
-                            <p align="center"><strong>Unlock -- Scan the QR code</strong></p>
-                            <p align="center">Scan QR code on the trolley to unlock</p>
-                            <p align="center"><strong>Unlock -- Enter trolley ID</strong></p>
-                            <p align="center">Ensure you entered the correct Trolley ID</p>
-                        </div>
-                    </div>
-                </div>
+        #main {
+            margin: 15px auto;
+            background: white;
+            overflow: auto;
+            width: 100%;
+        }
 
-                <a href="#popup3" class="fancy-btn open btn btn-danger btn-lg">Report</a>
-                <div id="popup3" class="overlay">
-                    <div class="popup">
-                        <a href="#" class="close">&times;</a>
-                        <div class="content">
-                            <button>Faulty Trolley</button>
-                            <button>Report Misuse</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        #header {
+            background: white;
+            margin-bottom: 15px;
+        }
 
-        </div>
-    </div>
-</section>
+        #mainbody {
+            background: white;
+            width: 100%;
+            display: none;
+        }
+
+        #v {
+            width: 320px;
+            height: 240px;
+        }
+
+        #qr-canvas {
+            display: none;
+        }
+
+        #qrfile {
+            width: 320px;
+            height: 240px;
+        }
+
+        #mp1 {
+            text-align: center;
+            font-size: 35px;
+        }
+
+        #imghelp {
+            position: relative;
+            left: 0px;
+            top: -160px;
+            z-index: 100;
+            font: 18px arial, sans-serif;
+            background: #f0f0f0;
+            margin-left: 35px;
+            margin-right: 35px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 20px;
+        }
+
+        .selector {
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+            margin-bottom: -5px;
+        }
+
+        #outdiv {
+            width: 320px;
+            height: 240px;
+            border: solid;
+            border-width: 3px 3px 3px 3px;
+        }
+
+        #result {
+            border: solid;
+            border-width: 1px 1px 1px 1px;
+            padding: 20px;
+            width: 70%;
+        }
+
+        ul {
+            margin-bottom: 0;
+            margin-right: 40px;
+        }
+
+{#        li {#}
+{#            display: inline;#}
+{#            padding-right: 0.5em;#}
+{#            padding-left: 0.5em;#}
+{#            font-weight: bold;#}
+{#            border-right: 1px solid #333333;#}
+{#        }#}
+
+        li a {
+            text-decoration: none;
+            color: black;
+        }
+
+        #footer a {
+            color: black;
+        }
+
+        .tsel {
+            padding: 0;
+        }
+
+    </style>
+
+    <script type="text/javascript" src="../static/js/scanner/llqrcode.js"></script>
+    <script type="text/javascript" src="../static/js/scanner/plusone.js"></script>
+    <script type="text/javascript" src="../static/js/scanner/webqr.js"></script>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-24451557-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
 {% endblock %}
 
-    <!-- jQuery -->
-    <script src="../static/js/jquery-1.11.3.min.js"></script>
+{% block body %}
+{% from "includes/_formhelper.html" import render_field %}
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../static/js/bootstrap.min.js"></script>
+<div class="row">
+    <div id="mainbody">
+        <table class="tsel" border="0" width="100%">
+            <tr>
+                <td valign="top" align="center" width="50%">
+                    <table class="tsel" border="0">
+                        <tr>
+                            <td><img class="selector" id="webcamimg" src="../static/images/vid.png" onclick="setwebcam()" align="left"/>
+                            </td>
+                            <td><img class="selector" id="qrimg" src="../static/images/cam.png" onclick="setimg()" align="right"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <div id="outdiv">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center">
+                    <div id="result"></div>
+                </td>
+            </tr>
+        </table>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- webqr_2016 -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-8418802408648518"
+             data-ad-slot="2527990541"
+             data-ad-format="auto"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>&nbsp;
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <h2 class="section-header">Scanner</h2>
+        <p class="lead text-muted">Please allow your device to use camera for your web browser. <br><font
+                size="2">*The QR scanner will not work on a computer.</font></p>
 
-    <!-- Plugin JavaScript -->
-    <script src="../static/js/jquery.easing.min.js"></script>
-    
-    <!-- Custom Javascript -->
-    <script src="../static/js/custom.js"></script>
+        <a href="#popup1" class="btn btn-info btn-lg">Enter Trolley ID</a>
+        <div id="popup1" class="overlay">
+            <div class="popup">
+                <a href="#" class="close">&times;</a>
+                <div align="center">
+                    <p align="center">Please enter the trolley ID number.</p>
+                    <div style="width: 50%" align="center">
+                        <form class="form-horizontal" method="POST" action="/scanner">
+                            {{ render_field(form.trolleyid, class_="form-control") }}
+                            <input type="submit" value="Unlock" class="btn btn-info"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <script>
-        function openQRCamera(node) {
-            var reader = new FileReader();
-            reader.onload = function() {
-            node.value = "";
-            qrcode.callback = function(res) {
-              if(res instanceof Error) {
-                alert("No QR code found. Please make sure the QR code is within the camera's frame and try again.");
-              } else {
-                node.parentNode.previousElementSibling.value = res;
-              }
-            };
-            qrcode.decode(reader.result);
-            };
-            reader.readAsDataURL(node.files[0]);
-        }
+        <a href="#popup2" class="btn btn-success btn-lg">Help</a>
+        <div id="popup2" class="overlay">
+            <div class="popup">
+                <a href="#" class="close">&times;</a>
+                <div>
+                    <p align="center"><strong>Unlock -- Scan the QR code</strong></p>
+                    <p align="center">Scan QR code on the trolley to unlock</p>
+                    <p align="center"><strong>Unlock -- Enter trolley ID</strong></p>
+                    <p align="center">Ensure you entered the correct Trolley ID</p>
+                </div>
+            </div>
+        </div>
 
-        function showQRIntro() {
-            return confirm("Use your camera to take a picture of a QR code.");
-        }
-    </script>
+        <a href="#popup3" class="fancy-btn open btn btn-danger btn-lg">Report</a>
+        <div id="popup3" class="overlay">
+            <div class="popup">
+                <a href="#" class="close">&times;</a>
+                <div>
+                    <p align="center">Please fill in the report form accordingly</p>
+                    <div align="center">
+                        <form class="form-horizontal" method="POST" action="/scanner">
+                            <div class="form-group col-md-6">
+                                    {{ render_field(form.name, class_="form-control") }}
+                            </div>
+                            <div class="form-group col-md-6">
+                                    {{ render_field(form.reporttype, class_="radio-inline") }}
+                            </div>
+
+                            <div id="report">
+                                <div class="form-group col-md-12">
+                                    {{ render_field(form.faulty, class_="form-control") }}
+                                </div>
+                                <div class="form-group col-md-12">
+                                    {{  render_field(form.comment, class_="form-control") }}
+                                </div>
+                            </div>
+
+                            <div id="misuse">
+                                <div class="form-group">
+
+                                </div>
+                            </div>
+                            <input type="submit" value="Submit" class="btn btn-info"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<canvas id="qr-canvas" width="800" height="600"></canvas>
+<script type="text/javascript">load();</script>
+
+{% endblock %}
+
+
+
 
