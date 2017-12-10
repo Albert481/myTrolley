@@ -22,9 +22,12 @@
     </head>
     <body>
 
-
-    {% include 'includes/_navbar.html' %}
-
+    <div class="container-fluid">
+        {% include 'includes/_navbar.html' %}
+    </div>
+    <div class="container-fluid">
+        {% include 'includes/_messages.html' %}
+    </div>
 
     {% block body %}{% endblock %}
 

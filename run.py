@@ -31,18 +31,19 @@ def scanner():
         for trolleyid in trolleys.items():
             if trolleyid[1]['name'] == calledname:
                 if trolleyid[1]['status'] == 'A':
-                    print('Trolley unlocked')
                     flash('Trolley unlocked', 'success')
+                    flash('Trolley unlocked', 'success')
+
                     found = True
                     break
 
                 elif trolleyid[1]['status'] == 'B':
-                    print('Trolley needs repair')
+                    flash('Trolley needs repair', 'danger')
                     flash('Trolley needs repair', 'danger')
                     found = True
                     break
         if found == False:
-            print('Trolley ID not in database')
+            flash('Trolley ID not in database', 'danger')
             flash('Trolley ID not in database', 'danger')
 
     return render_template('scanner.html', form=form)
