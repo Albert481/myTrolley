@@ -15,7 +15,6 @@ Although you can use them, for a more unique website, replace these images with 
 
     <!-- Bootstrap Core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/css/help.css" rel="stylesheet">
 
     <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles -->
     <link href="../static/css/custom.css" rel="stylesheet">
@@ -51,6 +50,35 @@ Although you can use them, for a more unique website, replace these images with 
     }
 
     </script>
+
+    <style>
+        #faq-header{
+            font-size: xx-large;
+            font-weight: bold;
+            font-color: black;
+        }
+
+        .faq-item{
+            padding-top: 25px;
+            padding-bottom: 25px;
+            border-bottom-style: dotted;
+            border-bottom-color: grey;
+        }
+
+        .faq-question{
+            font-weight: bold;
+            font-size: medium;
+        }
+
+        .faq-answer{
+            font-size: medium;
+        }
+
+        .faq-footer{
+            padding-top: 25px;
+            padding-bottom: 25px;
+        }
+    </style>
 </head>
 
 <body>
@@ -72,60 +100,76 @@ Although you can use them, for a more unique website, replace these images with 
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="panel-group" id="accordion">
-                            <div class="faqHeader"><h3>Frequently Asked Questions</h3></div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">How do i create an account?</a>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        Lorem ipsum whatever
-                                    </div>
-                                </div>
-                                <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">How do i create an account?</a>
-                                        </h4>
-                                </div>
-                                <div id="collapseTwo" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        Lorem ipsum whatever
-                                    </div>
-                                </div>
-                                <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">How do i create an account?</a>
-                                        </h4>
-                                </div>
-                                <div id="collapseThree" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        Lorem ipsum whatever
-                                    </div>
-                                </div>
-                                <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">How do i create an account?</a>
-                                        </h4>
-                                </div>
-                                <div id="collapseFour" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        Lorem ipsum whatever
-                                    </div>
-                                </div>
-                                <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">How do i create an account?</a>
-                                        </h4>
-                                </div>
-                                <div id="collapseFive" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        Lorem ipsum whatever
-                                    </div>
-                                </div>
+                    <div class="faq-section">
+                        <div class="faq-header"><h3 id="faq-header">Frequently Asked Questions</h3></div>
+
+                        <div class="faq-item">
+                            <a class="faq-question" href="#answer1" data-toggle="collapse" aria-expanded="false">
+                                Q: How do I rent a trolley?
+                            </a>
+                            <div id="answer1" class="faq-answer collapse">
+                                <span>A: Register for an account</span>
                             </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <a class="faq-question" href="#answer2" data-toggle="collapse" aria-expanded="false">
+                                Q: How do I rent a trolley?
+                            </a>
+                            <div id="answer2" class="faq-answer collapse">
+                                <span>A: Register for an account</span>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <a class="faq-question" href="#answer3" data-toggle="collapse" aria-expanded="false">
+                                Q: How do I rent a trolley?
+                            </a>
+                            <div id="answer3" class="faq-answer collapse">
+                                <span>A: Register for an account</span>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <a class="faq-question" href="#answer4" data-toggle="collapse" aria-expanded="false">
+                                Q: How do I rent a trolley?
+                            </a>
+                            <div id="answer4" class="faq-answer collapse">
+                                <span>A: Register for an account</span>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <a class="faq-question" href="#answer5" data-toggle="collapse" aria-expanded="false">
+                                Q: How do I rent a trolley?
+                            </a>
+                            <div id="answer5" class="faq-answer collapse">
+                                <span>A: Register for an account</span>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <a class="faq-question" href="#answer6" data-toggle="collapse" aria-expanded="false">
+                                Q: How do I rent a trolley?
+                            </a>
+                            <div id="answer6" class="faq-answer collapse">
+                                <span>A: Register for an account</span>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <a class="faq-question" href="#answer7" data-toggle="collapse" aria-expanded="false">
+                                Q: How do I rent a trolley?
+                            </a>
+                            <div id="answer7" class="faq-answer collapse">
+                                <span>A: Register for an account</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-footer">
+                        Still can't find what you are looking for?
+                        <a href="email" class="btn btn-primary text-uppercase text-center">Email Us</a>
                     </div>
                 </div>
             </div>
