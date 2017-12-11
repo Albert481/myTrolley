@@ -64,6 +64,7 @@ Although you can use them, for a more unique website, replace these images with 
             padding: 50px 50px 50px 50px;
             border-color: black;
             border-style: solid;
+            background-color: white;
         }
 
         .content{
@@ -118,21 +119,25 @@ Although you can use them, for a more unique website, replace these images with 
                         </div>
                         <div class="contactussection">
                             <form action="https://script.google.com/macros/u/0/s/AKfycbxpUfnQ0y4_adWC_
-                            DSlMleAiAV1nhIbDbfBeei12i0tetsc-nt7/exec" method="post" enctype="text/plain">
+                            DSlMleAiAV1nhIbDbfBeei12i0tetsc-nt7/exec" method="post" enctype="text/plain"
+                                  data-toggle="validator">
                                 <fieldset>
                                     <p>
                                         <label for="name">Name:</label>
-                                        <input type="text" name="name" id="name" placeholder="Enter your name">
+                                        <input type="text" name="name" id="name" placeholder="Enter your name" required
+                                        data-error="Please enter your name">
                                     </p>
 
                                     <p>
                                         <label for="email">Email:</label>
-                                        <input type="text" name="email" id="email" placeholder="Enter your email">
+                                        <input type="text" name="email" id="email" placeholder="Enter your email" required
+                                        data-error="That's not a valid email address">
                                     </p>
 
                                     <p>
                                         <label for="feedback">Feedback:</label>
-                                        <input type="text" name="feedback" id="feedback" placeholder="Enter your feedback here">
+                                        <input type="text" name="feedback" id="feedback" placeholder="Enter your feedback here" required
+                                        data-error="Please enter your feedback">
                                     </p>
                                     <input type="submit" value="Submit">
                                 </fieldset>
