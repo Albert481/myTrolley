@@ -15,7 +15,7 @@ troll = db.reference('trolleys')
 
 app = Flask(__name__)
 
-@app.route('/home')
+@app.route('/')
 def home():
     return render_template('index.html')
 
