@@ -14,6 +14,7 @@ root = db.reference()
 troll = db.reference('trolleys')
 
 app = Flask(__name__)
+app.config['SECRET KEY'] = 'DontTellAnyone'
 
 @app.route('/')
 def home():
@@ -136,7 +137,7 @@ def search():
 def signup():
     return render_template('signup.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
     return render_template('login.html')
 
