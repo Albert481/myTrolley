@@ -15,7 +15,7 @@ troll = db.reference('trolleys')
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/home')
 def home():
     return render_template('index.html')
 
@@ -155,6 +155,18 @@ def reward():
 @app.route('/help')
 def help():
     return render_template('help.html')
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
+
+@app.route('/email')
+def email():
+    return render_template('email.html')
+
+@app.route('/feedback')
+def feedback():
+    return render_template('feedback.html')
 
 if __name__ == '__main__':
     app.secret_key = 'secret123'

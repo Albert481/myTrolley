@@ -18,7 +18,6 @@ Although you can use them, for a more unique website, replace these images with 
 
     <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles -->
     <link href="../static/css/custom.css" rel="stylesheet">
-    <link href="../static/css/help.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -51,62 +50,46 @@ Although you can use them, for a more unique website, replace these images with 
     }
 
     </script>
+    <style>
+        #contactusheader{
+            padding-left: 30px;
+            padding-bottom: 50px;
+            font-size: 60px;
+            font-weight: bold;
+            border-bottom-color: black;
+            border-bottom-style: solid;
+        }
+
+        .contactussection{
+            padding: 50px 50px 50px 50px;
+            border-color: black;
+            border-style: solid;
+        }
+
+        .content{
+            background-color: #E6E6FA;
+        }
+
+        #feedback{
+             height: 250px;
+        }
+
+        .contactusinfo{
+            background-color: lightgrey;
+            border-color: black;
+            border-style: solid;
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>
 
     <!-- Navigation -->
-    <nav id="siteNav" class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Logo and responsive toggle -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">
-                	<span class="glyphicon glyphicon-shopping-cart"></span> 
-                	myTrolley
-                </a>
-            </div>
-            <!-- Navbar links -->
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">Scanner </a>
-                    </li>
-                    <li>
-                            <li class="dropdown">
-                                    <a href="ourproduct.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="ourproduct.html">Our Products</a></li>
-                                        <li><a href="popularitem.html">Weekly Popular Items</a></li>
-                                        <li><a href="healthyrecipe.html">Healthy Recipes</a></li>
-                                        <li><a href="healthevent.html">Healthy Events</a></li>
-                                        <li><a href="search.html">Search</a></li>
-                                    </ul>
-                                </li>
-                    <li class="active">
-                        <a href="help.html">Help</a>
-                    </li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account<span class="caret"></span></a>
-						<ul class="dropdown-menu" aria-labelledby="about-us">
-							<li><a href="#">Sign Up</a></li>
-							<li><a href="#">Login</a></li>
-						</ul>
-					</li>
-                    
-                </ul>
-                
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container -->
-    </nav>
+    <div class="container-fluid">
+        {% include 'includes/_navbar.html' %}
+        {% block body %}{% endblock %}
+    </div>
 
 	<!-- Header -->
    
@@ -117,23 +100,51 @@ Although you can use them, for a more unique website, replace these images with 
 
     <section class="content">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="emailus">
-                    <h1>Send an email to us!</h1>
-                        <form action="mailto:someone@example.com" method="post" enctype="text/plain">
-                            Name:<br>
-                            <input type="text" name="name"><br>
-                            E-mail:<br>
-                            <input type="text" name="mail"><br>
-                            Comment:<br>
-                            <input type="text" id="comment" name="comment" size="80"><br><br>
-                            <input type="submit" value="Send">
-                            <input type="reset" value="Reset">
-                            </form>
-                    </div>
+
+                <div class="contactusheader">
+                    <p id="contactusheader">Contact Us</p>
                 </div>
-            </div>
+
+                    <div class="col-sm-3">
+
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="contactusinfo">
+                        <p>Your feedback is important to us. Please enter your message below and
+                            we will be in touch with you within 5 to 7 working days. For the list of commonly asked questions,
+                            please click here. For urgent assistance, please call our hotline at 1234 5678.
+                        </p>
+                        </div>
+                        <div class="contactussection">
+                            <form action="https://script.google.com/macros/u/0/s/AKfycbxpUfnQ0y4_adWC_
+                            DSlMleAiAV1nhIbDbfBeei12i0tetsc-nt7/exec" method="post" enctype="text/plain">
+                                <fieldset>
+                                    <p>
+                                        <label for="name">Name:</label>
+                                        <input type="text" name="name" id="name" placeholder="Enter your name">
+                                    </p>
+
+                                    <p>
+                                        <label for="email">Email:</label>
+                                        <input type="text" name="email" id="email" placeholder="Enter your email">
+                                    </p>
+
+                                    <p>
+                                        <label for="feedback">Feedback:</label>
+                                        <input type="text" name="feedback" id="feedback" placeholder="Enter your feedback here">
+                                    </p>
+                                    <input type="submit" value="Submit">
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+
+                    </div>
+
+                </div>
         </div>
     </section>
 
