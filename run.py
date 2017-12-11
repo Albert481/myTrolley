@@ -14,6 +14,7 @@ root = db.reference()
 troll = db.reference('trolleys')
 
 app = Flask(__name__)
+app.config['SECRET KEY'] = 'DontTellAnyone'
 
 @app.route('/')
 def home():
@@ -142,11 +143,11 @@ def healthevent():
 def search():
     return render_template('search.html')
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET','POST'])
 def signup():
     return render_template('signup.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
     return render_template('login.html')
 
@@ -165,6 +166,18 @@ def reward():
 @app.route('/help')
 def help():
     return render_template('help.html')
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
+
+@app.route('/email')
+def email():
+    return render_template('email.html')
+
+@app.route('/feedback')
+def feedback():
+    return render_template('feedback.html')
 
 if __name__ == '__main__':
     app.secret_key = 'secret123'

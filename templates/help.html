@@ -15,7 +15,6 @@ Although you can use them, for a more unique website, replace these images with 
 
     <!-- Bootstrap Core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/css/help.css" rel="stylesheet">
 
     <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles -->
     <link href="../static/css/custom.css" rel="stylesheet">
@@ -51,6 +50,24 @@ Although you can use them, for a more unique website, replace these images with 
     }
 
     </script>
+    <style>
+        .helpboxes {
+            text-align: center;
+            padding: 50px 50px 50px 50px;
+            border-color: grey;
+            border-style: solid;
+            border-width: 2px;
+        }
+
+        .helpcontent {
+            border-color: grey;
+            border-style: solid;
+        }
+
+        .content{
+            background-color: #E6E6FA;
+        }
+    </style>
 </head>
 
 <body>
@@ -69,28 +86,39 @@ Although you can use them, for a more unique website, replace these images with 
     <!-- Content 1 -->
 
     <section class="content">
-        <div class="container">
+        <div class="container helpcontent">
             <div class="row">                
-                <div class="col-sm-4">
-                    <h3>Email Us</h3>
-                    <p>Having issues? Send us an email! We'll reply as soon as possible</p>
-                    <a href="email.html" class="btn btn-info">Go here!</a>
-                       
+                <div class="col-sm-3">
+                    <div class="helpboxes">
+                        <h3>Email Us</h3>
+                        <p>Having issues? Send us an email! We'll reply as soon as possible</p>
+                        <a href="email" class="btn btn-info">Go here!</a>
+                    </div>
                 </div>
                     
-                <div class="col-sm-4">
-                    <h3>Feedback</h3>
-                    <p>Want to say something about our website? Comment here!</p>
-                    <a href="feedback.html" class="btn btn-info">Go here!</a>
-                    
+                <div class="col-sm-3">
+                    <div class="helpboxes">
+                        <h3>Feedback</h3>
+                        <p>Want to say something about our website? Comment here!</p>
+                        <a href="feedback" class="btn btn-info">Go here!</a>
+                    </div>
                 </div>
                     
-                <div class="col-sm-4">
-                    <h3>FAQ</h3>
-                    <p>Here are the answers to some frequently asked questions</p>
-                    <a href="faq.html" class="btn btn-info">o here!</a>
-                    
-                </div>              
+                <div class="col-sm-3">
+                    <div class="helpboxes">
+                        <h3>FAQ</h3>
+                        <p>Here are the answers to some frequently asked questions</p>
+                        <a href="faq" class="btn btn-info">Go here!</a>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="helpboxes">
+                        <h3>General Enquiry</h3>
+                        <p>Guidelines and step by step instructions</p>
+                        <a href="generalhelp" class="btn btn-info">Go here!</a>
+                    </div>
+                </div>
                     
             </div>
         </div>
