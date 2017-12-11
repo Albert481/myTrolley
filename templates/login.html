@@ -1,36 +1,63 @@
 {% extends 'layout.html' %}
-{% block title %}Scanner{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block head %}
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+    <!-- jQuery -->
+    <script src="../static/js/jquery-1.11.3.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="../static/js/jquery.easing.min.js"></script>
+
+    <!-- Custom Javascript -->
+    <script src="../static/js/custom.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+    <script>
+     // Initialize Firebase
+     var config = {
+        apiKey: "AIzaSyBwPlW-TqggkUeA69NI0DBAAjoxeKGiN3s",
+        authDomain: "smarttrolley-c024a.firebaseapp.com",
+        databaseURL: "https://smarttrolley-c024a.firebaseio.com",
+        projectId: "smarttrolley-c024a",
+        storageBucket: "smarttrolley-c024a.appspot.com",
+        messagingSenderId: "260911627861"
+        };
+     firebase.initializeApp(config);
+    </script>
+
 {% endblock %}
-    <!-- Navigation -->
-    <div class="container-fluid">
-        {% include 'includes/_navbar.html' %}
-        {% block body %}{% endblock %}
+
+
+{% block body %}
+
+  <form data-toggle="validator" role="form">
+   <div class="form-group">
+    <label for="inputName" class="control-label">Username</label>
+    <input class="form-control" id="inputName" placeholder="Cina Saffary" required>
+   </div>
+   <div class="form-group">
+    <label for="inputPassword" class="control-label">Password</label>
+    <div class="form-inline row">
+      <div class="form-group col-sm-6">
+        <input type="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="Password" required>
+      </div>
+      <div class="clearfix">
+        <button type="submit" class="signupbtn">Login</button>
+      </div>
     </div>
-<br>
-<br>
-<br>
-<br>
- <form action="/action_page.php">
+   </div>
 
-  <div class="container">
-    <label><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
-
-    <label><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
-
-    <button type="submit">Login</button>
-    <input type="checkbox" checked="checked"> Remember me
-  </div>
-
-  <div class="container" style="background-color:#f1f1f1">
-    <span class="psw">Forgot <a href="#">password?</a></span>
-  </div>
-</form>
+  </form>
     
 	<!-- Footer -->
     <footer class="page-footer">
@@ -65,6 +92,4 @@
     <!-- Custom Javascript -->
     <script src="../static/js/custom.js"></script>
 
-</body>
-
-</html>
+{% endblock %}
