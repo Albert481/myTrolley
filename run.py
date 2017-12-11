@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from wtforms import Form, StringField, TextAreaField, RadioField, SelectField, validators, SelectMultipleField
+from wtforms import Form, StringField, TextAreaField, RadioField, BooleanField, validators, SelectMultipleField, DateTimeField, PasswordField
 import firebase_admin
 from firebase_admin import credentials, db, storage
 import scanner as scan
@@ -14,7 +14,7 @@ root = db.reference()
 troll = db.reference('trolleys')
 
 app = Flask(__name__)
-app.config['SECRET KEY'] = 'DontTellAnyone'
+app.config['SECRET KEY'] = 'secret123'
 
 @app.route('/')
 def home():
@@ -143,17 +143,49 @@ def healthevent():
 def search():
     return render_template('search.html')
 
-@app.route('/signup', methods=['GET','POST'])
+class Signupform(Form):
+    username = StringField('Username', [validators.Length(min=4, max=25)])
+    email = StringField('Email Address', [validators.Length(min=6, max=35)])
+    birthday = DateTimeField('Your Birthday', format='%d/%m/%y')
+    password = PasswordField()
+    accept_rules = BooleanField('I accept the site rules', [validators.InputRequired()])
+
+    def register(request):
+        form = Signupform(request.POST)
+        if request.method == 'POST' and form.validate():
+            user = Signupform()
+            user.username = form.username.data
+            user.email = form.email.data
+            user.save()
+            redirect('register')
+        return render_template('modifyuser.html')
+
+@app.route('/signup')
 def signup():
     return render_template('signup.html')
 
-@app.route('/login', methods=['GET','POST'])
+class LoginForm(Form):
+    username = StringField('username')
+    password = PasswordField('password')
+
+@app.route('/login')
 def login():
     return render_template('login.html')
 
 @app.route('/modifyuser')
 def modifyuser():
     return render_template('modifyuser.html')
+
+class ProfileForm():
+
+    def edit_profile(request):
+        user = request.current_user
+        form = ProfileForm(request.POST, user)
+        if request.method == 'POST' and form.validate():
+            form.populate_obj(user)
+            user.save()
+            redirect('edit_profile')
+        return render_template('edit_profile.html', form=form)
 
 @app.route('/credit')
 def creditpointsystem():
