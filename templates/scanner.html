@@ -137,6 +137,22 @@
 
 {% block body %}
 {% from "includes/_formhelper.html" import render_field %}
+<script>
+        $(document).ready(function () {
+            $('#report').show();
+            $('#misuse').hide();
+            $('input[type="radio"]').click(function () {
+                if ($(this).attr('value') == 'faulty') {
+                    $('#faulty').show();
+                    $('#misuse').hide();
+                }
+                else {
+                    $('#misuse').show();
+                    $('#faulty').hide();
+                }
+            });
+        });
+    </script>
 
 <div class="row">
     <div id="mainbody">
@@ -164,16 +180,6 @@
                 </td>
             </tr>
         </table>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <!-- webqr_2016 -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-8418802408648518"
-             data-ad-slot="2527990541"
-             data-ad-format="auto"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
     </div>&nbsp;
 </div>
 <div class="row">
@@ -213,37 +219,35 @@
 
         <a href="#popup3" class="fancy-btn open btn btn-danger btn-lg">Report</a>
         <div id="popup3" class="overlay">
-            <div class="popup">
+            <div class="popup" style="height:70%">
                 <a href="#" class="close">&times;</a>
-                <div>
                     <p align="center">Please fill in the report form accordingly</p>
-                    <div align="center">
-                        <form class="form-horizontal" method="POST" action="/scanner">
-                            <div class="form-group col-md-6">
-                                    {{ render_field(form.name, class_="form-control") }}
-                            </div>
-                            <div class="form-group col-md-6">
-                                    {{ render_field(form.reporttype, class_="radio-inline") }}
-                            </div>
+                    <form class="form-horizontal" method="POST" action="/scanner">
+                        <div class="form-group col-md-6">
+                                {{ render_field(form.name, class_="form-control") }}
+                        </div>
+                        <div class="form-group col-md-6">
+                                {{ render_field(form.reporttype, class_="radio-inline") }}
+                        </div>
 
-                            <div id="report">
-                                <div class="form-group col-md-12">
-                                    {{ render_field(form.faulty, class_="form-control") }}
-                                </div>
-                                <div class="form-group col-md-12">
-                                    {{  render_field(form.comment, class_="form-control") }}
-                                </div>
+                        <div id="faulty">
+                            <div class="form-group col-md-12">
+                                {{ render_field(form.faulty, class_="form-control") }}
                             </div>
-
-                            <div id="misuse">
-                                <div class="form-group">
-
-                                </div>
+                            <div class="form-group col-md-12">
+                                {{  render_field(form.comment, class_="form-control") }}
                             </div>
+                        </div>
+
+                        <div id="misuse">
+                            <div class="form-group col-md-12">
+                                {{ render_field(form.location, class_="form-control") }}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
                             <input type="submit" value="Submit" class="btn btn-info"/>
-                        </form>
-                    </div>
-                </div>
+                        </div>
+                    </form>
             </div>
         </div>
     </div>

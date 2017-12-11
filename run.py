@@ -41,7 +41,8 @@ class ScannerForm(Form):
     #Report
     reporttype = RadioField('Report Type', choices=[('faulty', 'Faulty Trolley'), ('misuse', 'Trolley Misuse')], default='faulty')
     name = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=150), validators.number_range(min=0000, max=9999), validators.DataRequired()])
-    faulty = SelectMultipleField('Select', [validators.DataRequired()], choices=[('', 'Select'), ('DW', 'Damaged Wheel'), ('DL', 'Damaged Lock'), ('DQ', 'Damaged QR')], default='')
+    faulty = SelectMultipleField('Select', [validators.DataRequired(), RequiredIf(reporttype='faulty')], choices=[('', 'Select'), ('DW', 'Damaged Wheel'), ('DL', 'Damaged Lock'), ('DQ', 'Damaged QR')], default='')
+    location = StringField('Enter location:', [validators.DataRequired(), RequiredIf(reporttype='misuse')])
     comment = TextAreaField('Additional comments:')
 
 @app.route('/scanner', methods=['GET','POST'])
@@ -51,42 +52,51 @@ def scanner():
     calledname = form.trolleyid.data
     found = False
     if request.method == 'POST':
+        #If Enter Trolley ID has data:
         if form.trolleyid.data != '':
+            #Iterate through the database trolleys
             for trolleyid in trolleys.items():
                 if trolleyid[1]['name'] == calledname:
+                    #If status is empty in database
                     if trolleyid[1]['status'] == '':
                         flash('Trolley unlocked', 'success')
                         print('Trolley unlocked')
                         found = True
                         break
+                    #If trolley has been reported, and flagged by 3 users or more
                     elif trolleyid[1]['status'] != '' and trolleyid[1]['flag_count'] >=3:
                         flash('Trolley needs repair', 'danger')
                         print('Trolley needs repair, please find another trolley')
                         found = True
                         break
+                    #If trolley has been reported once, twice.
                     elif trolleyid[1]['status'] != '':
                         flash('Trolley may need repair', 'danger')
                         print('Trolley may need repair, trolley unlocked, if not working, please report')
                         found = True
                         break
+            #If trolley is not in database
             if found == False:
                 flash('Trolley ID not in database', 'danger')
                 print('Trolley ID not in database')
 
+        #If report button has data:
         elif form.name.data != '':
             name = form.name.data
             fault = form.faulty.data
             comment = form.comment.data
+            location = form.location.data
             for trolleyid in trolleys.items():
                 if trolleyid[1]['name'] == name:
                     flag_count = (trolleyid[1]['flag_count'])
                     flag_count += 1
-                    reportfaulty = scan.Reports(fault, comment, flag_count)
+                    reportfaulty = scan.Reports(fault, comment, flag_count, location)
                     report_db = troll.child(trolleyid[0])
                     report_db.update({
                     'flag_count': reportfaulty.get_count(),
                     'status': reportfaulty.get_fault(),
                     'comments': reportfaulty.get_comment(),
+                    'location': reportfaulty.get_location()
                     })
             flash('You have successfully filed a report', 'success')
             print('Successully reported')
@@ -158,5 +168,5 @@ def help():
 
 if __name__ == '__main__':
     app.secret_key = 'secret123'
-    app.run()
+    app.run(debug=True)
 
