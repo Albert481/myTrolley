@@ -133,7 +133,7 @@ def healthevent():
 def search():
     return render_template('search.html')
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET','POST'])
 def signup():
     return render_template('signup.html')
 
