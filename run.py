@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from wtforms import Form, StringField, TextAreaField, RadioField, BooleanField, validators, SelectMultipleField, DateTimeField, PasswordField
+from wtforms import Form, StringField, TextAreaField, RadioField, BooleanField, validators, SelectMultipleField, DateTimeField, PasswordField, IntegerField, ValidationError
 import firebase_admin
 from firebase_admin import credentials, db, storage
-import scanner as scan
+import trolleys as tr
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -38,13 +38,13 @@ class RequiredIf(object):
 
 class ScannerForm(Form):
     #Enter Trolley ID
-    trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=150), validators.number_range(min=0000, max=9999), validators.DataRequired()])
+    trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=4), validators.number_range(min=1000, max=9999), validators.DataRequired()])
     #Report
     reporttype = RadioField('Report Type', choices=[('faulty', 'Faulty Trolley'), ('misuse', 'Trolley Misuse')], default='faulty')
     name = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=150), validators.number_range(min=0000, max=9999), validators.DataRequired()])
     faulty = SelectMultipleField('Select', [validators.DataRequired(), RequiredIf(reporttype='faulty')], choices=[('', 'Select'), ('DW', 'Damaged Wheel'), ('DL', 'Damaged Lock'), ('DQ', 'Damaged QR')], default='')
     location = StringField('Enter location:', [validators.DataRequired(), RequiredIf(reporttype='misuse')])
-    comment = TextAreaField('Additional comments:')
+    comments = TextAreaField('Additional comments:')
 
 @app.route('/scanner', methods=['GET','POST'])
 def scanner():
@@ -85,51 +85,93 @@ def scanner():
         elif form.name.data != '':
             name = form.name.data
             fault = form.faulty.data
-            comment = form.comment.data
+            comments = form.comments.data
             location = form.location.data
+            valid = False
             for trolleyid in trolleys.items():
+                print(trolleyid[1]['name'])
+                print(name)
                 if trolleyid[1]['name'] == name:
-                    flag_count = (trolleyid[1]['flag_count'])
+                    print('Came')
+                    flag_count = int((trolleyid[1]['flag_count']))
                     flag_count += 1
-                    reportfaulty = scan.Reports(fault, comment, flag_count, location)
+                    reportfaulty = tr.Reports(fault, flag_count, location, comments)
                     report_db = troll.child(trolleyid[0])
                     report_db.update({
                     'flag_count': reportfaulty.get_count(),
                     'status': reportfaulty.get_fault(),
-                    'comments': reportfaulty.get_comment(),
+                    'comments': reportfaulty.get_comments(),
                     'location': reportfaulty.get_location()
                     })
-            flash('You have successfully filed a report', 'success')
-            print('Successully reported')
+                    flash('Success: Trolley reported', 'success')
+                    valid = True
+            if valid == False:
+                flash('Failed report: Trolley ID does not exist', 'danger')
+            print('Success: filed a report')
             return redirect(url_for('scanner'))
         else:
             print('What to do')
             pass
     return render_template('scanner.html', form=form)
 
+class AdminForm(Form):
+    trolleynumbers = StringField('Enter number of new trolleys to add to database:', [validators.NumberRange(min=1, max=2)])
+    trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=4), validators.number_range(min=1000, max=9999), validators.DataRequired()])
+    password = PasswordField('Enter secret code:')
+
 @app.route('/admin', methods=['GET','POST'])
 def admin():
-    namelist = []
     trolleys = troll.get()
-    form = ScannerForm(request.form)
+    form = AdminForm(request.form)
+    foundlist = []
+    trolleynumbers = form.trolleynumbers.data
+    calledname = form.trolleyid.data
+    tnames = 0
+    tfaults = 0
+    tmisused = 0
     if request.method == 'POST':
-        for trolleyid in trolleys.items():
-            number = int(trolleyid[1]['name'])
-            namelist.append(number)
-        namelist.sort()
-        maxname = int(namelist[-1:][0])
-        maxname += 1
-        maxname = str(maxname)
-        print(maxname)
-        report_db = root.child('trolleys')
-        report_db.push({
-            'name': maxname,
-            'flag_count': '0',
-            'status': '',
-            'comments': '',
-            'location': ''
-        })
-    return render_template('admin.html', form=form)
+        #Add New
+        if form.trolleynumbers.data != '':
+            namelist = []
+            print(trolleynumbers)
+            for i in range(int(trolleynumbers)):
+                for trolleyid in trolleys.items():
+                    number = int(trolleyid[1]['name'])
+                    namelist.append(number)
+                namelist.sort()
+                maxname = int(namelist[-1:][0])
+                maxname += 1
+                namelist.append(maxname)
+                maxname = str(maxname)
+                newtroll_db = root.child('trolleys')
+                newtroll_db.push({
+                    'name': maxname,
+                    'flag_count': '0',
+                    'status': '',
+                    'comments': '',
+                    'location': ''
+                })
+            flash('Successfully added new id(s) to database', 'success')
+
+        #Find Trolley
+        if form.trolleyid.data != '':
+            found = ''
+            for trolleyid in trolleys.items():
+                if trolleyid[1]['name'] == calledname:
+                    findtrolley = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'], trolleyid[1]['location'], trolleyid[1]['comments'])
+                    foundlist.append(findtrolley)
+                    found = True
+            if found == False:
+                flash('Trolley does not exist in database', 'danger')
+    #Statistics function
+    for trolleyid in trolleys.items():
+        tnames += 1
+        if trolleyid[1]['status'] != "":
+            tfaults += 1
+        if trolleyid[1]['location'] != "":
+            tmisused += 1
+
+    return render_template('admin.html', form=form, eachtrolley = foundlist, totnames = tnames, totfaults = tfaults, totmisused = tmisused)
 
 @app.route('/ourproduct')
 def ourproduct():
