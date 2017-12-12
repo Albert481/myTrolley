@@ -107,6 +107,30 @@ def scanner():
             pass
     return render_template('scanner.html', form=form)
 
+@app.route('/admin', methods=['GET','POST'])
+def admin():
+    namelist = []
+    trolleys = troll.get()
+    form = ScannerForm(request.form)
+    if request.method == 'POST':
+        for trolleyid in trolleys.items():
+            number = int(trolleyid[1]['name'])
+            namelist.append(number)
+        namelist.sort()
+        maxname = int(namelist[-1:][0])
+        maxname += 1
+        maxname = str(maxname)
+        print(maxname)
+        report_db = root.child('trolleys')
+        report_db.push({
+            'name': maxname,
+            'flag_count': '0',
+            'status': '',
+            'comments': '',
+            'location': ''
+        })
+    return render_template('admin.html', form=form)
+
 @app.route('/ourproduct')
 def ourproduct():
     return render_template('ourproduct.html')

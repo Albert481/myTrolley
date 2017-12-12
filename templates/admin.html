@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div id="mainbody">
+            <table class="tsel" border="0" width="100%">
+                <tr>
+                    <td valign="top" align="center" width="50%">
+                        <table class="tsel" border="0">
+                            <tr>
+                                <form class="form-horizontal" method="POST" action="/admin">
+                                    <input type="submit" value="Add new" class="btn btn-info"/>
+                                </form>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>&nbsp;
+    </div>
+
+{% endblock %}
