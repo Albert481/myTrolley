@@ -273,7 +273,32 @@ def faq():
 def email():
     return render_template('email.html')
 
-@app.route('/feedback')
+class EmailForm(Form):
+    name = StringField('Name:',[validators.Length(min=1, max=100), validators.DataRequired()])
+    email = StringField('Email:',[validators.Email, validators.DataRequired()])
+    feedback = StringField('Feedback:',[validators.Length(min=1), validators.DataRequired])
+
+    def sendemail(request):
+        form = EmailForm(request.POST)
+        if request.method == 'POST' and form.validate():
+            name = form.name.data
+            email = form.email.data
+            feedback = form.feedback.data
+            return redirect('/faq')
+        return render_template('/faq', form=form)
+
+        def register(request):
+            form = Signupform(request.POST)
+            if request.method == 'POST' and form.validate():
+                user = Signupform()
+                user.username = form.username.data
+                user.email = form.email.data
+                user.save()
+                redirect('register')
+            return render_template('modifyuser.html')
+
+
+@app.route('/feedback', methods=['GET','POST'])
 def feedback():
     return render_template('feedback.html')
 
