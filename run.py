@@ -124,6 +124,7 @@ def admin():
     trolleys = troll.get()
     form = AdminForm(request.form)
     foundlist = []
+    attentionlist = []
     trolleynumbers = form.trolleynumbers.data
     calledname = form.trolleyid.data
     tnames = 0
@@ -166,12 +167,18 @@ def admin():
     #Statistics function
     for trolleyid in trolleys.items():
         tnames += 1
-        if trolleyid[1]['status'] != "":
+        if int(trolleyid[1]['flag_count']) >= 3:
             tfaults += 1
         if trolleyid[1]['location'] != "":
             tmisused += 1
 
-    return render_template('admin.html', form=form, eachtrolley = foundlist, totnames = tnames, totfaults = tfaults, totmisused = tmisused)
+    #Attention function
+    for trolleyid in trolleys.items():
+        if int(trolleyid[1]['flag_count']) >= 3:
+            attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'], trolleyid[1]['location'], trolleyid[1]['comments'])
+            attentionlist.append(attention)
+
+    return render_template('admin.html', form=form, eachtrolley = foundlist, totnames = tnames, totfaults = tfaults, totmisused = tmisused, attention= attentionlist)
 
 @app.route('/ourproduct')
 def ourproduct():
