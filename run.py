@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
-from wtforms import Form, SelectMultipleField, StringField, PasswordField, validators, RadioField, SelectField, ValidationError, FileField, SubmitField, TextAreaField, DateField
+from flask import Flask, render_template, request, flash, redirect, url_for
+from wtforms import Form, SelectField, StringField, TextAreaField, RadioField, BooleanField, validators, SelectMultipleField, DateTimeField, PasswordField, IntegerField, ValidationError
 import firebase_admin
-from firebase_admin import credentials, db, storage, validate_signup
-import signup as sp
+from firebase_admin import credentials, db, storage
 import trolleys as tr
+
 
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
@@ -234,24 +234,20 @@ class RegistrationForm(Form):
     fname = StringField('*Your First Name', [validators.Length(min=1), validators.DataRequired()])
     lname = StringField('*Your Last Name', [validators.Length(min=1), validators.DataRequired()])
     username = StringField('*Username',
-                           [validators.Length(min=6, max=20), validators.DataRequired(), validate_signup()])
-    nric = StringField('*Your NRIC', [validators.DataRequired(), validate_signup()])
+                           [validators.Length(min=6, max=20), validators.DataRequired(), validate_signup])
+    nric = StringField('*Your NRIC', [validators.DataRequired(), validate_signup])
     email = StringField('*Your Email Address', [validators.Length(min=6, max=50),
                                            validators.DataRequired(),
                                            validators.EqualTo('confirmemail', message='Email must match'),
                                            validate_signup])
-    confirmemail = StringField('*Confirm Email Address:', [validators.DataRequired()])
     password = PasswordField('*Password', [
         validators.Length(min=6, max=50),
         validators.DataRequired(),
         validators.EqualTo('confirmpass', message='Passwords must match')
     ])
     confirmpass = PasswordField('*Confirm Password', [validators.DataRequired()])
-    mobilephone = StringField('Mobile Phone Number')
-    address = StringField('*Your Address', [validators.DataRequired()])
-    postalcode = StringField('*Your Postal Code', [validators.Length(min=6, max=6)])
 
-@app.route('/signup', methods=['GET','POST'])
+@app.route('/signup')
 def register():
     form = RegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -261,13 +257,8 @@ def register():
         nric = form.nric.data.upper()
         email = form.email.data
         password = form.password.data
-        homephone = form.homephone.data
-        mobilephone = form.mobilephone.data
-        address = form.address.data
-        postalcode = form.postalcode.data
-        newsletter = form.newsletter.data
-        user = sp.User(fname, lname, username, nric, email, password, homephone, mobilephone, address, postalcode,
-                           newsletter)
+        confirmpass = form.confirmpass.data
+        user = sp.WebUsers(fname, lname, username, nric, email, password, confirmpass)
         user_db = root.child('userbase')
         user_db.push({
             'fname': user.get_fname(),
@@ -276,20 +267,14 @@ def register():
             'nric': user.get_nric(),
             'email': user.get_email(),
             'password': user.get_password(),
-            'homephone': user.get_homephone(),
-            'mobilephone': user.get_mobilephone(),
-            'address': user.get_address(),
-            'postalcode': user.get_postalcode(),
-            'newsletter': user.get_newsletter(),
-            'about': '',
-            'friends': {'dummy': 'user'},
+            'confirmpass': user.get_confirmpass(),
         })
         flash('You have successfully created an account', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
 class LoginForm(Form):
-    id = StringField('Username:', [validators.DataRequired()])
+    user = StringField('Username:', [validators.DataRequired()])
     password = PasswordField('Password:', [validators.DataRequired()])
 
 @app.route('/login')
