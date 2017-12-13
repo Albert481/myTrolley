@@ -292,7 +292,7 @@ class EmailForm(Form):
     email = StringField('Email:',[validators.Email, validators.DataRequired()])
     feedback = StringField('Feedback:',[validators.Length(min=1), validators.DataRequired])
 
-    def sendemail(request):
+    def sendemail():
         form = EmailForm(request.POST)
         if request.method == 'POST' and form.validate():
             name = form.name.data
@@ -300,17 +300,6 @@ class EmailForm(Form):
             feedback = form.feedback.data
             return redirect('/faq')
         return render_template('/faq', form=form)
-
-        def register(request):
-            form = Signupform(request.POST)
-            if request.method == 'POST' and form.validate():
-                user = Signupform()
-                user.username = form.username.data
-                user.email = form.email.data
-                user.save()
-                redirect('register')
-            return render_template('modifyuser.html')
-
 
 @app.route('/feedback', methods=['GET','POST'])
 def feedback():
