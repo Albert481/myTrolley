@@ -34,6 +34,8 @@
             </table>
         </div>
     </div>
+    <br>
+    <br>
     <div class="row" style="width: 100%" align="center">
         <form class="form-inline" style="width: 50%" method="POST" action="/admin">
             {{ render_field(form.trolleyid, class_="form-control") }}
@@ -62,5 +64,33 @@
             </tbody>
         </table>
     </div>
+    <br>
+    <br>
+    <div class="row" style="width: 100%" align="center">
+        <table class="table table-bordered" style="width:95%">
+        <caption>Attention needed!  Keyword: [DW]: Damaged Wheel, [DL]: Damaged Lock, [DQ]: Damaged QR</caption>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Fault</th>
+                <th>Flag Count</th>
+                <th>Location reported</th>
+                <th>Additional comments</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for att in attention %}
+                <tr>
+                    <td>{{ att.get_name() }}</td>
+                    <td>{{ att.get_fault() }}</td>
+                    <td>{{ att.get_count() }}</td>
+                    <td>{{ att.get_location() }}</td>
+                    <td>{{ att.get_comments() }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 
 {% endblock %}

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from wtforms import Form, StringField, TextAreaField, RadioField, BooleanField, validators, SelectMultipleField, DateTimeField, PasswordField, IntegerField, ValidationError
+from wtforms import Form, SelectField, StringField, TextAreaField, RadioField, BooleanField, validators, SelectMultipleField, DateTimeField, PasswordField, IntegerField, ValidationError
 import firebase_admin
 from firebase_admin import credentials, db, storage
 import trolleys as tr
@@ -124,6 +124,7 @@ def admin():
     trolleys = troll.get()
     form = AdminForm(request.form)
     foundlist = []
+    attentionlist = []
     trolleynumbers = form.trolleynumbers.data
     calledname = form.trolleyid.data
     tnames = 0
@@ -166,12 +167,18 @@ def admin():
     #Statistics function
     for trolleyid in trolleys.items():
         tnames += 1
-        if trolleyid[1]['status'] != "":
+        if int(trolleyid[1]['flag_count']) >= 3:
             tfaults += 1
         if trolleyid[1]['location'] != "":
             tmisused += 1
 
-    return render_template('admin.html', form=form, eachtrolley = foundlist, totnames = tnames, totfaults = tfaults, totmisused = tmisused)
+    #Attention function
+    for trolleyid in trolleys.items():
+        if int(trolleyid[1]['flag_count']) >= 3:
+            attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'], trolleyid[1]['location'], trolleyid[1]['comments'])
+            attentionlist.append(attention)
+
+    return render_template('admin.html', form=form, eachtrolley = foundlist, totnames = tnames, totfaults = tfaults, totmisused = tmisused, attention= attentionlist)
 
 @app.route('/ourproduct')
 def ourproduct():
@@ -210,24 +217,42 @@ def search():
     return render_template('search.html')
 
 class Signupform(Form):
-    username = StringField('Username', [validators.Length(min=4, max=25)])
-    email = StringField('Email Address', [validators.Length(min=6, max=35)])
-    birthday = DateTimeField('Your Birthday', format='%d/%m/%y')
-    password = PasswordField()
+    username = StringField('Username', [validators.Length(min=4, max=25), validators.DataRequired()])
+    email = StringField('Email Address', [validators.Length(min=6, max=35), validators.DataRequired()])
+    birthday = DateTimeField('Your Birthday', validators.DataRequired(), format='%d/%m/%y')
+    category = SelectField('Gender', [validators.DataRequired()],
+                           gender=[('', 'Select'), ('MALE', 'Male'), ('FEMALE', 'Female')])
+    password = PasswordField(validators.DataRequired())
     accept_rules = BooleanField('I accept the site rules', [validators.InputRequired()])
 
-    def register(request):
-        form = Signupform(request.POST)
-        if request.method == 'POST' and form.validate():
+@app.route('/signup', methods=['GET','POST'])
+def register(request):
+    form = Signupform(request.POST)
+    if request.method == 'POST' and form.validate():
             user = Signupform()
             user.username = form.username.data
             user.email = form.email.data
             user.save()
             redirect('register')
-        return render_template('modifyuser.html')
 
-@app.route('/signup')
-def signup():
+            signupform = Form(type)
+
+            signupform_db = root.child('submissions')
+            signupform_db.push({
+                'title': signupform.get_title(),
+                'type': signupform.get_type(),
+                'category': signupform.get_category(),
+                'status': signupform.get_status(),
+                'frequency': signupform.get_frequency(),
+                'publisher': signupform.get_publisher(),
+                'created_by': signupform.get_created_by(),
+                'create_date': signupform.get_created_date()
+            })
+
+            flash('Book Inserted Sucessfully.', 'success')
+
+            return redirect(url_for('signup'))
+
     return render_template('signup.html')
 
 class LoginForm(Form):
@@ -241,17 +266,6 @@ def login():
 @app.route('/modifyuser')
 def modifyuser():
     return render_template('modifyuser.html')
-
-class ProfileForm():
-
-    def edit_profile(request):
-        user = request.current_user
-        form = ProfileForm(request.POST, user)
-        if request.method == 'POST' and form.validate():
-            form.populate_obj(user)
-            user.save()
-            redirect('edit_profile')
-        return render_template('edit_profile.html', form=form)
 
 @app.route('/credit')
 def creditpointsystem():

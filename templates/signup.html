@@ -37,51 +37,41 @@
     <!-- Custom Javascript -->
     <script src="../static/js/custom.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
-    <script>
-     // Initialize Firebase
-     var config = {
-        apiKey: "AIzaSyBwPlW-TqggkUeA69NI0DBAAjoxeKGiN3s",
-        authDomain: "smarttrolley-c024a.firebaseapp.com",
-        databaseURL: "https://smarttrolley-c024a.firebaseio.com",
-        projectId: "smarttrolley-c024a",
-        storageBucket: "smarttrolley-c024a.appspot.com",
-        messagingSenderId: "260911627861"
-        };
-     firebase.initializeApp(config);
-    </script>
+    <script src="../static/js/signup.js"></script>
+
 
 {% endblock %}
 
 {% block body %}
 
-    <form data-toggle="validator" role="form">
-   <div class="form-group">
-    <label for="inputName" class="control-label">Username</label>
-    <input type="text" class="form-control" id="inputName" placeholder="Cina Saffary" required>
-   </div>
-   <div class="form-group">
-    <label for="inputEmail" class="control-label">Email</label>
-    <input type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="That email address is invalid" required>
-    <div class="help-block with-errors"></div>
-   </div>
-   <div class="form-group">
-    <label for="inputBirthday" class="control-label">Birthday</label>
-    <input type="text" class="form-control" id="inputBirthday" placeholder="dd/mm/yyyy" required>
-   </div>
-   <div class="form-group">
-    <label for="inputPassword" class="control-label">Password</label>
-    <div class="form-inline row">
-      <div class="form-group col-sm-6">
-        <input type="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="Password" required>
-      </div>
-      <div class="clearfix">
-        <button type="submit" class="signupbtn">Sign Up</button>
-      </div>
+<form>
+    <label><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
+
+
+    <label><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label><b>Birthday</b></label>
+    <input type="text" placeholder="Enter Birthday" name="birthday" required>
+
+    <label><b>Password</b></label>
+    <input type="password" placeholder="Password" name="psw-repeat" required>
+
+    <label><b>Category</b></label>
+    <input type="text" placeholder="Enter Category" name="category" required>
+
+    <input type="checkbox" checked="checked"> Remember me
+    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+
+
+    <div id="button">
+         <a href="modifyuser.html">Sign Up Now</a>
     </div>
+
    </div>
 
-  </form>
+ </form>
 
 	<!-- Footer -->
     <footer class="page-footer">
