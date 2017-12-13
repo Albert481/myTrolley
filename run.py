@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from wtforms import Form, SelectMultipleField, StringField, PasswordField, validators, RadioField, SelectField, ValidationError, FileField, SubmitField, TextAreaField, DateField
 import firebase_admin
-from firebase_admin import credentials, db, storage, validate_signup
+from firebase_admin import credentials, db, storage
 import signup as sp
 import trolleys as tr
 
@@ -237,30 +237,26 @@ def validate_signup(form, field):
         elif signup[1]['nric'] == field.data:
             raise ValidationError('You have already registered with this NRIC')
 
-class RegistrationForm(Form):
+class SignupForm(Form):
     fname = StringField('*Your First Name', [validators.Length(min=1), validators.DataRequired()])
     lname = StringField('*Your Last Name', [validators.Length(min=1), validators.DataRequired()])
     username = StringField('*Username',
-                           [validators.Length(min=6, max=20), validators.DataRequired(), validate_signup()])
-    nric = StringField('*Your NRIC', [validators.DataRequired(), validate_signup()])
+                           [validators.Length(min=6, max=20), validators.DataRequired(), validate_signup])
+    nric = StringField('*Your NRIC', [validators.DataRequired(), validate_signup])
     email = StringField('*Your Email Address', [validators.Length(min=6, max=50),
                                            validators.DataRequired(),
                                            validators.EqualTo('confirmemail', message='Email must match'),
                                            validate_signup])
-    confirmemail = StringField('*Confirm Email Address:', [validators.DataRequired()])
     password = PasswordField('*Password', [
         validators.Length(min=6, max=50),
         validators.DataRequired(),
         validators.EqualTo('confirmpass', message='Passwords must match')
     ])
     confirmpass = PasswordField('*Confirm Password', [validators.DataRequired()])
-    mobilephone = StringField('Mobile Phone Number')
-    address = StringField('*Your Address', [validators.DataRequired()])
-    postalcode = StringField('*Your Postal Code', [validators.Length(min=6, max=6)])
 
 @app.route('/signup', methods=['GET','POST'])
 def register():
-    form = RegistrationForm(request.form)
+    form = SignupForm(request.form)
     if request.method == 'POST' and form.validate():
         fname = form.fname.data.title()
         lname = form.lname.data.title()
@@ -306,7 +302,7 @@ def login():
         id = form.id.data
         password = form.password.data
         signupbase = user_ref.get()
-        for user in userbase.items():
+        for user in signupbase.items():
             if user[1]['username'] == id and user[1]['password'] == password:
                 session['user_data'] = user[1]
                 session['logged_in'] = True
