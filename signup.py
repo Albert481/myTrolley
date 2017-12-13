@@ -1,10 +1,11 @@
 class WebUsers:
-    def __init__(self, username, email, birthday, category, password, accept_rules):
+    def __init__(self, fname, lname, username, email, category, password, confirmpass, accept_rules):
+        self.__fname = fname
+        self.__lname = lname
         self.__username = username
         self.__email = email
-        self.__birthday = birthday
-        self.__category = category
         self.__password = password
+        self.__confirmpass = confirmpass
         self.__accept_rules = accept_rules
 
     #getter methods
