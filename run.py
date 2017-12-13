@@ -88,27 +88,34 @@ def scanner():
         #If report button has data:
         elif form.name.data != '':
             name = form.name.data
+            reporttype = form.reporttype.data
             fault = form.faulty.data
             comments = form.comments.data
             location = form.location.data
             valid = False
             for trolleyid in trolleys.items():
-                print(trolleyid[1]['name'])
-                print(name)
                 if trolleyid[1]['name'] == name:
-                    print('Came')
-                    flag_count = int((trolleyid[1]['flag_count']))
-                    flag_count += 1
-                    reportfaulty = tr.Reports(fault, flag_count, location, comments)
-                    report_db = troll.child(trolleyid[0])
-                    report_db.update({
-                    'flag_count': reportfaulty.get_count(),
-                    'status': reportfaulty.get_fault(),
-                    'comments': reportfaulty.get_comments(),
-                    'location': reportfaulty.get_location()
-                    })
-                    flash('Success: Trolley reported', 'success')
-                    valid = True
+                    if reporttype == 'faulty':
+                        flag_count = int(trolleyid[1]['flag_count'])
+                        flag_count += 1
+                        reportfaulty = tr.ReportF(fault, flag_count, comments)
+                        report_db = troll.child(trolleyid[0])
+                        report_db.update({
+                        'flag_count': reportfaulty.get_count(),
+                        'status': reportfaulty.get_fault(),
+                        'comments': reportfaulty.get_comments(),
+                        })
+                        flash('Success: Trolley fault reported', 'success')
+                        valid = True
+                    if reporttype == 'misuse':
+                        reportloc = tr.ReportL(location, comments)
+                        report_db = troll.child(trolleyid[0])
+                        report_db.update({
+                            'location': reportloc.get_location(),
+                            'comments': reportloc.get_comments()
+                        })
+                        flash('Success: Trolley misuse reported', 'success')
+                        valid = True
             if valid == False:
                 flash('Failed report: Trolley ID does not exist', 'danger')
             print('Success: filed a report')
@@ -160,7 +167,7 @@ def admin():
 
         #Find Trolley
         if form.trolleyid.data != '':
-            found = ''
+            found = False
             for trolleyid in trolleys.items():
                 if trolleyid[1]['name'] == calledname:
                     findtrolley = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'], trolleyid[1]['location'], trolleyid[1]['comments'])
