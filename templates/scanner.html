@@ -165,6 +165,17 @@
     </div>&nbsp;
 </div>
 <div class="row">
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                    {% for error in field_errors %}
+                        <li>{{ form[field_name].label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
     <div class="col-sm-12">
         <h2 class="section-header">Scanner</h2>
         <p class="lead text-muted">Please allow your device to use camera for your web browser. <br>

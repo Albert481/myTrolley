@@ -43,10 +43,10 @@ class RequiredIf(object):
 
 class ScannerForm(Form):
     #Enter Trolley ID
-    trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=4), validators.number_range(min=1000, max=9999), validators.DataRequired()])
+    trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=4, max=4), validators.DataRequired()])
     #Report
     reporttype = RadioField('Report Type', choices=[('faulty', 'Faulty Trolley'), ('misuse', 'Trolley Misuse')], default='faulty')
-    name = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=150), validators.number_range(min=0000, max=9999), validators.DataRequired()])
+    name = StringField('Please enter Trolley ID:', [validators.Length(min=4, max=4), validators.DataRequired()])
     faulty = SelectMultipleField('Select', [validators.DataRequired(), RequiredIf(reporttype='faulty')], choices=[('', 'Select'), ('DW', 'Damaged Wheel'), ('DL', 'Damaged Lock'), ('DQ', 'Damaged QR')], default='')
     location = StringField('Enter location:', [validators.DataRequired(), RequiredIf(reporttype='misuse')])
     comments = TextAreaField('Additional comments:')
@@ -65,26 +65,22 @@ def scanner():
                 if trolleyid[1]['name'] == calledname:
                     #If status is empty in database
                     if trolleyid[1]['status'] == '':
-                        flash('Trolley unlocked', 'success')
-                        print('Trolley unlocked')
+                        flash('Trolley unlocked!', 'success')
                         found = True
                         break
                     #If trolley has been reported, and flagged by 3 users or more
                     elif trolleyid[1]['status'] != '' and trolleyid[1]['flag_count'] >=3:
-                        flash('Trolley needs repair', 'danger')
-                        print('Trolley needs repair, please find another trolley')
+                        flash('Trolley needs repair, please find another trolley', 'danger')
                         found = True
                         break
                     #If trolley has been reported once, twice.
                     elif trolleyid[1]['status'] != '':
-                        flash('Trolley may need repair', 'danger')
-                        print('Trolley may need repair, trolley unlocked, if not working, please report')
+                        flash('Trolley unlocked! If faulty, please report!', 'success')
                         found = True
                         break
             #If trolley is not in database
             if found == False:
                 flash('Trolley ID not in database', 'danger')
-                print('Trolley ID not in database')
 
         #If report button has data:
         elif form.name.data != '':
@@ -115,15 +111,13 @@ def scanner():
                             'location': reportloc.get_location(),
                             'comments': reportloc.get_comments()
                         })
-                        flash('Success: Trolley misuse reported', 'success')
+                        flash('Report Success: Trolley misuse reported', 'success')
                         valid = True
             if valid == False:
-                flash('Failed report: Trolley ID does not exist', 'danger')
-            print('Success: filed a report')
+                flash('Report Failed: Trolley ID does not exist', 'danger')
             return redirect(url_for('scanner'))
         else:
-            print('What to do')
-            pass
+            flash('Do not leave blanks', 'danger')
     return render_template('scanner.html', form=form)
 
 class AdminForm(Form):
@@ -142,11 +136,26 @@ def admin():
     tnames = 0
     tfaults = 0
     tmisused = 0
+    delete = request.form['fix']
+
+    #Statistics function
+    for trolleyid in trolleys.items():
+        tnames += 1
+        if int(trolleyid[1]['flag_count']) >= 3:
+            tfaults += 1
+        if trolleyid[1]['location'] != "":
+            tmisused += 1
+
+    #Attention function
+    for trolleyid in trolleys.items():
+        if int(trolleyid[1]['flag_count']) >= 3:
+            attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'], trolleyid[1]['location'], trolleyid[1]['comments'])
+            attentionlist.append(attention)
+
     if request.method == 'POST':
         #Add New
         if form.trolleynumbers.data != '':
             namelist = []
-            print(trolleynumbers)
             for i in range(int(trolleynumbers)):
                 for trolleyid in trolleys.items():
                     number = int(trolleyid[1]['name'])
@@ -164,7 +173,7 @@ def admin():
                     'comments': '',
                     'location': ''
                 })
-            flash('Successfully added new id(s) to database', 'success')
+            flash('Add Sucesss: New Trolley ID(s) has been added', 'success')
 
         #Find Trolley
         if form.trolleyid.data != '':
@@ -176,19 +185,9 @@ def admin():
                     found = True
             if found == False:
                 flash('Trolley does not exist in database', 'danger')
-    #Statistics function
-    for trolleyid in trolleys.items():
-        tnames += 1
-        if int(trolleyid[1]['flag_count']) >= 3:
-            tfaults += 1
-        if trolleyid[1]['location'] != "":
-            tmisused += 1
 
-    #Attention function
-    for trolleyid in trolleys.items():
-        if int(trolleyid[1]['flag_count']) >= 3:
-            attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'], trolleyid[1]['location'], trolleyid[1]['comments'])
-            attentionlist.append(attention)
+    else:
+        print('Validation failed')
 
     return render_template('admin.html', form=form, eachtrolley = foundlist, totnames = tnames, totfaults = tfaults, totmisused = tmisused, attention= attentionlist)
 

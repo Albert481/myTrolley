@@ -9,6 +9,17 @@
         <div align="center" class="col-md-6">
             <p>Add new trolley into database</p>
             <div style="width:60%">
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                                {% for error in field_errors %}
+                                    <li>{{ form[field_name].label }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
                 <form class="form-inline" method="POST" action="/admin">
                     {{ render_field(form.trolleynumbers, class_="form-control") }}
                     <input type="submit" value="Add New" class="btn btn-info"/>
@@ -37,6 +48,17 @@
     <br>
     <br>
     <div class="row" style="width: 100%" align="center">
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                        {% for error in field_errors %}
+                            <li>{{ form[field_name].label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
         <form class="form-inline" style="width: 50%" method="POST" action="/admin">
             {{ render_field(form.trolleyid, class_="form-control") }}
             <input type="submit" value="Find Trolley" class="btn btn-info"/>
@@ -76,6 +98,7 @@
                 <th>Flag Count</th>
                 <th>Location reported</th>
                 <th>Additional comments</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -86,6 +109,8 @@
                     <td>{{ att.get_count() }}</td>
                     <td>{{ att.get_location() }}</td>
                     <td>{{ att.get_comments() }}</td>
+                    <td><form class="form-inline" style="width: 50%" method="POST" action="/admin">
+                        <input name="fix" type="submit" value="Fixed" class="btn btn-success" onclick="return confirm('Are you sure this trolley is fixed?');"></form></td>
                 </tr>
             {% endfor %}
             </tbody>
