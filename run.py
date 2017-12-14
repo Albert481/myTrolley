@@ -4,6 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, db, storage
 import signup as sp
 import trolleys as tr
+import email as em
 
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
@@ -351,14 +352,23 @@ class EmailForm(Form):
     email = StringField('Email:',[validators.Email, validators.DataRequired()])
     feedback = StringField('Feedback:',[validators.Length(min=1), validators.DataRequired])
 
-    def sendemail():
-        form = EmailForm(request.POST)
-        if request.method == 'POST' and form.validate():
-            name = form.name.data
-            email = form.email.data
-            feedback = form.feedback.data
-            return redirect('/faq')
-        return render_template('/faq', form=form)
+def sendemail():
+    form = EmailForm(request.form)
+    if request.method == 'POST' and form.validate():
+        name = form.name.data
+        email = form.email.data
+        feedback = form.feedback.data
+        email = em.Email(name, email, feedback)
+        email_db = root.child('userbase')
+        email_db.push({
+            'name': email.get_name(),
+            'email': email.get_email(),
+            'feedback': email.get_feedback(),
+        })
+
+        em_ref = db.reference('email')
+        data = em_ref.get();
+
 
 @app.route('/feedback', methods=['GET','POST'])
 def feedback():
