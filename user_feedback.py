@@ -1,4 +1,4 @@
-class Email:
+class email:
     def __init__(self, name, user_email, feedback):
         self.__name = name
         self.__user_email = user_email

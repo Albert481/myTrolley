@@ -10,5 +10,8 @@
         messagingSenderId: "260911627861"
     };
     firebase.initializeApp(config);
+    // Listen for form submit
+    document.getElementById('')
+
 
 }())
