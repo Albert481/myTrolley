@@ -1,7 +1,28 @@
 {% extends 'layout.html' %}
 {% block title %}Login{% endblock %}
 
-{% block head %}
+{% block body %}
+    {% from "includes/_formhelper.html" import render_field %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/custom.css">
+    <link rel="stylesheet" href="../static/css/font-awesome.css">
+    <link rel="stylesheet" href="../static/css/help.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+
+    <style type="text/css">
+
+        body {
+            background-color: #E6E6FA;
+        }
+
+        h3 {
+            font-family: 'FontAwesome';
+        }
+
+    </style>
 
 
 <br>
@@ -21,52 +42,33 @@
     <!-- Custom Javascript -->
     <script src="../static/js/custom.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
-    <script>
-     // Initialize Firebase
-     var config = {
-        apiKey: "AIzaSyBwPlW-TqggkUeA69NI0DBAAjoxeKGiN3s",
-        authDomain: "smarttrolley-c024a.firebaseapp.com",
-        databaseURL: "https://smarttrolley-c024a.firebaseio.com",
-        projectId: "smarttrolley-c024a",
-        storageBucket: "smarttrolley-c024a.appspot.com",
-        messagingSenderId: "260911627861"
-        };
-     firebase.initializeApp(config);
-    </script>
-
-{% endblock %}
-
-
-{% block body %}
-
-<div class="container mtb" style="padding-bottom: 225px">
-    <div class="center wow fadeInDown">
-        <h2>Login</h2>
+<div class="container">
+    <div class="center">
+        <h2 class="text-center">Login Page</h2>
     </div>
+    <br>
     <div class="row">
-        <div class="col-lg-6 col-lg-offset-3">
-            <h4>Login Here!</h4>
-            <div class="hline"></div>
-            </br>
-            <form class="form-horizontal" action="" method="POST" >
-                <div class="form-group">
-                    {{ render_field(form.id, class_="form-control") }}
+        <form method="POST" action="">
+
+        <div class="form-group">
+            <div class="form-row">
+                <div class="form-group row-md-4">
+                    {{ render_field(form.username, class_="form-control") }}
                 </div>
-                <div class="form-group">
+                <div class="form-group row-md-4">
                     {{ render_field(form.password, class_="form-control") }}
                 </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-theme" value="Login">
-                    <div class="hline-w"></div>
-                    <p>Dont have an account?<a style="padding-left:10px;" href="/register">Sign Up Here</a></p>
+                <div class="form-group row-md-1">
+                    <input type="login" value="Log In" class="btn btn-info"/>
                 </div>
-            </form>
-        </div><!-- /col-lg-6 -->
-    </div><!--/row -->
-</div><!--/container -->
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
 
-    
+
+
 	<!-- Footer -->
     <footer class="page-footer">
     
@@ -88,16 +90,6 @@
         
     </footer>
 
-    <!-- jQuery -->
-    <script src="../static/js/jquery-1.11.3.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../static/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="../static/js/jquery.easing.min.js"></script>
-    
-    <!-- Custom Javascript -->
-    <script src="../static/js/custom.js"></script>
-
 {% endblock %}
+
+
