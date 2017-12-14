@@ -142,7 +142,6 @@ def admin():
     tnames = 0
     tfaults = 0
     tmisused = 0
-    delete = request.form['fix']
 
     #Statistics function
     for trolleyid in trolleys.items():
