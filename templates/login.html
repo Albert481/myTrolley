@@ -48,14 +48,14 @@
     </div>
     <br>
     <div class="row">
-        <form method="POST" action="">
+        <form id="contactForm" method="POST" action="">
 
         <div class="form-group">
             <div class="form-row">
-                <div class="form-group row-md-4">
+                <div id="username" class="form-group row-md-4">
                     {{ render_field(form.username, class_="form-control") }}
                 </div>
-                <div class="form-group row-md-4">
+                <div id="password" class="form-group row-md-4">
                     {{ render_field(form.password, class_="form-control") }}
                 </div>
                 <div class="form-group row-md-1">

@@ -270,17 +270,20 @@ def healthevent():
 def search():
     return render_template('search.html')
 
-def validity(form, field):
-    signupfirebase = user_ref.get()
-    for signup in signupfirebase.items():
+def validity_signup(form, field):
+    userbase = user_ref.get()
+    for signup in userbase:
+        eachentry = entry[entry_id]
+        entrybase = sp.Users(eachentry['entry_username'], eachentry['entry_email'], eachentry['entry_password'])
+        list.append(entrybase)
         if signup[1]['username'] == field.data:
             raise ValidationError('Username has already been used')
         elif signup[1]['email'] == field.data:
             raise ValidationError('Email has already been used')
 
 class SignupForm(Form):
-    username = StringField('Username',[validators.Length(min=6, max=10), validators.DataRequired(), validity])
-    email = StringField('Email Address', [validators.Length(min=6, max=30),validators.DataRequired(), validity])
+    username = StringField('Username',[validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
+    email = StringField('Email Address', [validators.Length(min=6, max=30),validators.DataRequired(), validity_signup])
     password = PasswordField('Password', [validators.Length(min=6, max=50),validators.DataRequired()])
 
 @app.route('/signup', methods=['GET','POST'])
@@ -306,25 +309,28 @@ def signup():
 
     return render_template('signup.html', form=form)
 
+
+
 class LoginForm(Form):
-    username= StringField('Username:', [validators.DataRequired()])
+    username = StringField('Username:', [validators.DataRequired()])
     password = PasswordField('Password:', [validators.DataRequired()])
 
 @app.route('/login', methods=['GET','POST'])
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
+
         username = form.username.data
         password = form.password.data
-        signupbase = user_ref.get()
-        for user in signupbase.items():
-            if user[1]['username'] == id and user[1]['password'] == password:
+        userbase = user_ref.get()
+        for user in userbase.items():
+            if user[1]['username'] == username and user[1]['password'] == password:
                 session['user_data'] = user[1]
                 session['logged_in'] = True
-                session['id'] = id
+                session['id'] = username
                 session['key'] = user[0]
                 return redirect(url_for('home'))
-        flash('Invalid Login', 'danger')
+        flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
 
     elif request.method == 'POST' and form.validate() == False:
