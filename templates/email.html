@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Template by Quackit.com -->
-<!-- Images by various sources under the Creative Commons CC0 license and/or the Creative Commons Zero license. 
+<!-- Images by various sources under the Creative Commons CC0 license and/or the Creative Commons Zero license.
 Although you can use them, for a more unique website, replace these images with your own. -->
 <html lang="en">
 
@@ -27,31 +27,32 @@ Although you can use them, for a more unique website, replace these images with 
     <![endif]-->
 
     <!-- Custom Fonts from Google -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+
     <script>
-    var acc = document.getElementsByClassName("accordion");
-    var i;
-    
-    for (i = 0; i < acc.length; i++) {
-        acc[i].onclick = function(){
-            /* Toggle between adding and removing the "active" class,
-            to highlight the button that controls the panel */
-            this.classList.toggle("active");
-    
-            /* Toggle between hiding and showing the active panel */
-            var panel = this.nextElementSibling;
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
-            } else {
-                panel.style.display = "block";
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].onclick = function () {
+                /* Toggle between adding and removing the "active" class,
+                to highlight the button that controls the panel */
+                this.classList.toggle("active");
+
+                /* Toggle between hiding and showing the active panel */
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
             }
         }
-    }
 
     </script>
     <style>
-        #contactusheader{
+        #contactusheader {
             padding-left: 30px;
             padding-bottom: 50px;
             font-size: 60px;
@@ -60,22 +61,22 @@ Although you can use them, for a more unique website, replace these images with 
             border-bottom-style: solid;
         }
 
-        .contactussection{
+        .contactussection {
             padding: 50px 50px 50px 50px;
             border-color: black;
             border-style: solid;
             background-color: white;
         }
 
-        .content{
+        .content {
             background-color: #E6E6FA;
         }
 
-        #feedback{
-             height: 250px;
+        #feedback {
+            height: 250px;
         }
 
-        .contactusinfo{
+        .contactusinfo {
             background-color: lightgrey;
             border-color: black;
             border-style: solid;
@@ -83,103 +84,94 @@ Although you can use them, for a more unique website, replace these images with 
         }
     </style>
 </head>
+{% from "includes/_formhelper.html" import render_field %}
 
 <body>
 
-    <!-- Navigation -->
-    <div class="container-fluid">
-        {% include 'includes/_navbar.html' %}
-        {% block body %}{% endblock %}
+<!-- Navigation -->
+<div class="container-fluid">
+    {% include 'includes/_navbar.html' %}
+    {% block body %}{% endblock %}
+</div>
+<!-- Header -->
+
+
+<!-- Intro Section -->
+
+<!-- Content 1 -->
+
+<section class="content">
+    <div class="container">
+
+        <div class="contactusheader">
+            <p id="contactusheader">Contact Us</p>
+        </div>
+
+        <div class="col-sm-3">
+
+        </div>
+
+        <div class="col-sm-6">
+            <div class="contactusinfo">
+                <p>Your feedback is important to us. Please enter your message below and
+                    we will be in touch with you within 5 to 7 working days. For the list of commonly asked questions,
+                    please click <a href="faq"> here </a>. For urgent assistance, please call our hotline at 1234 5678.
+                </p>
+            </div>
+            <div class="contactussection">
+                <form action="/email" method="POST">
+                    <div class="form-group">
+                        {{ render_field(form.name, class_="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ render_field(form.user_email, class_="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ render_field(form.feedback, class_="form-control") }}
+                    </div>
+
+                    <input type="submit" value="submit" class="btn btn-default"/>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+
+        </div>
+
+    </div>
+    </div>
+</section>
+
+
+<!-- Footer -->
+<footer class="page-footer">
+
+    <!-- Contact Us -->
+
+
+    <!-- Copyright etc -->
+    <div class="small-print">
+        <div class="container">
+            <p>Copyright &copy; myTrolley.tk 2017</p>
+        </div>
     </div>
 
-	<!-- Header -->
-   
+</footer>
 
-	<!-- Intro Section -->
- 
-    <!-- Content 1 -->
+<!-- jQuery -->
+<script src="../static/js/jquery-1.11.3.min.js"></script>
 
-    <section class="content">
-        <div class="container">
+<!-- Bootstrap Core JavaScript -->
+<script src="../static/js/bootstrap.min.js"></script>
 
-                <div class="contactusheader">
-                    <p id="contactusheader">Contact Us</p>
-                </div>
+<!-- Plugin JavaScript -->
+<script src="../static/js/jquery.easing.min.js"></script>
 
-                    <div class="col-sm-3">
-
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="contactusinfo">
-                        <p>Your feedback is important to us. Please enter your message below and
-                            we will be in touch with you within 5 to 7 working days. For the list of commonly asked questions,
-                            please click <a href="faq"> here </a>. For urgent assistance, please call our hotline at 1234 5678.
-                        </p>
-                        </div>
-                        <div class="contactussection">
-                            <form action="" method="post" enctype="text/plain"
-                                  data-toggle="validator">
-                                <fieldset>
-                                    <p>
-                                        <label for="name">Name:</label>
-                                        <input type="text" name="name" id="name" placeholder="Enter your name" required
-                                        data-error="Please enter your name">
-                                    </p>
-
-                                    <p>
-                                        <label for="email">Email:</label>
-                                        <input type="text" name="email" id="email" placeholder="Enter your email" required
-                                        data-error="That's not a valid email address">
-                                    </p>
-
-                                    <p>
-                                        <label for="feedback">Feedback:</label>
-                                        <input type="text" name="feedback" id="feedback" placeholder="Enter your feedback here" required
-                                        data-error="Please enter your feedback">
-                                    </p>
-                                    <input type="submit" value="Submit">
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-
-                    </div>
-
-                </div>
-        </div>
-    </section>
-
-	
-    
-	<!-- Footer -->
-    <footer class="page-footer">
-    
-    	<!-- Contact Us -->
-        
-        	
-        <!-- Copyright etc -->
-        <div class="small-print">
-        	<div class="container">
-        		<p>Copyright &copy; myTrolley.tk 2017</p>
-        	</div>
-        </div>
-        
-    </footer>
-
-    <!-- jQuery -->
-    <script src="../static/js/jquery-1.11.3.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../static/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="../static/js/jquery.easing.min.js"></script>
-    
-    <!-- Custom Javascript -->
-    <script src="../static/js/custom.js"></script>
+<!-- Custom Javascript -->
+<script src="../static/js/custom.js"></script>
 
 </body>
 
