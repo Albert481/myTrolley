@@ -253,79 +253,51 @@ def healthevent():
 def search():
     return render_template('search.html')
 
-def validate_signup(form, field):
-    signupbase = user_ref.get()
-    for signup in signupbase.items():
+def validity(form, field):
+    signupfirebase = user_ref.get()
+    for signup in signupfirebase.items():
         if signup[1]['username'] == field.data:
-            raise ValidationError('Username is already taken')
+            raise ValidationError('Username has already been used')
         elif signup[1]['email'] == field.data:
             raise ValidationError('Email has already been used')
-        elif signup[1]['nric'] == field.data:
-            raise ValidationError('You have already registered with this NRIC')
 
 class SignupForm(Form):
-    fname = StringField('*Your First Name', [validators.Length(min=1), validators.DataRequired()])
-    lname = StringField('*Your Last Name', [validators.Length(min=1), validators.DataRequired()])
-    username = StringField('*Username',
-                           [validators.Length(min=6, max=20), validators.DataRequired(), validate_signup])
-    nric = StringField('*Your NRIC', [validators.DataRequired(), validate_signup])
-    email = StringField('*Your Email Address', [validators.Length(min=6, max=50),
-                                           validators.DataRequired(),
-                                           validators.EqualTo('confirmemail', message='Email must match'),
-                                           validate_signup])
-    password = PasswordField('*Password', [
-        validators.Length(min=6, max=50),
-        validators.DataRequired(),
-        validators.EqualTo('confirmpass', message='Passwords must match')
-    ])
-    confirmpass = PasswordField('*Confirm Password', [validators.DataRequired()])
+    username = StringField('Username',[validators.Length(min=6, max=10), validators.DataRequired(), validity])
+    email = StringField('Email Address', [validators.Length(min=6, max=30),validators.DataRequired(), validity])
+    password = PasswordField('Password', [validators.Length(min=6, max=50),validators.DataRequired()])
 
 @app.route('/signup', methods=['GET','POST'])
-def register():
+def signup():
     form = SignupForm(request.form)
     if request.method == 'POST' and form.validate():
-        fname = form.fname.data.title()
-        lname = form.lname.data.title()
+
         username = form.username.data
-        nric = form.nric.data.upper()
         email = form.email.data
         password = form.password.data
-        homephone = form.homephone.data
-        mobilephone = form.mobilephone.data
-        address = form.address.data
-        postalcode = form.postalcode.data
-        newsletter = form.newsletter.data
-        user = sp.User(fname, lname, username, nric, email, password, homephone, mobilephone, address, postalcode,
-                           newsletter)
+
+        user = sp.Users(username, email, password)
         user_db = root.child('userbase')
         user_db.push({
-            'fname': user.get_fname(),
-            'lname': user.get_lname(),
             'username': user.get_username(),
-            'nric': user.get_nric(),
             'email': user.get_email(),
             'password': user.get_password(),
-            'homephone': user.get_homephone(),
-            'mobilephone': user.get_mobilephone(),
-            'address': user.get_address(),
-            'postalcode': user.get_postalcode(),
-            'newsletter': user.get_newsletter(),
-            'about': '',
-            'friends': {'dummy': 'user'},
         })
-        flash('You have successfully created an account', 'success')
+
+        flash('You have created an account with us', 'success')
+
         return redirect(url_for('login'))
-    return render_template('register.html', form=form)
+
+    return render_template('signup.html', form=form)
 
 class LoginForm(Form):
-    id = StringField('Username:', [validators.DataRequired()])
+    username= StringField('Username:', [validators.DataRequired()])
     password = PasswordField('Password:', [validators.DataRequired()])
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-        id = form.id.data
+        username = form.username.data
         password = form.password.data
         signupbase = user_ref.get()
         for user in signupbase.items():
@@ -337,9 +309,13 @@ def login():
                 return redirect(url_for('home'))
         flash('Invalid Login', 'danger')
         return render_template('login.html', form=form)
+
     elif request.method == 'POST' and form.validate() == False:
+
         flash('Please enter your details', 'danger')
+
         return render_template('login.html', form=form)
+
     return render_template('login.html', form=form)
 
 @app.route('/logout')
@@ -348,8 +324,24 @@ def logout():
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
 
-@app.route('/modifyuser')
+class AccountForm(Form):
+    email = StringField('New Email', [validators.Length(min=6, max=30)])
+    password = PasswordField('New Password (Optional)', [validators.Length(min=6, max=50)])
+
+class ImageForm(Form):
+    image = FileField('Choose File')
+
+@app.route('/modify', methods=['GET','POST'])
 def modifyuser():
+    key = session['key']
+    user_update = user_ref.child(key)
+    user_data = user_ref.child(key).get()
+
+    form = SignupForm(request.form)
+    form.username.data = 'username'
+    form.email.data = 'email'
+    form.password.data = 'password'
+
     return render_template('modifyuser.html')
 
 @app.route('/credit')
@@ -375,6 +367,10 @@ def email():
 @app.route('/feedback')
 def feedback():
     return render_template('feedback.html')
+
+@app.route('/workout')
+def workout():
+    return render_template('workout.html')
 
 if __name__ == '__main__':
     app.secret_key = 'secret123'

@@ -157,22 +157,6 @@ header .header-content .header-content-inner p {
     display: inline-block;
     vertical-align: middle;
 }
-	
-.item-2 {
-	background: url('../images/Online-QR-Code-Scanner.png');
-	}
-	
-.item-3 {
-	background: url('../images/Enable-store-NTUC-Fairprice-4.jpg');
-	}
-
-.item-1,
-.item-2,
-.item-3,
-.item-4{
-	background-size: cover;
-	background-position: 50% 50%;
-	}
 
 .page-footer {
 	text-align: center;
