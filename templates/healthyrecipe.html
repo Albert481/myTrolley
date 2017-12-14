@@ -15,42 +15,16 @@
                     <div class="row text-center">
 
                         <div class="col-lg-12 col-md-12 mb-12">
+                        {% for reci in recipe_list %}
                             <div class="col-sm-3">
                                 <div class="single-blog">
-                                    <img src="../static/images/HealthyRecipe/applepearorangejuice.jpg" style="height:200px; width:170px;"/>
-                                    <h3>Orange, Apple & Pear Juice</h3>
+                                    <img src="../static/images/HealthyRecipe/{{ reci.get_image() }}" style="height:200px; width:170px;"/>
+                                    <h3>{{ reci.get_recipeName() }}</h3>
 
-                                    <a href="/recipe1" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span>Read More</a>
+                                    <a href="{{ reci.get_link() }}" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span>Read More</a>
                                 </div>
                             </div>
-
-                            <div class="col-sm-3">
-                                <div class="single-blog">
-                                    <img src="../static/images/HealthyRecipe/bananapudding.jpg" style="height:200px; width:170px;"/>
-                                    <h3>Homemade Creamy Banana Pudding</h3>
-
-                                    <a href="recipe2" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span>Read More</a>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-3">
-                                <div class="single-blog">
-                                    <img src="../static/images/HealthyRecipe/tomatocucumberlettucesalad.jpg" style="height:200px; width:170px;"/>
-                                    <h3>Lettuce, Cucumber & Tomato Salad</h3>
-
-                                    <a href="recipe3" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span>Read More</a>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-3">
-                                <div class="single-blog">
-                                    <img src="../static/images/HealthyRecipe/carrotapplesalad.jpg" style="height:200px; width:170px;"/>
-                                    <h3>Crunchy Carrot & Apple Salad</h3>
-
-                                    <a href="recipe4" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span>Read More</a>
-                                </div>
-                            </div>
-
+                        {% endfor %}
 
                         </div>
                     </div>
