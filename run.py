@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
-from wtforms import Form, SelectField, StringField, TextAreaField, RadioField, BooleanField, validators, SelectMultipleField, DateTimeField, PasswordField, IntegerField, ValidationError
+from flask import Flask, render_template, request, flash, redirect, url_for, session
+from wtforms import Form, SelectMultipleField, StringField, PasswordField, validators, RadioField, SelectField, ValidationError, FileField, SubmitField, TextAreaField, DateField
 import firebase_admin
 from firebase_admin import credentials, db, storage
+import signup as sp
 import trolleys as tr
+
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -12,6 +14,8 @@ default_app = firebase_admin.initialize_app(cred, {
 root = db.reference()
 
 troll = db.reference('trolleys')
+
+user_ref = db.reference('userbase')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
@@ -84,27 +88,34 @@ def scanner():
         #If report button has data:
         elif form.name.data != '':
             name = form.name.data
+            reporttype = form.reporttype.data
             fault = form.faulty.data
             comments = form.comments.data
             location = form.location.data
             valid = False
             for trolleyid in trolleys.items():
-                print(trolleyid[1]['name'])
-                print(name)
                 if trolleyid[1]['name'] == name:
-                    print('Came')
-                    flag_count = int((trolleyid[1]['flag_count']))
-                    flag_count += 1
-                    reportfaulty = tr.Reports(fault, flag_count, location, comments)
-                    report_db = troll.child(trolleyid[0])
-                    report_db.update({
-                    'flag_count': reportfaulty.get_count(),
-                    'status': reportfaulty.get_fault(),
-                    'comments': reportfaulty.get_comments(),
-                    'location': reportfaulty.get_location()
-                    })
-                    flash('Success: Trolley reported', 'success')
-                    valid = True
+                    if reporttype == 'faulty':
+                        flag_count = int(trolleyid[1]['flag_count'])
+                        flag_count += 1
+                        reportfaulty = tr.ReportF(fault, flag_count, comments)
+                        report_db = troll.child(trolleyid[0])
+                        report_db.update({
+                        'flag_count': reportfaulty.get_count(),
+                        'status': reportfaulty.get_fault(),
+                        'comments': reportfaulty.get_comments(),
+                        })
+                        flash('Success: Trolley fault reported', 'success')
+                        valid = True
+                    if reporttype == 'misuse':
+                        reportloc = tr.ReportL(location, comments)
+                        report_db = troll.child(trolleyid[0])
+                        report_db.update({
+                            'location': reportloc.get_location(),
+                            'comments': reportloc.get_comments()
+                        })
+                        flash('Success: Trolley misuse reported', 'success')
+                        valid = True
             if valid == False:
                 flash('Failed report: Trolley ID does not exist', 'danger')
             print('Success: filed a report')
@@ -156,7 +167,7 @@ def admin():
 
         #Find Trolley
         if form.trolleyid.data != '':
-            found = ''
+            found = False
             for trolleyid in trolleys.items():
                 if trolleyid[1]['name'] == calledname:
                     findtrolley = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'], trolleyid[1]['location'], trolleyid[1]['comments'])
@@ -216,52 +227,100 @@ def healthevent():
 def search():
     return render_template('search.html')
 
-class Signupform(Form):
-    username = StringField('Username', [validators.Length(min=4, max=25), validators.DataRequired()])
-    email = StringField('Email Address', [validators.Length(min=6, max=35), validators.DataRequired()])
-    birthday = DateTimeField('Your Birthday', validators.DataRequired(), format='%d/%m/%y')
-    category = SelectField('Gender', [validators.DataRequired()],
-                           gender=[('', 'Select'), ('MALE', 'Male'), ('FEMALE', 'Female')])
-    password = PasswordField(validators.DataRequired())
-    accept_rules = BooleanField('I accept the site rules', [validators.InputRequired()])
+def validate_signup(form, field):
+    signupbase = user_ref.get()
+    for signup in signupbase.items():
+        if signup[1]['username'] == field.data:
+            raise ValidationError('Username is already taken')
+        elif signup[1]['email'] == field.data:
+            raise ValidationError('Email has already been used')
+        elif signup[1]['nric'] == field.data:
+            raise ValidationError('You have already registered with this NRIC')
+
+class SignupForm(Form):
+    fname = StringField('*Your First Name', [validators.Length(min=1), validators.DataRequired()])
+    lname = StringField('*Your Last Name', [validators.Length(min=1), validators.DataRequired()])
+    username = StringField('*Username',
+                           [validators.Length(min=6, max=20), validators.DataRequired(), validate_signup])
+    nric = StringField('*Your NRIC', [validators.DataRequired(), validate_signup])
+    email = StringField('*Your Email Address', [validators.Length(min=6, max=50),
+                                           validators.DataRequired(),
+                                           validators.EqualTo('confirmemail', message='Email must match'),
+                                           validate_signup])
+    password = PasswordField('*Password', [
+        validators.Length(min=6, max=50),
+        validators.DataRequired(),
+        validators.EqualTo('confirmpass', message='Passwords must match')
+    ])
+    confirmpass = PasswordField('*Confirm Password', [validators.DataRequired()])
 
 @app.route('/signup', methods=['GET','POST'])
-def register(request):
-    form = Signupform(request.POST)
+def register():
+    form = SignupForm(request.form)
     if request.method == 'POST' and form.validate():
-            user = Signupform()
-            user.username = form.username.data
-            user.email = form.email.data
-            user.save()
-            redirect('register')
-
-            signupform = Form(type)
-
-            signupform_db = root.child('submissions')
-            signupform_db.push({
-                'title': signupform.get_title(),
-                'type': signupform.get_type(),
-                'category': signupform.get_category(),
-                'status': signupform.get_status(),
-                'frequency': signupform.get_frequency(),
-                'publisher': signupform.get_publisher(),
-                'created_by': signupform.get_created_by(),
-                'create_date': signupform.get_created_date()
-            })
-
-            flash('Book Inserted Sucessfully.', 'success')
-
-            return redirect(url_for('signup'))
-
-    return render_template('signup.html')
+        fname = form.fname.data.title()
+        lname = form.lname.data.title()
+        username = form.username.data
+        nric = form.nric.data.upper()
+        email = form.email.data
+        password = form.password.data
+        homephone = form.homephone.data
+        mobilephone = form.mobilephone.data
+        address = form.address.data
+        postalcode = form.postalcode.data
+        newsletter = form.newsletter.data
+        user = sp.User(fname, lname, username, nric, email, password, homephone, mobilephone, address, postalcode,
+                           newsletter)
+        user_db = root.child('userbase')
+        user_db.push({
+            'fname': user.get_fname(),
+            'lname': user.get_lname(),
+            'username': user.get_username(),
+            'nric': user.get_nric(),
+            'email': user.get_email(),
+            'password': user.get_password(),
+            'homephone': user.get_homephone(),
+            'mobilephone': user.get_mobilephone(),
+            'address': user.get_address(),
+            'postalcode': user.get_postalcode(),
+            'newsletter': user.get_newsletter(),
+            'about': '',
+            'friends': {'dummy': 'user'},
+        })
+        flash('You have successfully created an account', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
 class LoginForm(Form):
-    username = StringField('username')
-    password = PasswordField('password')
+    id = StringField('Username:', [validators.DataRequired()])
+    password = PasswordField('Password:', [validators.DataRequired()])
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        id = form.id.data
+        password = form.password.data
+        signupbase = user_ref.get()
+        for user in signupbase.items():
+            if user[1]['username'] == id and user[1]['password'] == password:
+                session['user_data'] = user[1]
+                session['logged_in'] = True
+                session['id'] = id
+                session['key'] = user[0]
+                return redirect(url_for('home'))
+        flash('Invalid Login', 'danger')
+        return render_template('login.html', form=form)
+    elif request.method == 'POST' and form.validate() == False:
+        flash('Please enter your details', 'danger')
+        return render_template('login.html', form=form)
+    return render_template('login.html', form=form)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('You are now logged out', 'success')
+    return redirect(url_for('login'))
 
 @app.route('/modifyuser')
 def modifyuser():
