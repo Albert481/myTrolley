@@ -397,7 +397,7 @@ def email():
         feedback = form.feedback.data
         flash('Thanks for emailing')
 
-        #email = em.Email(name, user_email, feedback)
+        email = em.Email(name, user_email, feedback)
         email_db = root.child('userbase')
         email_db.push({
             'name': email.get_name(),
@@ -406,9 +406,6 @@ def email():
         })
         return render_template('email.html', form=form)
         #return redirect(url_for('email'))
-    else:
-        #return redirect(url_for('email'))
-        return render_template('email.html', form=form)
 
     return render_template('email.html', form=form)
 
