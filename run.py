@@ -7,6 +7,7 @@ import trolleys as tr
 import event as ev
 import recipe as recs
 import popularitem as pop
+import product as prodt
 
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
@@ -21,6 +22,8 @@ events = db.reference('events')
 popitem = db.reference('popularitems')
 recipes = db.reference('recipes')
 pdt = db.reference('products')
+pdt_fruit = db.reference('fruits')
+pdt_veg  = db.reference('vegetables')
 
 user_ref = db.reference('userbase')
 
@@ -198,7 +201,21 @@ def admin():
 
 @app.route('/ourproduct')
 def ourproduct():
-    return render_template('ourproduct.html')
+    pfruit = pdt_fruit.get()
+    pfruitlist = []
+    for fruit_id in pfruit:
+        eachfruit = pfruit[fruit_id]
+        fruitBase = prodt.Product(eachfruit['name'],eachfruit['category'],eachfruit['price'],eachfruit['origin'],eachfruit['image_name'])
+        pfruitlist.append(fruitBase)
+
+    pveg = pdt_veg.get()
+    pveglist = []
+    for veg_id in pveg:
+        eachveg = pveg[veg_id]
+        vegBase = prodt.Product(eachveg['name'], eachveg['category'], eachveg['price'], eachveg['origin'], eachveg['image_name'])
+        pveglist.append(vegBase)
+
+    return render_template('ourproduct.html', pfruit_list = pfruitlist, pveg_list = pveglist)
 
 @app.route('/popularitem')
 def popularitem():
