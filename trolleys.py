@@ -18,11 +18,6 @@ class trolleys:
     def get_comments(self):
         return self.__comments
 
-# Search function for admin page
-class FindTrolley(trolleys):
-    def __init__(self, name, fault, count, location, comments):
-        super().__init__(name, fault, count, location, comments)
-
 #Report function for scanner page
 class Report:
     def __init__(self, comments):
@@ -52,3 +47,8 @@ class ReportL(Report):
 
     def get_location(self):
         return self.__location
+
+# Search function for admin page
+class FindTrolley(trolleys):
+    def __init__(self, name, fault, count, location, comments):
+        super().__init__(name, fault, count, location, comments)
