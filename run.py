@@ -4,6 +4,9 @@ import firebase_admin
 from firebase_admin import credentials, db, storage
 import signup as sp
 import trolleys as tr
+import event as ev
+import recipe as recs
+import popularitem as pop
 
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
@@ -14,6 +17,10 @@ default_app = firebase_admin.initialize_app(cred, {
 root = db.reference()
 
 troll = db.reference('trolleys')
+events = db.reference('events')
+popitem = db.reference('popularitems')
+recipes = db.reference('recipes')
+pdt = db.reference('products')
 
 user_ref = db.reference('userbase')
 
@@ -196,11 +203,25 @@ def ourproduct():
 
 @app.route('/popularitem')
 def popularitem():
-    return render_template('popularitem.html')
+    popular = popitem.get()
+    poplist = []
+    for pop_id in popular:
+        eachpop = popular[pop_id]
+        popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
+        poplist.append(popBase)
+
+    return render_template('popularitem.html', pop_list = poplist)
 
 @app.route('/healthyrecipe')
 def healthyrecipe():
-    return render_template('healthyrecipe.html')
+    rec = recipes.get()
+    recipelist = []
+    for recipe_id in rec:
+        eachrecipe = rec[recipe_id]
+        recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'],eachrecipe['serving'],eachrecipe['cooktime'],eachrecipe['ingredient'],eachrecipe['method'], eachrecipe['link'])
+        recipelist.append(recipeBase)
+
+    return render_template('healthyrecipe.html', recipe_list = recipelist)
 
 @app.route('/recipe1')
 def recipe1():
@@ -220,7 +241,14 @@ def recipe4():
 
 @app.route('/healthevent')
 def healthevent():
-    return render_template('healthevent.html')
+    event = events.get()
+    list = []
+    for event_id in event:
+        eachevent = event[event_id]
+        eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'], eachevent['image'], eachevent['link'])
+        list.append(eventBase)
+
+    return render_template('healthevent.html', event_list= list)
 
 @app.route('/search')
 def search():

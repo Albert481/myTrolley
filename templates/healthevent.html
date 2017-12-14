@@ -14,64 +14,28 @@
 
                 <!-- Page Features -->
                 <div class="row text-center">
-
+                    {% for evt in event_list %}
                     <div class="col-lg-3 col-md-6 mb-4">
                         <div class="card">
-                            <img class="card-img-top" src="../static/images/HealthEvent/eventA.jpg" alt="Simei: Therapeutic Yoga " style="width:100%;">
+                            <img class="card-img-top" src="../static/images/HealthEvent/{{ evt.get_image() }}" alt="" style="width:100%;">
                             <div class="card-body">
-                                <h4 class="card-title">Simei: Therapeutic Yoga</h4>
-                                <p class="card-text">Jan 2 - Feb 27 2018</p>
+                                <h4 class="card-title">{{ evt.get_eventName() }}</h4>
+                                {% if evt.get_startDate() == evt.get_endDate() %}
+                                <p class="card-text">{{ evt.get_startDate() }}</p>
+                                {% else %}
+                                <p class="card-text">{{ evt.get_startDate() }} - {{ evt.get_endDate() }}</p>
+                                {% endif %}
                             </div>
                             <div class="card-footer">
-                                <a href="https://www.eventbrite.sg/e/simei-therapeutic-yoga-9-sessions-jan-2-feb-27-tue-tickets-40839874163?aff=ehomecard" class="btn btn-primary">Find Out More!</a>
+                                <a href="{{ evt.get_link() }}" class="btn btn-primary">Find Out More!</a>
                             </div>
                         </div>
                         <br />
                     </div>
-
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="../static/images/HealthEvent/eventB.png" alt="Yin Yoga@MacPherson" style="width:100%;">
-                            <div class="card-body">
-                                <h4 class="card-title">Yin Yoga @ MacPherson</h4>
-                                <p class="card-text">Jan 9 - Mar 27 2018</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="https://www.eventbrite.sg/e/yin-yogamacpherson-tue-jan-9-mar-27-tickets-39949284385?aff=ehomecard" class="btn btn-primary">Find Out More!</a>
-                            </div>
-                        </div>
-                        <br />
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="../static/images/HealthEvent/eventC.png" alt="Organic Family Movement" style="width:100%;">
-                            <div class="card-body">
-                                <h4 class="card-title">Organic Family Movement</h4>
-                                <p class="card-text">20 Jan 2018</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="https://www.eventbrite.ca/e/organic-family-movement-tickets-38927261487?aff=es2" class="btn btn-primary">Find Out More!</a>
-                            </div>
-                        </div>
-                        <br />
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="../static/images/HealthEvent/eventD.jpg" alt="Novena: Mindfulness Foundation Course" style="width:100%;">
-                            <div class="card-body">
-                                <h4 class="card-title">Mindfulness Foundation Course</h4>
-                                <p class="card-text">Jan 31 - Feb 21 2018</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="https://www.eventbrite.sg/e/novena-mindfulness-foundation-course-jan-31-feb-21-wed-tickets-39215472534?aff=es2" class="btn btn-primary">Find Out More!</a>
-                            </div>
-                        </div>
-                        <br />
-                    </div>
+                    {% endfor %}
 
                 </div>
+
                 <!-- /.row -->
 
             </div>
