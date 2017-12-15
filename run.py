@@ -270,21 +270,6 @@ def healthevent():
 def search():
     return render_template('search.html')
 
-def validity_signup(form, field):
-    userbase = user_ref.get()
-    for signup in userbase:
-        eachentry = entry[entry_id]
-        entrybase = sp.Users(eachentry['entry_username'], eachentry['entry_email'], eachentry['entry_password'])
-        list.append(entrybase)
-        if signup[1]['username'] == field.data:
-            raise ValidationError('Username has already been used')
-        elif signup[1]['email'] == field.data:
-            raise ValidationError('Email has already been used')
-
-class SignupForm(Form):
-    username = StringField('Username',[validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
-    email = StringField('Email Address', [validators.Length(min=6, max=30),validators.DataRequired(), validity_signup])
-    password = PasswordField('Password', [validators.Length(min=6, max=50),validators.DataRequired()])
 
 @app.route('/signup', methods=['GET','POST'])
 def signup():
@@ -309,6 +294,22 @@ def signup():
 
     return render_template('signup.html', form=form)
 
+def validity_signup(form, field):
+     userbase = user_ref.get()
+     list = []
+     for signup in userbase:
+        eachentry = userbase[signup]
+   #     entrybase = sp.Users(eachentry['username'], eachentry['email'], eachentry['password'])
+   #     list.append(entrybase)
+   #     if signup[1]['username'] == field.data:
+   #         raise ValidationError('Username has already been used')
+   #    elif signup[1]['email'] == field.data:
+   #         raise ValidationError('Email has already been used')
+
+class SignupForm(Form):
+    username = StringField('Username',[validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
+    email = StringField('Email Address', [validators.Length(min=6, max=30),validators.DataRequired(), validity_signup])
+    password = PasswordField('Password', [validators.Length(min=6, max=50),validators.DataRequired()])
 
 
 class LoginForm(Form):
@@ -329,14 +330,12 @@ def login():
                 session['logged_in'] = True
                 session['id'] = username
                 session['key'] = user[0]
-                return redirect(url_for('home'))
+                return redirect(url_for('modifyuser'))
         flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
 
     elif request.method == 'POST' and form.validate() == False:
-
         flash('Please enter your details', 'danger')
-
         return render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
@@ -344,28 +343,31 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('You are now logged out', 'success')
+    flash('You were logged out', 'success')
     return redirect(url_for('login'))
 
 class AccountForm(Form):
     email = StringField('New Email', [validators.Length(min=6, max=30)])
     password = PasswordField('New Password (Optional)', [validators.Length(min=6, max=50)])
 
-class ImageForm(Form):
-    image = FileField('Choose File')
-
 @app.route('/modify', methods=['GET','POST'])
 def modifyuser():
-    key = session['key']
-    user_update = user_ref.child(key)
-    user_data = user_ref.child(key).get()
+        form = AccountForm(request.form)
+        if request.method == 'POST' and form.validate():
+                username = form.username.data
+                password = form.password.data
+                user = sp.Users(username, email, password)
 
-    form = SignupForm(request.form)
-    form.username.data = 'username'
-    form.email.data = 'email'
-    form.password.data = 'password'
+                user_db = root.child('modify/' + id)
+                user_db.set({
+                    'username': user.get_username(),
+                    'email': user.get_type(),
+                    'password': user.get_category(),
+                })
 
-    return render_template('modifyuser.html')
+                flash('Profile Updated Sucessfully.', 'success')
+
+        return render_template('modifyuser.html')
 
 @app.route('/credit')
 def creditpointsystem():
