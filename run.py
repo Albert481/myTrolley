@@ -330,7 +330,7 @@ def login():
                 session['logged_in'] = True
                 session['id'] = username
                 session['key'] = user[0]
-                return redirect(url_for('modifyuser'))
+                return redirect(url_for('home'))
         flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
 
