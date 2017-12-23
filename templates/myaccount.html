@@ -1,0 +1,159 @@
+{% extends 'layout2.html' %}
+{% block title %}Welcome Page{% endblock %}
+
+{% block head %}
+    <style>
+/* Heart of the matter */
+@media (min-width: 768px) {
+  .ten-columns > .col-sm-2 {
+    width: 20%;
+  }
+}
+
+/* Decorations */
+.col-sm-2 {
+  font-size: 28px;
+  font-weight: bold;
+  min-height: 150px;
+  padding-top: 6px;
+  width:218px;
+  height:231px;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <!-- Header -->
+    <header style="background-image:url('../static/images/trolley.jpg')">
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 style="color:white; text-shadow: 0 0 3px black; font-weight:bold;">Easily Accessible Trolley</h1>
+                <h3 style="color:white; text-shadow: 0 0 3px black; font-weight:bold;">Let us make a pleasant environment for both the customers and staff at NTUC.</h3>
+                <a href="/scanner" class="btn btn-primary btn-lg">Scan now</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Intro Section -->
+    <section class="intro">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h2 class="section-heading">About Us</h2>
+                    <p class="text-light">The long-standing issue that has been bugging NTUC is customers misusing the trolleys and this needs to be addressed immediately. After countless research and findings about the situation, our team created myTrolley app to specifically target this problem. It aims to provide convenience, making the trolleys more accessible to the NTUC customers, as well as to discourage NTUC customers from wheeling trolleys away from the premises.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Content 1 -->
+    <section class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <img class="img-responsive img-circle center-block" src="../static/images/misplaced_trolley.jpg" alt="misplaced trolley">
+                </div>
+                <div class="col-sm-6">
+                    <h2 class="section-header">Abandoned Trolleys</h2>
+                    <p class="lead text-muted">NTUC has lost about 1,000 trolleys annually in the past three years. It spends an estimated $150,000 on repairing, replacing and retrieving trolleys each year.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Content 2 -->
+    <section class="content content-2" style="background-color:yellowgreen;">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2 class="section-header">The $1 deposit</h2>
+                    <p class="lead text-light">The current coin system of requiring customers to deposit $1 serves as a deterrent to trolley theft. Customers find it a hassle to search for new coins to unlock the trolley when shopping in the NTUC supermarket.</p>
+                </div>
+                <div class="col-sm-6">
+                    <img class="img-responsive img-circle center-block" src="../static/images/NTUC_Trolley_ Abuse.jpg" alt="abuse">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Promos -->
+<div class="container-fluid">
+  <div class="row ten-columns">
+
+    <div class="col-sm-2" style="background-image:url('../static/images/credit.jpg'); background-size: auto 100%; ">
+        <a href="/credit">
+        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center">
+            Credit point system
+        </h2>
+        </a>
+    </div>
+
+    <div class="col-sm-2" style="background: url('../static/images/scanner.jpg'); background-size: auto 100%; ">
+        <a href="/scanner">
+        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
+            Scanner
+        </h2>
+            </a>
+    </div>
+
+    <div class="col-sm-2" style="background: url('../static/images/Enable-store-NTUC-Fairprice-4.jpg'); background-size: auto 100%; ">
+        <a href="/ourproduct">
+        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
+            Products
+        </h2>
+            </a>
+    </div>
+
+    <div class="col-sm-2" style="background: url('../static/images/help.jpg'); background-size: auto 100%; ">
+        <a href="/help">
+        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
+            Help
+        </h2>
+        </a>
+    </div>
+
+    <div class="col-sm-2" style="background: url('../static/images/row_workout.jpg'); background-size: auto 100%;">
+        <a href="/workout">
+        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
+            Workout
+        </h2>
+        </a>
+    </div>
+  </div>
+</div>
+
+            <!-- /.container-fluid -->
+
+    <!-- Content 3 -->
+    <section class="content content-3">
+        <div class="container">
+            <h2 class="section-header">
+                <br>
+                Facts</h2>
+            <p class="lead text-muted">Do you know that NTUC outlets at Jurong Point mall, have the highest number of unreturned trolleys across all FairPrice outlets despite there being 17 trolley return bays at the mall? From the start of 2016, an average of 150 to 200 trolleys from Jurong Point have been taken out of the mall and cast aside every day.</p>
+        </div>
+    </section>
+
+{% endblock %}
+
+    <!-- jQuery -->
+    <script src="../static/js/jquery-1.11.3.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="../static/js/jquery.easing.min.js"></script>
+
+    <!-- Custom Javascript -->
+    <script src="../static/js/custom.js"></script>

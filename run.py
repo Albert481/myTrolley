@@ -299,12 +299,12 @@ def validity_signup(form, field):
      list = []
      for signup in userbase:
         eachentry = userbase[signup]
-   #     entrybase = sp.Users(eachentry['username'], eachentry['email'], eachentry['password'])
-   #     list.append(entrybase)
-   #     if signup[1]['username'] == field.data:
-   #         raise ValidationError('Username has already been used')
-   #    elif signup[1]['email'] == field.data:
-   #         raise ValidationError('Email has already been used')
+        entrybase = sp.Users(eachentry['username'], eachentry['email'], eachentry['password'])
+        list.append(entrybase)
+        if signup[1]['username'] == field.data:
+            raise ValidationError('Username has already been used')
+        elif signup[1]['email'] == field.data:
+            raise ValidationError('Email has already been used')
 
 class SignupForm(Form):
     username = StringField('Username',[validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
@@ -328,9 +328,10 @@ def login():
             if user[1]['username'] == username and user[1]['password'] == password:
                 session['user_data'] = user[1]
                 session['logged_in'] = True
+                session['logged_out'] = True
                 session['id'] = username
                 session['key'] = user[0]
-                return redirect(url_for('home'))
+                return redirect(url_for('myaccount'))
         flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
 
@@ -339,6 +340,10 @@ def login():
         return render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
+
+@app.route('/myaccount')
+def myaccount():
+    return render_template('myaccount.html')
 
 @app.route('/logout')
 def logout():
