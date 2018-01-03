@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
-from wtforms import Form, SelectMultipleField, StringField, PasswordField, validators, RadioField, SelectField, \
-    ValidationError, FileField, SubmitField, TextAreaField, DateField
+from wtforms import Form, SelectMultipleField, StringField, PasswordField, validators, RadioField, SelectField, ValidationError, FileField, SubmitField, TextAreaField, DateField
 import firebase_admin
 from firebase_admin import credentials, db, storage
 import signup as sp
@@ -9,8 +8,7 @@ import event as ev
 import recipe as recs
 import popularitem as pop
 import product as prodt
-import user_feedback as em
-import user_comment as co
+
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -25,18 +23,16 @@ popitem = db.reference('popularitems')
 recipes = db.reference('recipes')
 pdt = db.reference('products')
 pdt_fruit = db.reference('fruits')
-pdt_veg = db.reference('vegetables')
+pdt_veg  = db.reference('vegetables')
 
 user_ref = db.reference('userbase')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
 
-
 @app.route('/')
 def home():
     return render_template('index.html')
-
 
 class RequiredIf(object):
 
@@ -54,53 +50,48 @@ class RequiredIf(object):
                 else:
                     validators.Optional().__call__(form, field)
 
-
 class ScannerForm(Form):
-    # Enter Trolley ID
+    #Enter Trolley ID
     trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=4, max=4), validators.DataRequired()])
-    # Report
-    reporttype = RadioField('Report Type', choices=[('faulty', 'Faulty Trolley'), ('misuse', 'Trolley Misuse')],
-                            default='faulty')
+    #Report
+    reporttype = RadioField('Report Type', choices=[('faulty', 'Faulty Trolley'), ('misuse', 'Trolley Misuse')], default='faulty')
     name = StringField('Please enter Trolley ID:', [validators.Length(min=4, max=4), validators.DataRequired()])
-    faulty = SelectMultipleField('Select', [validators.DataRequired(), RequiredIf(reporttype='faulty')],
-                                 choices=[('', 'Select'), ('DW', 'Damaged Wheel'), ('DL', 'Damaged Lock'),
-                                          ('DQ', 'Damaged QR')], default='')
+    faulty = SelectMultipleField('Select', [validators.DataRequired(), RequiredIf(reporttype='faulty')], choices=[('', 'Select'), ('DW', 'Damaged Wheel'), ('DL', 'Damaged Lock'), ('DQ', 'Damaged QR')], default='')
     location = StringField('Enter location:', [validators.DataRequired(), RequiredIf(reporttype='misuse')])
     comments = TextAreaField('Additional comments:')
 
-
-@app.route('/scanner', methods=['GET', 'POST'])
+@app.route('/scanner', methods=['GET','POST'])
 def scanner():
     trolleys = troll.get()
     form = ScannerForm(request.form)
     calledname = form.trolleyid.data
     found = False
     if request.method == 'POST':
-        # If Enter Trolley ID has data:
+        #If Enter Trolley ID has data:
         if form.trolleyid.data != '':
-            # Iterate through the database trolleys
+            #Iterate through the database trolleys
             for trolleyid in trolleys.items():
                 if trolleyid[1]['name'] == calledname:
-                    # If status is empty in database
+                    #If status is empty in database
                     if trolleyid[1]['status'] == '':
                         flash('Trolley unlocked!', 'success')
                         found = True
                         break
-                    # If trolley has been reported, and flagged by 3 users or more
-                    elif trolleyid[1]['status'] != '' and trolleyid[1]['flag_count'] >= 3:
+                    #If trolley has been reported, and flagged by 3 users or more
+                    elif trolleyid[1]['status'] != '' and trolleyid[1]['flag_count'] >=3:
                         flash('Trolley needs repair, please find another trolley', 'danger')
                         found = True
                         break
-                    # If trolley has been reported once, twice.
+                    #If trolley has been reported once, twice.
                     elif trolleyid[1]['status'] != '':
                         flash('Trolley unlocked! If faulty, please report!', 'success')
                         found = True
                         break
-            # If trolley is not in database
+            #If trolley is not in database
             if found == False:
                 flash('Trolley ID not in database', 'danger')
 
-        # If report button has data:
+        #If report button has data:
         elif form.name.data != '':
             name = form.name.data
             reporttype = form.reporttype.data
@@ -116,9 +107,9 @@ def scanner():
                         reportfaulty = tr.ReportF(fault, flag_count, comments)
                         report_db = troll.child(trolleyid[0])
                         report_db.update({
-                            'flag_count': reportfaulty.get_count(),
-                            'status': reportfaulty.get_fault(),
-                            'comments': reportfaulty.get_comments(),
+                        'flag_count': reportfaulty.get_count(),
+                        'status': reportfaulty.get_fault(),
+                        'comments': reportfaulty.get_comments(),
                         })
                         flash('Success: Trolley fault reported', 'success')
                         valid = True
@@ -138,17 +129,12 @@ def scanner():
             flash('Do not leave blanks', 'danger')
     return render_template('scanner.html', form=form)
 
-
 class AdminForm(Form):
-    trolleynumbers = StringField('Enter number of new trolleys to add to database:',
-                                 [validators.NumberRange(min=1, max=2)])
-    trolleyid = StringField('Please enter Trolley ID:',
-                            [validators.Length(min=1, max=4), validators.number_range(min=1000, max=9999),
-                             validators.DataRequired()])
+    trolleynumbers = StringField('Enter number of new trolleys to add to database:', [validators.NumberRange(min=1, max=2)])
+    trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=1, max=4), validators.number_range(min=1000, max=9999), validators.DataRequired()])
     password = PasswordField('Enter secret code:')
 
-
-@app.route('/admin', methods=['GET', 'POST'])
+@app.route('/admin', methods=['GET','POST'])
 def admin():
     trolleys = troll.get()
     form = AdminForm(request.form)
@@ -160,7 +146,7 @@ def admin():
     tfaults = 0
     tmisused = 0
 
-    # Statistics function
+    #Statistics function
     for trolleyid in trolleys.items():
         tnames += 1
         if int(trolleyid[1]['flag_count']) >= 3:
@@ -168,15 +154,14 @@ def admin():
         if trolleyid[1]['location'] != "":
             tmisused += 1
 
-    # Attention function
+    #Attention function
     for trolleyid in trolleys.items():
         if int(trolleyid[1]['flag_count']) >= 3:
-            attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'],
-                                       trolleyid[1]['location'], trolleyid[1]['comments'])
+            attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'], trolleyid[1]['location'], trolleyid[1]['comments'])
             attentionlist.append(attention)
 
     if request.method == 'POST':
-        # Add New
+        #Add New
         if form.trolleynumbers.data != '':
             namelist = []
             for i in range(int(trolleynumbers)):
@@ -198,14 +183,12 @@ def admin():
                 })
             flash('Add Sucesss: New Trolley ID(s) has been added', 'success')
 
-        # Find Trolley
+        #Find Trolley
         if form.trolleyid.data != '':
             found = False
             for trolleyid in trolleys.items():
                 if trolleyid[1]['name'] == calledname:
-                    findtrolley = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'],
-                                                 trolleyid[1]['flag_count'], trolleyid[1]['location'],
-                                                 trolleyid[1]['comments'])
+                    findtrolley = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'], trolleyid[1]['location'], trolleyid[1]['comments'])
                     foundlist.append(findtrolley)
                     found = True
             if found == False:
@@ -214,9 +197,7 @@ def admin():
     else:
         print('Validation failed')
 
-    return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
-                           totmisused=tmisused, attention=attentionlist)
-
+    return render_template('admin.html', form=form, eachtrolley = foundlist, totnames = tnames, totfaults = tfaults, totmisused = tmisused, attention= attentionlist)
 
 @app.route('/ourproduct')
 def ourproduct():
@@ -224,20 +205,17 @@ def ourproduct():
     pfruitlist = []
     for fruit_id in pfruit:
         eachfruit = pfruit[fruit_id]
-        fruitBase = prodt.Product(eachfruit['name'], eachfruit['category'], eachfruit['price'], eachfruit['origin'],
-                                  eachfruit['image_name'])
+        fruitBase = prodt.Product(eachfruit['name'],eachfruit['category'],eachfruit['price'],eachfruit['origin'],eachfruit['image_name'])
         pfruitlist.append(fruitBase)
 
     pveg = pdt_veg.get()
     pveglist = []
     for veg_id in pveg:
         eachveg = pveg[veg_id]
-        vegBase = prodt.Product(eachveg['name'], eachveg['category'], eachveg['price'], eachveg['origin'],
-                                eachveg['image_name'])
+        vegBase = prodt.Product(eachveg['name'], eachveg['category'], eachveg['price'], eachveg['origin'], eachveg['image_name'])
         pveglist.append(vegBase)
 
-    return render_template('ourproduct.html', pfruit_list=pfruitlist, pveg_list=pveglist)
-
+    return render_template('ourproduct.html', pfruit_list = pfruitlist, pveg_list = pveglist)
 
 @app.route('/popularitem')
 def popularitem():
@@ -248,8 +226,7 @@ def popularitem():
         popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
         poplist.append(popBase)
 
-    return render_template('popularitem.html', pop_list=poplist)
-
+    return render_template('popularitem.html', pop_list = poplist)
 
 @app.route('/healthyrecipe')
 def healthyrecipe():
@@ -257,33 +234,26 @@ def healthyrecipe():
     recipelist = []
     for recipe_id in rec:
         eachrecipe = rec[recipe_id]
-        recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
-                                 eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
-                                 eachrecipe['link'])
+        recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'],eachrecipe['serving'],eachrecipe['cooktime'],eachrecipe['ingredient'],eachrecipe['method'], eachrecipe['link'])
         recipelist.append(recipeBase)
 
-    return render_template('healthyrecipe.html', recipe_list=recipelist)
-
+    return render_template('healthyrecipe.html', recipe_list = recipelist)
 
 @app.route('/recipe1')
 def recipe1():
     return render_template('recipe_orange_apple_pear_juice.html')
 
-
 @app.route('/recipe2')
 def recipe2():
     return render_template('recipe_creamy_banana_pudding.html')
-
 
 @app.route('/recipe3')
 def recipe3():
     return render_template('recipe_lettuce_cumber_tomato_salad.html')
 
-
 @app.route('/recipe4')
 def recipe4():
     return render_template('recipe_crunchy_carrot_apple_salad.html')
-
 
 @app.route('/healthevent')
 def healthevent():
@@ -291,40 +261,21 @@ def healthevent():
     list = []
     for event_id in event:
         eachevent = event[event_id]
-        eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'],
-                             eachevent['image'], eachevent['link'])
+        eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'], eachevent['image'], eachevent['link'])
         list.append(eventBase)
 
-    return render_template('healthevent.html', event_list=list)
-
+    return render_template('healthevent.html', event_list= list)
 
 @app.route('/search')
 def search():
     return render_template('search.html')
 
 
-def validity_signup(form, field):
-    userbase = user_ref.get()
-    for signup in userbase:
-        eachentry = entry[entry_id]
-        entrybase = sp.Users(eachentry['entry_username'], eachentry['entry_email'], eachentry['entry_password'])
-        list.append(entrybase)
-        if signup[1]['username'] == field.data:
-            raise ValidationError('Username has already been used')
-        elif signup[1]['email'] == field.data:
-            raise ValidationError('Email has already been used')
-
-
-class SignupForm(Form):
-    username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
-    email = StringField('Email Address', [validators.Length(min=6, max=30), validators.DataRequired(), validity_signup])
-    password = PasswordField('Password', [validators.Length(min=6, max=50), validators.DataRequired()])
-
-
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/signup', methods=['GET','POST'])
 def signup():
     form = SignupForm(request.form)
     if request.method == 'POST' and form.validate():
+
         username = form.username.data
         email = form.email.data
         password = form.password.data
@@ -343,13 +294,29 @@ def signup():
 
     return render_template('signup.html', form=form)
 
+def validity_signup(form, field):
+     userbase = user_ref.get()
+     list = []
+     for signup in userbase:
+        eachentry = userbase[signup]
+   #     entrybase = sp.Users(eachentry['username'], eachentry['email'], eachentry['password'])
+   #     list.append(entrybase)
+   #     if signup[1]['username'] == field.data:
+   #         raise ValidationError('Username has already been used')
+   #    elif signup[1]['email'] == field.data:
+   #         raise ValidationError('Email has already been used')
+
+class SignupForm(Form):
+    username = StringField('Username',[validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
+    email = StringField('Email Address', [validators.Length(min=6, max=30),validators.DataRequired(), validity_signup])
+    password = PasswordField('Password', [validators.Length(min=6, max=50),validators.DataRequired()])
+
 
 class LoginForm(Form):
     username = StringField('Username:', [validators.DataRequired()])
     password = PasswordField('Password:', [validators.DataRequired()])
 
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET','POST'])
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -363,133 +330,74 @@ def login():
                 session['logged_in'] = True
                 session['id'] = username
                 session['key'] = user[0]
-                return redirect(url_for('home'))
+                return redirect(url_for('modifyuser'))
         flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
 
     elif request.method == 'POST' and form.validate() == False:
-
         flash('Please enter your details', 'danger')
-
         return render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
 
-
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('You are now logged out', 'success')
+    flash('You were logged out', 'success')
     return redirect(url_for('login'))
-
 
 class AccountForm(Form):
     email = StringField('New Email', [validators.Length(min=6, max=30)])
     password = PasswordField('New Password (Optional)', [validators.Length(min=6, max=50)])
 
-
-class ImageForm(Form):
-    image = FileField('Choose File')
-
-
-@app.route('/modify', methods=['GET', 'POST'])
+@app.route('/modify', methods=['GET','POST'])
 def modifyuser():
-    key = session['key']
-    user_update = user_ref.child(key)
-    user_data = user_ref.child(key).get()
+        form = AccountForm(request.form)
+        if request.method == 'POST' and form.validate():
+                username = form.username.data
+                password = form.password.data
+                user = sp.Users(username, email, password)
 
-    form = SignupForm(request.form)
-    form.username.data = 'username'
-    form.email.data = 'email'
-    form.password.data = 'password'
+                user_db = root.child('modify/' + id)
+                user_db.set({
+                    'username': user.get_username(),
+                    'email': user.get_type(),
+                    'password': user.get_category(),
+                })
 
-    return render_template('modifyuser.html')
+                flash('Profile Updated Sucessfully.', 'success')
 
+        return render_template('modifyuser.html')
 
 @app.route('/credit')
 def creditpointsystem():
     return render_template('creditpointsystem.html')
 
-
 @app.route('/reward')
 def reward():
     return render_template('rewardsystem.html')
-
 
 @app.route('/help')
 def help():
     return render_template('help.html')
 
-
 @app.route('/faq')
 def faq():
     return render_template('faq.html')
 
-
-# @app.route('/email')
-# def email():
-#    return render_template('email.html')
-
-class EmailForm(Form):
-    name = StringField('Name:',
-                       [validators.Length(min=1, max=100, message="Please enter your name"), validators.DataRequired()])
-    user_email = StringField('Email:', [validators.Email, validators.DataRequired()])
-    feedback = StringField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
-                                         validators.DataRequired()])
-
-
-@app.route('/email', methods=["GET", "POST"])
+@app.route('/email')
 def email():
-    form = EmailForm(request.form)
-    if request.method == 'POST' and form.validate():
-        name = form.name.data
-        user_email = form.user_email.data
-        feedback = form.feedback.data
-        emailisfun = em.user_feedback(name, user_email, feedback)
+    return render_template('email.html')
 
-        email_db = root.child('userbase')
-        email_db.push({
-            'name': emailisfun.get_name(),
-            'email': emailisfun.get_email(),
-            'feedback': emailisfun.get_feedback(),
-        })
-        flash('Thanks for emailing')
-        return render_template('email.html', form=form)
-        # return redirect(url_for('email'))
-
-    return render_template('email.html', form=form)
-
-    # em_ref = db.reference('email')
-    # print(em_ref.get())
-
-
-class CommentForm(Form):
-    comment = StringField('user_comment:', [validators.Length(min=1, max=100, message="Please enter your comment"),
-                                       validators.DataRequired()])
-
-
-@app.route('/feedback', methods=["GET", "POST"])
+@app.route('/feedback')
 def feedback():
-    form = CommentForm(request.form)
-    if request.method == 'POST' and form.validate():
-        comment = form.comment.data
-        user_comment = co.user_comment(comment)
-
-        comment_db = root.child('userbase')
-        comment_db.push({
-            'comment': user_comment.get_comment()
-        })
-        flash('Thanks for emailing')
-        return render_template('feedback.html', form=form)
-
-    return render_template('feedback.html', form=form)
-
+    return render_template('feedback.html')
 
 @app.route('/workout')
 def workout():
     return render_template('workout.html')
 
-
 if __name__ == '__main__':
     app.secret_key = 'secret123'
     app.run(debug=True)
+
