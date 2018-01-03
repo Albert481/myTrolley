@@ -8,7 +8,8 @@ import event as ev
 import recipe as recs
 import popularitem as pop
 import product as prodt
-
+import user_feedback as em
+#import user_comment as co
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -26,6 +27,8 @@ pdt_fruit = db.reference('fruits')
 pdt_veg  = db.reference('vegetables')
 
 user_ref = db.reference('userbase')
+
+user_email = db.reference('email')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
@@ -390,9 +393,41 @@ def help():
 def faq():
     return render_template('faq.html')
 
-@app.route('/email')
+# @app.route('/email')
+# def email():
+#    return render_template('email.html')
+
+class EmailForm(Form):
+    name = StringField('Name:',
+                       [validators.Length(min=1, max=100, message="Please enter your name"), validators.DataRequired()])
+    user_email = StringField('Email:', [validators.Email, validators.DataRequired()])
+    feedback = StringField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
+                                         validators.DataRequired()])
+
+
+@app.route('/email', methods=["GET", "POST"])
 def email():
-    return render_template('email.html')
+    form = EmailForm(request.form)
+    if request.method == 'POST' and form.validate():
+        name = form.name.data
+        user_email = form.user_email.data
+        feedback = form.feedback.data
+        emailisfun = em.user_feedback(name, user_email, feedback)
+
+        email_db = root.child('email')
+        email_db.push({
+            'name': emailisfun.get_name(),
+            'email': emailisfun.get_email(),
+            'feedback': emailisfun.get_feedback(),
+        })
+        flash('Thanks for emailing')
+        return render_template('email.html', form=form)
+        # return redirect(url_for('email'))
+
+    return render_template('email.html', form=form)
+
+    # em_ref = db.reference('email')
+    # print(em_ref.get())
 
 @app.route('/feedback')
 def feedback():
