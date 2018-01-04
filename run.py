@@ -414,8 +414,8 @@ def email():
         feedback = form.feedback.data
         emailisfun = em.user_feedback(name, user_email, feedback)
 
-        email_db = root.child('email')
-        email_db.push({
+        emailisfun_db = root.child('email')
+        emailisfun_db.push({
             'name': emailisfun.get_name(),
             'email': emailisfun.get_email(),
             'feedback': emailisfun.get_feedback(),
