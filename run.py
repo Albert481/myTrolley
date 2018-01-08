@@ -70,12 +70,28 @@ class ScannerForm(Form):
                                           ('DQ', 'Damaged QR')], default='')
     location = StringField('Enter location:', [validators.DataRequired(), RequiredIf(reporttype='misuse')])
     comments = TextAreaField('Additional comments:')
+    unlocksubmit = SubmitField('Submit')
+
+class ReportForm(Form):
+    # Enter Trolley ID
+    trolleyid = StringField('Please enter Trolley ID:', [validators.Length(min=4, max=4), validators.DataRequired()])
+    # Report
+    reporttype = RadioField('Report Type', choices=[('faulty', 'Faulty Trolley'), ('misuse', 'Trolley Misuse')],
+                            default='faulty')
+    name = StringField('Please enter Trolley ID:', [validators.Length(min=4, max=4), validators.DataRequired()])
+    faulty = SelectMultipleField('Select', [validators.DataRequired(), RequiredIf(reporttype='faulty')],
+                                 choices=[('', 'Select'), ('DW', 'Damaged Wheel'), ('DL', 'Damaged Lock'),
+                                          ('DQ', 'Damaged QR')], default='')
+    location = StringField('Enter location:', [validators.DataRequired(), RequiredIf(reporttype='misuse')])
+    comments = TextAreaField('Additional comments:')
+    reportsubmit = SubmitField('Submit')
 
 
 @app.route('/scanner', methods=['GET', 'POST'])
 def scanner():
     trolleys = troll.get()
     form = ScannerForm(request.form)
+    reportform = ReportForm(request.form)
     calledname = form.trolleyid.data
     found = False
     if request.method == 'POST':
@@ -104,12 +120,12 @@ def scanner():
                 flash('Trolley ID not in database', 'danger')
 
         # If report button has data:
-        elif form.name.data != '':
-            name = form.name.data
-            reporttype = form.reporttype.data
-            fault = form.faulty.data
-            comments = form.comments.data
-            location = form.location.data
+        elif reportform.trolleyid.data != '':
+            name = reportform.trolleyid.data
+            reporttype = reportform.reporttype.data
+            fault = reportform.faulty.data
+            comments = reportform.comments.data
+            location = reportform.location.data
             valid = False
             for trolleyid in trolleys.items():
                 if trolleyid[1]['name'] == name:
@@ -139,7 +155,7 @@ def scanner():
             return redirect(url_for('scanner'))
         else:
             flash('Do not leave blanks', 'danger')
-    return render_template('scanner.html', form=form)
+    return render_template('scanner.html', form=form, reportform=reportform)
 
 
 class AdminForm(Form):

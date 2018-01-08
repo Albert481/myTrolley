@@ -190,7 +190,7 @@
                     <div style="width: 50%" align="center">
                         <form class="form-horizontal" method="POST" action="/scanner">
                             {{ render_field(form.trolleyid, class_="form-control") }}
-                            <input type="submit" value="Unlock" class="btn btn-info"/>
+                            <input type="submit" name="action" value="Unlock" class="btn btn-info"/>
                         </form>
                     </div>
                 </div>
@@ -217,22 +217,22 @@
                 <p align="center">Please fill in the report form accordingly</p>
                 <form class="form-horizontal" method="POST" action="/scanner">
                     <div class="form-group col-md-6">
-                            {{ render_field(form.name, class_="form-control") }}
+                        {{ render_field(reportform.trolleyid, class_="form-control") }}
                     </div>
                     <div class="form-group col-md-6">
-                            {{ render_field(form.reporttype, class_="radio-inline") }}
+                        {{ render_field(reportform.reporttype, class_="radio-inline") }}
                     </div>
                     <div class="form-group col-md-12" id="faulty">
-                        {{ render_field(form.faulty, class_="form-control") }}
+                        {{ render_field(reportform.faulty, class_="form-control") }}
                     </div>
                     <div class="form-group col-md-12" id="misuse">
-                        {{ render_field(form.location, class_="form-control") }}
+                        {{ render_field(reportform.location, class_="form-control") }}
                     </div>
                     <div class="form-group col-md-12">
-                        {{ render_field(form.comments, class_="form-control") }}
+                        {{ render_field(reportform.comments, class_="form-control") }}
                     </div>
                     <div class="form-group col-md-12">
-                        <input type="submit" value="Submit" class="btn btn-info"/>
+                        <input type="submit" name="action" value="Submit" class="btn btn-info"/>
                     </div>
                 </form>
             </div>
