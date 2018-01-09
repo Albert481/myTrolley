@@ -4,13 +4,14 @@
 {% block body %}
     <section class="content">
         <div class="container">
+        {% for rdetail in recipe_list %}
             <div class="row">
 
                 <div class="col-md-12">
                 <div>
                     <ol class="breadcrumb">
                         <li><a href="/healthyrecipe">Healthy Recipes</a></li>
-                        <li class="active">Orange, Apple & Pear Juice</li>
+                        <li class="active">{{ rdetail.get_recipeName() }}</li>
                     </ol>
                 </div>
                 </div>
@@ -18,33 +19,25 @@
 
                 <div class="col-sm-1"></div>
                 <div class="col-sm-5">
-                    <img src="../static/images/HealthyRecipe/applepearorangejuice.jpg" class="img-responsive" style="height:350px; width:350px;" />
+                    <img src="../static/images/HealthyRecipe/{{ rdetail.get_recipeName() }}" class="img-responsive" style="height:350px; width:350px;" />
                 </div>
-                <div class="col-sm-5">
-                    <h2 class="section-header">Orange, Apple & Pear Juice</h2>
+                <div class="col-sm-6">
+                    <h2 class="section-header">{{ rdetail.get_name() }}</h2>
                     <br />
-                    <p>Serves: 1-2 | Cooking Time: 5 mins</p>
+                    <p>Serves: {{ rdetail.get_serving() }} | Cooking Time: {{ rdetail.get_cooktime() }} mins</p>
                     <br />
                     <h3>Ingredients:</h3>
-                    <ul style="text-align:left; padding-left:40px;">
-                        <li >2 oranges</li>
-                        <li>1 red apple</li>
-                        <li>1 pear</li>
-                        <li>ice cubes (optional)</li>
-                        <li>1 teaspoon clear honey (optional)</li>
-                    </ul>
+                    <p style="text-align:left;">
+                        {{ rdetail.get_ingredient() }}
+                    </p>
                     <br />
                     <h3>Method:</h3>
-                    <ol style="text-align:left;">
-                        <li>Peel the oranges and divide the flesh into segments.</li>
-                        <li>Chop the apple and pear into even-sized pieces.</li>
-                        <li>Juice all the fruit in a blender.</li>
-                        <li>Pour the juice into a glass over ice.</li>
-                        <li>If using, stir in the honey and serve immediately.</li>
-                    </ol>
+                    <p style="text-align:left;">
+                        {{ rdetail.get_method() }}
+                    </p>
                 </div>
-                <div class="col-sm-1"></div>
             </div>
+        {% endfor %}
         </div>
     </section>
 {% endblock %}

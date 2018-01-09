@@ -266,6 +266,7 @@ def popularitem():
         eachpop = popular[pop_id]
         popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
         poplist.append(popBase)
+        print(popBase)
 
     return render_template('popularitem.html', pop_list=poplist)
 
@@ -337,7 +338,7 @@ def search():
                         eachitem['origin'], eachitem['image_name'])
 
         item.set_itemid(itemid)
-        print(item.get_itemid())
+        #print(item.get_itemid())
         list.append(item)
 
     return render_template('search.html', item_list=list) #stop here 20180109
