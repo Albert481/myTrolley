@@ -96,7 +96,7 @@ def scanner():
     found = False
     if request.method == 'POST':
         # If Enter Trolley ID has data:
-        if form.trolleyid.data != '':
+        if request.form['action'] == 'Unlock':
             # Iterate through the database trolleys
             for trolleyid in trolleys.items():
                 if trolleyid[1]['name'] == calledname:
@@ -120,7 +120,7 @@ def scanner():
                 flash('Trolley ID not in database', 'danger')
 
         # If report button has data:
-        elif reportform.trolleyid.data != '':
+        elif request.form['action'] == 'Submit':
             name = reportform.trolleyid.data
             reporttype = reportform.reporttype.data
             fault = reportform.faulty.data
@@ -233,7 +233,7 @@ def admin():
     else:
         print('Validation failed')
 
-    return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
+    return render_template('admintest.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
                            totmisused=tmisused, attention=attentionlist)
 
 
