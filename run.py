@@ -271,7 +271,7 @@ def popularitem():
     return render_template('popularitem.html', pop_list=poplist)
 
 
-@app.route('/healthyrecipe')
+@app.route('/healthyrecipe') #main recipe page
 def healthyrecipe():
     rec = recipes.get()
     recipelist = []
