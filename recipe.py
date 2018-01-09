@@ -1,6 +1,7 @@
 #Parent Class
 class Recipe:
     def __init__(self, recipeName, image, serving, cooktime, ingredient, method, link):
+        self.__recipeid = ""
         self.__recipeName = recipeName
         self.__image = image
         self.__serving = serving
@@ -8,6 +9,11 @@ class Recipe:
         self.__ingredient = ingredient
         self.__method = method
         self.__link = link
+
+    def get_recipeid(self): #just added get & set
+        return self.__recipeid
+    def set_recipeid(self, recipeid):
+        self.__recipeid = recipeid
 
     def get_recipeName(self):
         return self.__recipeName

@@ -284,9 +284,19 @@ def healthyrecipe():
     return render_template('healthyrecipe.html', recipe_list=recipelist)
 
 
-@app.route('/recipe1')
-def recipe1():
-    return render_template('recipe_orange_apple_pear_juice.html')
+@app.route('/viewrecipe/<string:id>/') #stop here 20180109 #orginally is /recipe1
+def viewrecipe(id):
+    mag_db = root.child('recipes/' + id)
+
+    rec = recipes.get()
+    recipelist = []
+    for recipe_id in rec:
+        eachrecipe = rec[recipe_id]
+        recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
+                                 eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
+                                 eachrecipe['link'])
+        recipelist.append(recipeBase)
+    return render_template('recipe_orange_apple_pear_juice.html', recipe_list=recipelist) #stop here 20180109
 
 
 @app.route('/recipe2')
@@ -317,9 +327,20 @@ def healthevent():
     return render_template('healthevent.html', event_list=list)
 
 
-@app.route('/search')
+@app.route('/search') #stop here 20180109
 def search():
-    return render_template('search.html')
+    items = root.child('products').get()
+    list = []  # create a list to store all the publication objects
+    for itemid in items:
+        eachitem = items[itemid]
+        item = prodt.Product(eachitem['name'], eachitem['category'], eachitem['price'],
+                        eachitem['origin'], eachitem['image_name'])
+
+        item.set_itemid(itemid)
+        print(item.get_itemid())
+        list.append(item)
+
+    return render_template('search.html', item_list=list) #stop here 20180109
 
 
 @app.route('/signup', methods=['GET', 'POST'])
