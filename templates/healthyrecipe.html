@@ -7,7 +7,7 @@
             <div class="row">
                     <!-- Jumbotron Header -->
                     <header class="jumbotron my-4" style="background-image: url(http://www.californiafootgolfclub.com/static/img/footgolf-1.jpg);">
-                        <h1 class="display-3">Healthy Recipes</h1> #Main Recipe Page
+                        <h1 class="display-3">Healthy Recipes</h1>
                         <p class="lead">Try out these healthy recipes with your freshly bought ingredients!</p>
                     </header>
 
@@ -18,7 +18,7 @@
                         {% for reci in recipe_list %}
                             <div class="col-sm-3">
                                 <div class="single-blog">
-                                    <img src="../static/images/HealthyRecipe/{{ reci.get_image() }}" style="height:200px; width:170px;"/>
+                                    <img src="../static/images/HealthyRecipe/{{ reci.get_image() }}" alt="{{ reci.get_recipeName() }}" style="height:200px; width:170px;"/>
                                     <h3>{{ reci.get_recipeName() }}</h3>
 
                                     <a href={{ "/viewrecipe/" + reci.get_recipeid() }} class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span>Read More</a>
