@@ -22,6 +22,22 @@
             font-family: 'FontAwesome';
         }
 
+        #username {
+            width: 200px;
+        }
+
+        #password {
+            width: 200px;
+        }
+
+        .text-center {
+            width: 1075px;
+        }
+
+        #container {
+            width: 500px;
+        }
+
     </style>
 
 
@@ -34,17 +50,15 @@
 
 {% block body %}
     {% from "includes/_formhelper.html" import render_field %}
-
-<div class="container">
+    <section class="content">
     <div class="center">
         <h2 class="text-center">Login Page</h2>
     </div>
-    <br>
-    <div class="row">
-        <form id="contactForm" method="POST" action="">
+        <br>
+        <div id="container" class="container">
 
-        <div class="form-group">
-            <div class="form-row">
+            <form action="" method="POST">
+
                 <div id="username" class="form-group row-md-4">
                     {{ render_field(form.username, class_="form-control") }}
                 </div>
@@ -54,11 +68,9 @@
                 <div class="form-group row-md-1">
                     <input type="submit" value="Log In" class="btn btn-info"/>
                 </div>
-            </div>
+            </form>
         </div>
-        </form>
-    </div>
-</div>
+    </section>
 
 {% endblock %}
 
