@@ -1,0 +1,44 @@
+﻿{% extends 'viewlayout.html' %}
+{% block title %}Healthy Recipe{% endblock %}
+
+{% block body %}
+    <section class="content">
+        <div class="container">
+
+        {% for rdetail in recipe_toview %}
+            <div class="row">
+
+                <div class="col-md-12">
+                <div>
+                    <ol class="breadcrumb">
+                        <li><a href="/healthyrecipe">Healthy Recipes</a></li>
+                        <li class="active">{{ rdetail.get_recipeName() }}</li>
+                    </ol>
+                </div>
+                </div>
+                <!-- /.div -->
+
+                <div class="col-sm-1"></div>
+                <div class="col-sm-5">
+                    <img src="../../static/images/HealthyRecipe/{{ rdetail.get_image() }}" alt="{{ rdetail.get_recipeName() }}" class="img-responsive" style="height:350px; width:350px;" />
+                </div>
+                <div class="col-sm-6">
+                    <h2 class="section-header">{{ rdetail.get_recipeName() }}</h2>
+                    <br />
+                    <p>Serves: {{ rdetail.get_serving() }} | Cooking Time: {{ rdetail.get_cooktime() }} mins</p>
+                    <br />
+                    <h3>Ingredients:</h3>
+                    <p style="text-align:left;">
+                        {{ rdetail.get_ingredient() }}
+                    </p>
+                    <br />
+                    <h3>Method:</h3>
+                    <p style="text-align:left;">
+                        {{ rdetail.get_method() }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+{% endblock %}

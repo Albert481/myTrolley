@@ -18,10 +18,10 @@
                         {% for reci in recipe_list %}
                             <div class="col-sm-3">
                                 <div class="single-blog">
-                                    <img src="../static/images/HealthyRecipe/{{ reci.get_image() }}" style="height:200px; width:170px;"/>
+                                    <img src="../static/images/HealthyRecipe/{{ reci.get_image() }}" alt="{{ reci.get_recipeName() }}" style="height:200px; width:170px;"/>
                                     <h3>{{ reci.get_recipeName() }}</h3>
 
-                                    <a href="{{ reci.get_link() }}" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span>Read More</a>
+                                    <a href={{ "/viewrecipe/" + reci.get_recipeid() }} class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span>Read More</a>
                                 </div>
                             </div>
                         {% endfor %}

@@ -314,11 +314,11 @@ def popularitem():
         eachpop = popular[pop_id]
         popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
         poplist.append(popBase)
+        print(popBase)
 
     return render_template('popularitem.html', pop_list=poplist)
 
-
-@app.route('/healthyrecipe')
+@app.route('/healthyrecipe') #main recipe page
 def healthyrecipe():
     rec = recipes.get()
     recipelist = []
@@ -326,40 +326,30 @@ def healthyrecipe():
         eachrecipe = rec[recipe_id]
         recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
                                  eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
-                                 eachrecipe['link'])
+                                 eachrecipe['link'], recipe_id)
         recipelist.append(recipeBase)
 
     return render_template('healthyrecipe.html', recipe_list=recipelist)
 
 
-@app.route('/viewrecipe/<string:id>/') #stop here 20180109 #orginally is /recipe1
+@app.route('/viewrecipe/<string:id>/', methods=['GET', 'POST']) #stop here 20180109
 def viewrecipe(id):
-    mag_db = root.child('recipes/' + id)
-
+    #mag_db = root.child('recipes/' + id)
     rec = recipes.get()
     recipelist = []
-    for recipe_id in rec:
-        eachrecipe = rec[recipe_id]
-        recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
+    eachrecipe = rec[id]
+    recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
                                  eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
-                                 eachrecipe['link'])
-        recipelist.append(recipeBase)
-    return render_template('recipe_orange_apple_pear_juice.html', recipe_list=recipelist) #stop here 20180109
+                                 eachrecipe['link'], id)
+    recipelist.append(recipeBase)
 
-
-@app.route('/recipe2')
-def recipe2():
-    return render_template('recipe_creamy_banana_pudding.html')
-
-
-@app.route('/recipe3')
-def recipe3():
-    return render_template('recipe_lettuce_cumber_tomato_salad.html')
-
-
-@app.route('/recipe4')
-def recipe4():
-    return render_template('recipe_crunchy_carrot_apple_salad.html')
+    # for recipe_id in rec:
+    #     eachrecipe = rec[recipe_id]
+    #     recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
+    #                              eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
+    #                              eachrecipe['link'])
+    #     recipelist.append(recipeBase)
+    return render_template('viewrecipe.html', recipe_toview=recipelist) #stop here 20180109
 
 
 @app.route('/healthevent')
@@ -385,7 +375,7 @@ def search():
                         eachitem['origin'], eachitem['image_name'])
 
         item.set_itemid(itemid)
-        print(item.get_itemid())
+        #print(item.get_itemid())
         list.append(item)
 
     return render_template('search.html', item_list=list) #stop here 20180109
@@ -551,17 +541,21 @@ def email():
         })
         flash('Thanks for emailing')
 
-    return render_template('email.html', form=form)
+        return render_template('email.html', form=form)
 
     return render_template('email.html', form=form)
 
     # em_ref = db.reference('email')
     # print(em_ref.get())
+#class ForumCommentForm(Form):
 
 
-@app.route('/feedback')
-def feedback():
-    return render_template('feedback.html')
+@app.route('/forum')#, methods=["GET", "POST"])
+def forum():
+    #form = ForumCommentForm(request.form)
+    #if request.method == "POST" and form.validate():
+
+    return render_template('forum.html')
 
 
 @app.route('/workout')
