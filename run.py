@@ -314,7 +314,7 @@ def popularitem():
         eachpop = popular[pop_id]
         popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
         poplist.append(popBase)
-        print(popBase)
+        #print(popBase)
 
     return render_template('popularitem.html', pop_list=poplist)
 
@@ -359,11 +359,22 @@ def healthevent():
     for event_id in event:
         eachevent = event[event_id]
         eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'],
-                             eachevent['image'], eachevent['link'])
+                             eachevent['image'], eachevent['link'], event_id)
         list.append(eventBase)
 
     return render_template('healthevent.html', event_list=list)
 
+@app.route('/viewevent/<string:id>/', methods=['GET', 'POST']) #stop here 20180109
+def viewevent(id):
+
+    event = events.get()
+    eventlist = []
+    eachevent = event[id]
+    eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'],
+                         eachevent['image'], eachevent['link'], id)
+    eventlist.append(eventBase)
+
+    return render_template('viewevent.html', event_toview=eventlist)
 
 @app.route('/search') #stop here 20180109
 def search():
