@@ -504,17 +504,21 @@ def email():
         })
         flash('Thanks for emailing')
 
-    return render_template('email.html', form=form)
+        return render_template('email.html', form=form)
 
     return render_template('email.html', form=form)
 
     # em_ref = db.reference('email')
     # print(em_ref.get())
+#class ForumCommentForm(Form):
 
 
-@app.route('/feedback')
-def feedback():
-    return render_template('feedback.html')
+@app.route('/forum')#, methods=["GET", "POST"])
+def forum():
+    #form = ForumCommentForm(request.form)
+    #if request.method == "POST" and form.validate():
+
+    return render_template('forum.html')
 
 
 @app.route('/workout')
