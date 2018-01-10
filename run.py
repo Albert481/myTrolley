@@ -279,25 +279,26 @@ def healthyrecipe():
         eachrecipe = rec[recipe_id]
         recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
                                  eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
-                                 eachrecipe['link'])
+                                 eachrecipe['link'], recipe_id)
         recipelist.append(recipeBase)
 
     return render_template('healthyrecipe.html', recipe_list=recipelist)
 
 
-@app.route('/viewrecipe/<string:id>/') #stop here 20180109 #orginally is /recipe1
+@app.route('/viewrecipe/<string:id>/', methods=['GET', 'POST']) #stop here 20180109 #orginally is /recipe1
 def viewrecipe(id):
-    mag_db = root.child('recipes/' + id)
-
+    #mag_db = root.child('recipes/' + id)
     rec = recipes.get()
-    recipelist = []
-    for recipe_id in rec:
-        eachrecipe = rec[recipe_id]
-        recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
-                                 eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
-                                 eachrecipe['link'])
-        recipelist.append(recipeBase)
-    return render_template('recipe_orange_apple_pear_juice.html', recipe_list=recipelist) #stop here 20180109
+    #recipelist = []
+    recipetoview = rec[id]
+
+    # for recipe_id in rec:
+    #     eachrecipe = rec[recipe_id]
+    #     recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
+    #                              eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
+    #                              eachrecipe['link'])
+    #     recipelist.append(recipeBase)
+    return render_template('viewrecipe.html', recipe_toview=recipetoview) #stop here 20180109
 
 
 @app.route('/recipe2')
