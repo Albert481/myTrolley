@@ -1,121 +1,231 @@
-{% extends 'layout.html' %}
-{% block title %}Admin{% endblock %}
+{% block title %}Admin Panel{% endblock %}
+
+{% block head %}
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/css/adminpanel/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/metisMenu.min.css">
+
+    <!-- Timeline CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/timeline.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/startmin.css">
+
+    <!-- Morris Charts CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/morris.css">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+{% endblock %}
 
 {% block body %}
     {% from "includes/_formhelper.html" import render_field %}
 
+    <div id="wrapper">
 
-    <div class="row" align="center" style="width:95%">
-        <div align="center" class="col-md-6">
-            <p>Add new trolley into database</p>
-            <div style="width:60%">
-                {% if form.errors %}
-                    <div class="alert alert-danger">
-                        <ul>
-                            {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-                                {% for error in field_errors %}
-                                    <li>{{ form[field_name].label }}: {{ error }}</li>
-                                {% endfor %}
-                            {% endfor %}
-                        </ul>
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="admin" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="trolleys"><i class="fa fa-shopping-cart fa-fw"></i> Trolleys</a>
+                        </li>
+                        <li>
+                            <a href="accounts"><i class="fa fa-database fa-fw"></i> Accounts</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Dashboard</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-shopping-cart fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ totnames }}</div>
+                                    <div>Total trolleys</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
                     </div>
-                {% endif %}
-                <form class="form-inline" method="POST" action="/admin">
-                    {{ render_field(form.trolleynumbers, class_="form-control") }}
-                    <input type="submit" value="Add New" class="btn btn-info"/>
-                </form>
-            </div>
-        </div>
-        <div style="width: 50%" align="center" class="col-md-6">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Total number of trolleys registered</th>
-                        <th>Total number of trolleys faulty</th>
-                        <th>Total number of trolleys misused</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{ totnames }}</td>
-                        <td>{{ totfaults }}</td>
-                        <td>{{ totmisused }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <br>
-    <br>
-    <div class="row" style="width: 100%" align="center">
-        {% if form.errors %}
-            <div class="alert alert-danger">
-                <ul>
-                    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-                        {% for error in field_errors %}
-                            <li>{{ form[field_name].label }}: {{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-        <form class="form-inline" style="width: 50%" method="POST" action="/admin">
-            {{ render_field(form.trolleyid, class_="form-control") }}
-            <input type="submit" value="Find Trolley" class="btn btn-info"/>
-        </form>
-        <table class="table table-bordered" style="width:95%">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Fault</th>
-                <th>Flag Count</th>
-                <th>Location reported</th>
-                <th>Additional comments</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for each in eachtrolley %}
-                <tr>
-                    <td>{{ each.get_name() }}</td>
-                    <td>{{ each.get_fault() }}</td>
-                    <td>{{ each.get_count() }}</td>
-                    <td>{{ each.get_location() }}</td>
-                    <td>{{ each.get_comments() }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <br>
-    <br>
-    <div class="row" style="width: 100%" align="center">
-        <table class="table table-bordered" style="width:95%">
-        <caption>Attention needed!  Keyword: [DW]: Damaged Wheel, [DL]: Damaged Lock, [DQ]: Damaged QR</caption>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Fault</th>
-                <th>Flag Count</th>
-                <th>Location reported</th>
-                <th>Additional comments</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for att in attention %}
-                <tr>
-                    <td>{{ att.get_name() }}</td>
-                    <td>{{ att.get_fault() }}</td>
-                    <td>{{ att.get_count() }}</td>
-                    <td>{{ att.get_location() }}</td>
-                    <td>{{ att.get_comments() }}</td>
-                    <td><form class="form-inline" style="width: 50%" method="POST" action="/admin">
-                        <input name="fix" type="submit" value="Fixed" class="btn btn-success" onclick="return confirm('Are you sure this trolley is fixed?');"></form></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-cogs fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ totnames - totfaults }}</div>
+                                    <div>Trolleys operational</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-clipboard fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ totmisused }}</div>
+                                    <div>Trolley reports!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-wrench fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ totfaults }}</div>
+                                    <div>Trolleys need repair!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-4">
+                    <p>Add new trolley into database</p>
+                    <div style="width:60%">
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <ul>
+                                    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                                        {% for error in field_errors %}
+                                            <li>{{ form[field_name].label }}: {{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <form class="form-inline" method="POST" action="/admin">
+                            {{ render_field(form.trolleynumbers, class_="form-control") }}
+                            <input type="submit" value="Add New" class="btn btn-info"/>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                        </div>
+                        <!-- /.col-lg-8 -->
+                        <div class="col-lg-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <i class="fa fa-bell fa-fw"></i> Statistics
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item">
+                                            <i class="fa fa-comment fa-fw"></i> Registered users
+                                        </a>
+                                    </div>
+                                    <!-- /.list-group -->
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                        </div>
+                        <!-- /.col-lg-4 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /#page-wrapper -->
+
+            </div>
+            <!-- /#wrapper -->
+
+            <!-- jQuery -->
+            <script src="../static/js/adminpanel/jquery.min.js"></script>
+
+            <!-- Bootstrap Core JavaScript -->
+            <script src="../static/js/adminpanel/bootstrap.min.js"></script>
+
+            <!-- Metis Menu Plugin JavaScript -->
+            <script src="../static/js/adminpanel/metisMenu.min.js"></script>
+
+            <!-- Morris Charts JavaScript -->
+            <script src="../static/js/adminpanel/raphael.min.js"></script>
+            <script src="../static/js/adminpanel/morris.min.js"></script>
+            <script src="../static/js/adminpanel/morris-data.js"></script>
+
+            <!-- Custom Theme JavaScript -->
+            <script src="../static/js/adminpanel/startmin.js"></script>
+
+        </div>
+    </div>
 {% endblock %}

@@ -179,7 +179,7 @@ def admin():
     tfaults = 0
     tmisused = 0
 
-    # Statistics function
+    # Statistics function  implemented
     for trolleyid in trolleys.items():
         tnames += 1
         if int(trolleyid[1]['flag_count']) >= 3:
@@ -187,7 +187,7 @@ def admin():
         if trolleyid[1]['location'] != "":
             tmisused += 1
 
-    # Attention function
+    # Attention function   not implemented
     for trolleyid in trolleys.items():
         if int(trolleyid[1]['flag_count']) >= 3:
             attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'],
@@ -195,7 +195,7 @@ def admin():
             attentionlist.append(attention)
 
     if request.method == 'POST':
-        # Add New
+        # Add New Trolley
         if form.trolleynumbers.data != '':
             namelist = []
             for i in range(int(trolleynumbers)):
@@ -216,24 +216,72 @@ def admin():
                     'location': ''
                 })
             flash('Add Sucesss: New Trolley ID(s) has been added', 'success')
+    return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
+                           totmisused=tmisused, attention=attentionlist)
 
-        # Find Trolley
-        if form.trolleyid.data != '':
-            found = False
-            for trolleyid in trolleys.items():
-                if trolleyid[1]['name'] == calledname:
-                    findtrolley = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'],
-                                                 trolleyid[1]['flag_count'], trolleyid[1]['location'],
-                                                 trolleyid[1]['comments'])
-                    foundlist.append(findtrolley)
-                    found = True
-            if found == False:
-                flash('Trolley does not exist in database', 'danger')
+@app.route('/trolleys', methods=['GET', 'POST'])
+def trolleys():
+    trolleys = troll.get()
+    totaltrolleys = []
 
-    else:
-        print('Validation failed')
+    #Trolleys Overview
+    for trolleyid in trolleys.items():
+        findtrolley = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'],
+                                     trolleyid[1]['flag_count'], trolleyid[1]['location'],
+                                     trolleyid[1]['comments'])
+        totaltrolleys.append(findtrolley)
+    return render_template('trolleys.html', eachtrolley=totaltrolleys)
 
-    return render_template('admintest.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
+@app.route('/adminold')
+def adminold():
+    trolleys = troll.get()
+    form = AdminForm(request.form)
+    foundlist = []
+    attentionlist = []
+    trolleynumbers = form.trolleynumbers.data
+    calledname = form.trolleyid.data
+    tnames = 0
+    tfaults = 0
+    tmisused = 0
+
+    # Statistics function  implemented
+    for trolleyid in trolleys.items():
+        tnames += 1
+        if int(trolleyid[1]['flag_count']) >= 3:
+            tfaults += 1
+        if trolleyid[1]['location'] != "":
+            tmisused += 1
+
+    # Attention function   not implemented
+    for trolleyid in trolleys.items():
+        if int(trolleyid[1]['flag_count']) >= 3:
+            attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'],
+                                       trolleyid[1]['location'], trolleyid[1]['comments'])
+            attentionlist.append(attention)
+
+    if request.method == 'POST':
+        # Add New Trolley
+        if form.trolleynumbers.data != '':
+            namelist = []
+            for i in range(int(trolleynumbers)):
+                for trolleyid in trolleys.items():
+                    number = int(trolleyid[1]['name'])
+                    namelist.append(number)
+                namelist.sort()
+                maxname = int(namelist[-1:][0])
+                maxname += 1
+                namelist.append(maxname)
+                maxname = str(maxname)
+                newtroll_db = root.child('trolleys')
+                newtroll_db.push({
+                    'name': maxname,
+                    'flag_count': '0',
+                    'status': '',
+                    'comments': '',
+                    'location': ''
+                })
+            flash('Add Sucesss: New Trolley ID(s) has been added', 'success')
+    return render_template('adminold.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
                            totmisused=tmisused, attention=attentionlist)
 
 
