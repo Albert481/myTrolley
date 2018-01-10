@@ -270,7 +270,6 @@ def popularitem():
 
     return render_template('popularitem.html', pop_list=poplist)
 
-
 @app.route('/healthyrecipe') #main recipe page
 def healthyrecipe():
     rec = recipes.get()
@@ -285,7 +284,7 @@ def healthyrecipe():
     return render_template('healthyrecipe.html', recipe_list=recipelist)
 
 
-@app.route('/viewrecipe/<string:id>/', methods=['GET', 'POST']) #stop here 20180109 #orginally is /recipe1
+@app.route('/viewrecipe/<string:id>/', methods=['GET', 'POST']) #stop here 20180109
 def viewrecipe(id):
     #mag_db = root.child('recipes/' + id)
     rec = recipes.get()
