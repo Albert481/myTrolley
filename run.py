@@ -288,8 +288,12 @@ def healthyrecipe():
 def viewrecipe(id):
     #mag_db = root.child('recipes/' + id)
     rec = recipes.get()
-    #recipelist = []
-    recipetoview = rec[id]
+    recipelist = []
+    eachrecipe = rec[id]
+    recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
+                                 eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
+                                 eachrecipe['link'], id)
+    recipelist.append(recipeBase)
 
     # for recipe_id in rec:
     #     eachrecipe = rec[recipe_id]
@@ -297,22 +301,7 @@ def viewrecipe(id):
     #                              eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
     #                              eachrecipe['link'])
     #     recipelist.append(recipeBase)
-    return render_template('viewrecipe.html', recipe_toview=recipetoview) #stop here 20180109
-
-
-@app.route('/recipe2')
-def recipe2():
-    return render_template('recipe_creamy_banana_pudding.html')
-
-
-@app.route('/recipe3')
-def recipe3():
-    return render_template('recipe_lettuce_cumber_tomato_salad.html')
-
-
-@app.route('/recipe4')
-def recipe4():
-    return render_template('recipe_crunchy_carrot_apple_salad.html')
+    return render_template('viewrecipe.html', recipe_toview=recipelist) #stop here 20180109
 
 
 @app.route('/healthevent')
