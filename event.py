@@ -1,11 +1,14 @@
 class Event:
-    def __init__(self, eventName, startDate, endDate, image, link, eventid):
+    def __init__(self, eventName, startDate, endDate, image, time, location, status, description, eventid ):
         self.__eventid = eventid
         self.__eventName = eventName
         self.__startDate = startDate
         self.__endDate = endDate
         self.__image = image
-        self.__link = link
+        self.__time = time
+        self.__location = location
+        self.__status = status
+        self.__description = description
 
     def get_eventid(self): #just added get & set
         return self.__eventid
@@ -32,10 +35,25 @@ class Event:
     def set_image(self, image):
         self.__image = image
 
-    def get_link(self):
-        return self.__link
-    def set_link(self, link):
-        self.__link = link
+    def get_time(self):
+        return self.__time
+    def set_time(self, time):
+        self.__time = time
+
+    def get_location(self):
+        return self.__location
+    def set_location(self, location):
+        self.__location = location
+
+    def get_status(self):
+        return self.__status
+    def set_status(self, status):
+        self.__status = status
+
+    def get_description(self):
+        return self.__description
+    def set_description(self, description):
+        self.__description = description
 
     # def sortdate(self):
     #     if self.__startDate == self.__endDate:

@@ -370,7 +370,7 @@ def healthevent():
     for event_id in event:
         eachevent = event[event_id]
         eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'],
-                             eachevent['image'], eachevent['link'], event_id)
+                             eachevent['image'], eachevent['time'], eachevent['location'], eachevent['status'], eachevent['description'], event_id)
         list.append(eventBase)
 
     return render_template('healthevent.html', event_list=list)
@@ -382,7 +382,7 @@ def viewevent(id):
     eventlist = []
     eachevent = event[id]
     eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'],
-                         eachevent['image'], eachevent['link'], id)
+                         eachevent['image'], eachevent['time'], eachevent['location'], eachevent['status'], eachevent['description'], id)
     eventlist.append(eventBase)
 
     return render_template('viewevent.html', event_toview=eventlist)
