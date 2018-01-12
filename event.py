@@ -1,10 +1,16 @@
 class Event:
-    def __init__(self, eventName, startDate, endDate, image, link):
+    def __init__(self, eventName, startDate, endDate, image, link, eventid):
+        self.__eventid = eventid
         self.__eventName = eventName
         self.__startDate = startDate
         self.__endDate = endDate
         self.__image = image
         self.__link = link
+
+    def get_eventid(self): #just added get & set
+        return self.__eventid
+    def set_eventid(self, eventid):
+        self.__eventid = eventid
 
     def get_eventName(self):
         return self.__eventName

@@ -325,7 +325,7 @@ def popularitem():
         eachpop = popular[pop_id]
         popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
         poplist.append(popBase)
-        print(popBase)
+        #print(popBase)
 
     return render_template('popularitem.html', pop_list=poplist)
 
@@ -370,11 +370,22 @@ def healthevent():
     for event_id in event:
         eachevent = event[event_id]
         eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'],
-                             eachevent['image'], eachevent['link'])
+                             eachevent['image'], eachevent['link'], event_id)
         list.append(eventBase)
 
     return render_template('healthevent.html', event_list=list)
 
+@app.route('/viewevent/<string:id>/', methods=['GET', 'POST']) #stop here 20180109
+def viewevent(id):
+
+    event = events.get()
+    eventlist = []
+    eachevent = event[id]
+    eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'],
+                         eachevent['image'], eachevent['link'], id)
+    eventlist.append(eventBase)
+
+    return render_template('viewevent.html', event_toview=eventlist)
 
 @app.route('/search') #stop here 20180109
 def search():
@@ -406,6 +417,7 @@ def signup():
             'username': user.get_username(),
             'email': user.get_email(),
             'password': user.get_password(),
+            'admin': 0
         })
 
         flash('You have created an account with us', 'success')
@@ -455,7 +467,9 @@ def login():
                 session['logged_out'] = True
                 session['id'] = username
                 session['key'] = user[0]
-                return redirect(url_for('myaccount'))
+                session['admin'] = user[1]['admin']
+
+                return redirect(url_for('home'))
         flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
 
@@ -502,21 +516,17 @@ def modifyuser():
 
     return render_template('modifyuser.html')
 
-
 @app.route('/credit')
 def creditpointsystem():
     return render_template('creditpointsystem.html')
-
 
 @app.route('/reward')
 def reward():
     return render_template('rewardsystem.html')
 
-
 @app.route('/help')
 def help():
     return render_template('help.html')
-
 
 @app.route('/faq')
 def faq():
@@ -572,7 +582,6 @@ def forum():
 @app.route('/workout')
 def workout():
     return render_template('workout.html')
-
 
 if __name__ == '__main__':
     app.secret_key = 'secret123'
