@@ -194,6 +194,16 @@ def admin():
                                        trolleyid[1]['location'], trolleyid[1]['comments'])
             attentionlist.append(attention)
 
+    return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
+                           totmisused=tmisused, attention=attentionlist)
+
+@app.route('/trolleys', methods=['GET', 'POST'])
+def trolleys():
+    trolleys = troll.get()
+    form = AdminForm(request.form)
+    trolleynumbers = form.trolleynumbers.data
+    totaltrolleys = []
+
     if request.method == 'POST':
         # Add New Trolley
         if form.trolleynumbers.data != '':
@@ -216,13 +226,6 @@ def admin():
                     'location': ''
                 })
             flash('Add Sucesss: New Trolley ID(s) has been added', 'success')
-    return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
-                           totmisused=tmisused, attention=attentionlist)
-
-@app.route('/trolleys', methods=['GET', 'POST'])
-def trolleys():
-    trolleys = troll.get()
-    totaltrolleys = []
 
     #Trolleys Overview
     for trolleyid in trolleys.items():
@@ -230,7 +233,15 @@ def trolleys():
                                      trolleyid[1]['flag_count'], trolleyid[1]['location'],
                                      trolleyid[1]['comments'])
         totaltrolleys.append(findtrolley)
-    return render_template('trolleys.html', eachtrolley=totaltrolleys)
+    return render_template('trolleys.html', eachtrolley=totaltrolleys, form=form)
+
+@app.route('/repair_trolley/<string:id>', methods=['POST'])
+def repair_trolley(id):
+    mag_db = root.child('trolleys/' + id)
+    print(mag_db)
+    flash('Trolley Repaired', 'success')
+
+    return redirect(url_for('viewpublications'))
 
 @app.route('/adminold')
 def adminold():

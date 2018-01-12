@@ -3,7 +3,7 @@
 {% block head %}
 
     <!-- Bootstrap Core CSS -->
-    <link href="../static/css/adminpanel/bootstrap.min.css" rel="stylesheet">
+    <<link href="../static/css/adminpanel/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
     <link rel="stylesheet" href="../static/css/adminpanel/metisMenu.min.css">
@@ -26,6 +26,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+
 {% endblock %}
 
 {% block body %}
@@ -157,26 +158,6 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                <div class="col-lg-4">
-                    <p>Add new trolley into database</p>
-                    <div style="width:60%">
-                        {% if form.errors %}
-                            <div class="alert alert-danger">
-                                <ul>
-                                    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
-                                        {% for error in field_errors %}
-                                            <li>{{ form[field_name].label }}: {{ error }}</li>
-                                        {% endfor %}
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
-                        <form class="form-inline" method="POST" action="/admin">
-                            {{ render_field(form.trolleynumbers, class_="form-control") }}
-                            <input type="submit" value="Add New" class="btn btn-info"/>
-                        </form>
-                    </div>
-                </div>
                 <div class="col-lg-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -205,27 +186,25 @@
                     <!-- /.row -->
                 </div>
                 <!-- /#page-wrapper -->
-
             </div>
             <!-- /#wrapper -->
-
-            <!-- jQuery -->
-            <script src="../static/js/adminpanel/jquery.min.js"></script>
-
-            <!-- Bootstrap Core JavaScript -->
-            <script src="../static/js/adminpanel/bootstrap.min.js"></script>
-
-            <!-- Metis Menu Plugin JavaScript -->
-            <script src="../static/js/adminpanel/metisMenu.min.js"></script>
-
-            <!-- Morris Charts JavaScript -->
-            <script src="../static/js/adminpanel/raphael.min.js"></script>
-            <script src="../static/js/adminpanel/morris.min.js"></script>
-            <script src="../static/js/adminpanel/morris-data.js"></script>
-
-            <!-- Custom Theme JavaScript -->
-            <script src="../static/js/adminpanel/startmin.js"></script>
-
         </div>
     </div>
+
+    <!-- jQuery -->
+    <script src="../static/js/adminpanel/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/js/adminpanel/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../static/js/adminpanel/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="../static/js/adminpanel/raphael.min.js"></script>
+    <script src="../static/js/adminpanel/morris.min.js"></script>
+    <script src="../static/js/adminpanel/morris-data.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../static/js/adminpanel/startmin.js"></script>
 {% endblock %}

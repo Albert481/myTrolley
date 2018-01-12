@@ -1,6 +1,7 @@
 #Parent class
 class trolleys:
     def __init__(self, name, fault, count, location, comments):
+        self.__trolleyid = ''
         self.__name = name
         self.__fault = fault
         self.__count = count
@@ -17,6 +18,10 @@ class trolleys:
         return self.__location
     def get_comments(self):
         return self.__comments
+    def get_trolleyid(self):
+        return self.__trolley
+    def set_trolleyid(self, trolleyid):
+        self.__trolleyid = trolleyid
 
 #Report function for scanner page
 class Report:
