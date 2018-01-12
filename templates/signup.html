@@ -1,11 +1,8 @@
 {% extends 'layout.html' %}
 {% block title %}Signup{% endblock %}
 
-{% block body %}
-    {% from "includes/_formhelper.html" import render_field %}
-
-
-    <style type="text/css">
+{% block head %}
+    <style>
 
         body {
             background-color: #E6E6FA;
@@ -15,49 +12,73 @@
             font-family: 'FontAwesome';
         }
 
+        #username {
+            width: 150px;
+        }
+
+        #email {
+            width: 300px;
+        }
+
+        #password {
+            width: 200px;
+        }
+
+        .text-center {
+            width: 1100px;
+        }
+
+        #container {
+            width: 500px;
+        }
+
     </style>
 
-
 <br>
-    <!-- jQuery -->
-    <script src="../static/js/jquery-1.11.3.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../static/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="../static/js/jquery.easing.min.js"></script>
-
-    <!-- Custom Javascript -->
-    <script src="../static/js/custom.js"></script>
-
-    <script src="../static/js/signup.js"></script>
-
-
-        <h2 class="text-center">Sign Up Page</h2>
-        <br>
-    <form id="contactForm" method="POST" action="">
-    <div class="container">
-        <div class="form-group">
-            <div class="form-row">
-                <div id="username" class="form-group row-md-4">
-                    {{ render_field(form.username, class_="form-control") }}
-                </div>
-                <div id="email" class="form-group row-md-4">
-                    {{ render_field(form.email, class_="form-control") }}
-                </div>
-                <div id="password" class="form-group row-md-4">
-                    {{ render_field(form.password, class_="form-control") }}
-                </div>
-                <div class="form-group row-md-1">
-                    <input type="submit" value="Submit" class="btn btn-info"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    </form>
 
 {% endblock %}
+
+{% block body %}
+    {% from "includes/_formhelper.html" import render_field %}
+    <section class="content">
+    <div class="center">
+        <h2 class="text-center">Sign Up Page</h2>
+    </div>
+    <br>
+        <div id="container" class="container">
+
+                <form action="" method="POST">
+
+                    <div id="username" class="form-group">
+                        {{ render_field(form.username, class_="form-control") }}
+                    </div>
+                    <div id="email" class="form-group">
+                        {{ render_field(form.email, class_="form-control") }}
+                    </div>
+                    <div id="password" class="form-group">
+                        {{ render_field(form.password, class_="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Submit" class="btn btn-info"/>
+                    </div>
+                </form>
+
+        </div>
+    </section>
+
+{% endblock %}
+
+            <!-- jQuery -->
+            <script src="../static/js/jquery-1.11.3.min.js"></script>
+
+            <!-- Bootstrap Core JavaScript -->
+            <script src="../static/js/bootstrap.min.js"></script>
+
+            <!-- Plugin JavaScript -->
+            <script src="../static/js/jquery.easing.min.js"></script>
+
+            <!-- Custom Javascript -->
+            <script src="../static/js/custom.js"></script>
 
 
 

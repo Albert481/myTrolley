@@ -1,10 +1,16 @@
 class Product:
     def __init__(self, name, category, price, origin, image_name):
+        self.__itemid = ""
         self.__name = name
         self.__category = category
         self.__price = price
         self.__origin = origin
         self.__image_name = image_name
+
+    def get_itemid(self):
+        return self.__itemid
+    def set_itemid(self, itemid):
+        self.__itemid = itemid
 
     def get_name(self):
         return self.__name

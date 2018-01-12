@@ -49,51 +49,32 @@
                 <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for a product" title="Type in a product name">
 
                 <table id="myTable">
+                    <thead>
                     <tr class="header">
-                        <th style="width:50%;">Product Name</th>
-                        <th style="width:35%;">Category</th>
+                        <th style="width:25%;">Product Name</th>
+                        <th style="width:15%;">Image</th>
+                        <th style="width:15%;">Category</th>
                         <th style="width:15%;">Price</th>
+                        <th style="width:15%;">Origin</th>
+                        <th style="width:10%;"></th>
                     </tr>
-                    <tr>
-                        <td>China Premium Fuji Apple 4S</td>
-                        <td>Fruits</td>
-                        <td>$3.95</td>
-                    </tr>
-                    <tr>
-                        <td>Sumifru Cavendish Banana 700G</td>
-                        <td>Fruits</td>
-                        <td>$2.20</td>
-                    </tr>
-                    <tr>
-                        <td>Pasar China Golden Pear 4S</td>
-                        <td>Fruits</td>
-                        <td>$3.95</td>
-                    </tr>
-                    <tr>
-                        <td>Sunkist Australia Barnfield Navel Oranges 1.3KG</td>
-                        <td>Fruits</td>
-                        <td>$6.95</td>
-                    </tr>
-                    <tr>
-                        <td>Fresh Tomatoes 600G</td>
-                        <td>Vegetables</td>
-                        <td>$1.55</td>
-                    </tr>
-                    <tr>
-                        <td>Pasar Prepacked Carrots 500G</td>
-                        <td>Vegetables</td>
-                        <td>$0.90</td>
-                    </tr>
-                    <tr>
-                        <td>Pasar Organic Cucumber 500G</td>
-                        <td>Vegetables</td>
-                        <td>$3.65</td>
-                    </tr>
-                    <tr>
-                        <td>Pasar Local Lettuce 220G</td>
-                        <td>Vegetables</td>
-                        <td>$1.30</td>
-                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for item in item_list %}
+                        <tr>
+
+                            <td>{{ item.get_name() }}</td>
+                            <td><img src="../static/images/ProductItem/{{ item.get_image_name() }}" class="img-responsive"</td>
+                            <td>{{ item.get_category() }}</td>
+                            <td>{{ item.get_price() }}</td>
+                            <td>{{ item.get_origin() }}</td>
+                            <td><a href="/ourproduct" class="btn btn-warning">View</a></td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
                 </table>
 
                 <script>
