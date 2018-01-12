@@ -286,6 +286,7 @@ def signup():
             'username': user.get_username(),
             'email': user.get_email(),
             'password': user.get_password(),
+            'admin': 0
         })
 
         flash('You have created an account with us', 'success')
@@ -330,6 +331,8 @@ def login():
                 session['logged_in'] = True
                 session['id'] = username
                 session['key'] = user[0]
+                session['admin'] = user[1]['admin']
+
                 return redirect(url_for('home'))
         flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
