@@ -1,4 +1,4 @@
-{% block title %}Admin Panel{% endblock %}
+{% block title %}Admin - Dashboard{% endblock %}
 
 {% block head %}
 
@@ -55,7 +55,7 @@
             </div>
         </nav>
 
-        {% if session['logged_in'] == True and session['admin'] == 1 %}
+        {% if (session['logged_in'] and session['admin'] == 1) or (session['logged_in'] and session['admin'] == 2) %}
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">

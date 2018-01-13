@@ -43,7 +43,7 @@
                     <li>
                         <a href="/help">Help</a>
                     </li>
-                    {% if session['logged_in'] and session['admin'] == 1 %}
+                    {% if (session['logged_in'] and session['admin'] == 1) or (session['logged_in'] and session['admin'] == 2) %}
                         <li>
                         <a href="/admin">Admin</a>
                     </li>

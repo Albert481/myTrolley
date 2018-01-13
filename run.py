@@ -243,6 +243,16 @@ def repair_trolley(id):
 
     return redirect(url_for('viewpublications'))
 
+@app.route('/accounts')
+def accounts():
+    userbase = user_ref.get()
+    totalaccounts = []
+    for user in userbase.items():
+        finduser = sp.Admin(user[1]['username'], user[1]['email'], user[1]['admin'])
+        totalaccounts.append(finduser)
+
+    return render_template('accounts.html', eachuser=totalaccounts)
+
 
 @app.route('/ourproduct')
 def ourproduct():

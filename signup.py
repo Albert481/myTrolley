@@ -3,6 +3,7 @@ class Users:
         self.__username = username
         self.__email = email
         self.__password = password
+        self.__admin = 0
 
     def get_username(self):
         return self.__username
@@ -21,3 +22,21 @@ class Users:
 
     def set_password(self, password):
         self.__password = password
+
+class Admin:
+    def __init__(self, username, email, admin):
+        self.__username = username
+        self.__email = email
+        self.__admin = admin
+
+    def get_username(self):
+        return self.__username
+
+    def get_email(self):
+        return self.__email
+
+    def get_admin(self):
+        return self.__admin
+
+    def set_admin(self, admin):
+        self.__admin = admin
