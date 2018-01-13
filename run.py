@@ -243,58 +243,6 @@ def repair_trolley(id):
 
     return redirect(url_for('viewpublications'))
 
-@app.route('/adminold')
-def adminold():
-    trolleys = troll.get()
-    form = AdminForm(request.form)
-    foundlist = []
-    attentionlist = []
-    trolleynumbers = form.trolleynumbers.data
-    calledname = form.trolleyid.data
-    tnames = 0
-    tfaults = 0
-    tmisused = 0
-
-    # Statistics function  implemented
-    for trolleyid in trolleys.items():
-        tnames += 1
-        if int(trolleyid[1]['flag_count']) >= 3:
-            tfaults += 1
-        if trolleyid[1]['location'] != "":
-            tmisused += 1
-
-    # Attention function   not implemented
-    for trolleyid in trolleys.items():
-        if int(trolleyid[1]['flag_count']) >= 3:
-            attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'],
-                                       trolleyid[1]['location'], trolleyid[1]['comments'])
-            attentionlist.append(attention)
-
-    if request.method == 'POST':
-        # Add New Trolley
-        if form.trolleynumbers.data != '':
-            namelist = []
-            for i in range(int(trolleynumbers)):
-                for trolleyid in trolleys.items():
-                    number = int(trolleyid[1]['name'])
-                    namelist.append(number)
-                namelist.sort()
-                maxname = int(namelist[-1:][0])
-                maxname += 1
-                namelist.append(maxname)
-                maxname = str(maxname)
-                newtroll_db = root.child('trolleys')
-                newtroll_db.push({
-                    'name': maxname,
-                    'flag_count': '0',
-                    'status': '',
-                    'comments': '',
-                    'location': ''
-                })
-            flash('Add Sucesss: New Trolley ID(s) has been added', 'success')
-    return render_template('adminold.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
-                           totmisused=tmisused, attention=attentionlist)
-
 
 @app.route('/ourproduct')
 def ourproduct():
