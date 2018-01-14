@@ -34,6 +34,7 @@ email_email = db.reference('email')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
+app.secret_key = 'secret123'
 
 
 @app.route('/')
@@ -542,5 +543,4 @@ def workout():
     return render_template('workout.html')
 
 if __name__ == '__main__':
-    app.secret_key = 'secret123'
     app.run(port='80')
