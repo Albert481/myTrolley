@@ -389,9 +389,7 @@ def signup():
 def validity_signup(form, field):
     userbase = user_ref.get()
     list = []
-
-
-# for signup in userbase:
+#   for signup in userbase:
 #   eachentry = userbase[signup]
 #   entrybase = sp.Users(eachentry['username'], eachentry['email'], eachentry['password'])
 #   list.append(entrybase)
@@ -456,7 +454,7 @@ class AccountForm(Form):
     password = PasswordField('New Password (Optional)', [validators.Length(min=6, max=50)])
 
 
-@app.route('/modify', methods=['GET', 'POST'])
+@app.route('/modifyuser', methods=['GET', 'POST'])
 def modifyuser():
     form = AccountForm(request.form)
     if request.method == 'POST' and form.validate():
