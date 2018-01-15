@@ -492,10 +492,6 @@ def faq():
     return render_template('faq.html')
 
 
-# @app.route('/email')
-# def email():
-#    return render_template('email.html')
-
 class EmailForm(Form):
     name = StringField('Name:', [validators.Length(min=1, max=100, message="Please enter your name"),
                                  validators.DataRequired()])
@@ -519,7 +515,7 @@ def email():
             'email': eEmail.get_user_email(),
             'feedback': eEmail.get_email_comment(),
         })
-        flash('Thanks for emailing')
+        flash('Your email has been sent!')
 
         return render_template('email.html', form=form)
 
@@ -527,6 +523,7 @@ def email():
 
     # em_ref = db.reference('email')
     # print(em_ref.get())
+
 #class ForumCommentForm(Form):
 
 
