@@ -195,8 +195,12 @@ def admin():
                                        trolleyid[1]['location'], trolleyid[1]['comments'])
             attentionlist.append(attention)
 
+    # Charts
+    labels = ["Operational", "Faulty"]
+    values = [3, 5]
+    colors = ["#F7464A", "#46BFBD"]
     return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
-                           totmisused=tmisused, attention=attentionlist)
+                           totmisused=tmisused, attention=attentionlist, set=zip(values, labels, colors))
 
 @app.route('/trolleys', methods=['GET', 'POST'])
 def trolleys():

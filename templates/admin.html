@@ -21,6 +21,8 @@
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="../static/css/font-awesome.min.css">
 
+    <script src="../static/js/adminpanel/Chart.min.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -149,6 +151,7 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                                <canvas id="chart" width="600" height="400"></canvas>
                             </div>
                             <!-- /.col-lg-8 -->
                             <div class="col-lg-4">
@@ -205,4 +208,28 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="../static/js/adminpanel/startmin.js"></script>
+
+    <script>
+        var pieData = [
+            {% for item,label,colors in set %}
+                {
+                    value: {{item}},
+                    label: "{{label}}",
+                    color: "{{colors}}"
+                },
+            {% endfor %}
+
+
+        ];
+
+        // get bar chart canvas
+        var mychart = document.getElementById("chart").getContext("2d");
+
+        steps = 10
+        max = 10
+        // draw pie chart
+        new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData);
+
+    </script>
+
 {% endblock %}
