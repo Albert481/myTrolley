@@ -3,34 +3,40 @@
 
 {% block head %}
 
-
 {% endblock %}
 
+{% block body %}
+    {% from "includes/_formhelper.html" import render_field %}
+    <section class="content">
+
          <div class="container">
-             <h3>Edit Information</h3>
-                     <div class="profile"><p align="left">Profile:
+             <h2>Edit Information</h2>
+                 <div class="profile"><p align="left">Profile:
                          <div class="image">
                              <img src="../static/images/usericon.png" height="100px" width="100px"/>
                                  <div class="profile-picture">
                                      <a href="">Change profile picture</a><br><br>
-                                         <div class="name"><br>
+                                         <div class="name">{{ render_field(form.username, class_="form-control") }}<br>
                                              <a href="">Change your username</a><br><br>
-                                                 <div class="email">Email:{{render_field(form.email, class_="form-control")}}<br>
+                                                 <div class="email">{{render_field(form.email, class_="form-control")}}<br>
                                                      <a href="">Change email address</a><br><br>
-                                                         <div class="password">Password:{{ render_field(form.password, class_="form-control") }}<br>
+                                                         <div class="password">{{ render_field(form.password, class_="form-control") }}<br>
                                                              <a href="">Change password</a><br>
                                                          </div>
                                                  </div>
                                          </div>
                                  </div>
                          </div>
-                     </div>
+                 </div>
          </div>
     <br>
     <br>
     <br>
     <br>
     <br>
+    </section>
+
+{% endblock %}
 	<!-- Footer -->
     <footer class="page-footer">
     
@@ -64,6 +70,3 @@
     <!-- Custom Javascript -->
     <script src="../static/js/custom.js"></script>
 
-</body>
-
-</html>
