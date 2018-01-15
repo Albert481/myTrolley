@@ -1,28 +1,7 @@
 {% extends 'layout.html' %}
-{% block title %}Scanner{% endblock %}
+{% block title %}Email Us{% endblock %}
 
 {% block head %}
-    <script>
-        var acc = document.getElementsByClassName("accordion");
-        var i;
-
-        for (i = 0; i < acc.length; i++) {
-            acc[i].onclick = function () {
-                /* Toggle between adding and removing the "active" class,
-                to highlight the button that controls the panel */
-                this.classList.toggle("active");
-
-                /* Toggle between hiding and showing the active panel */
-                var panel = this.nextElementSibling;
-                if (panel.style.display === "block") {
-                    panel.style.display = "none";
-                } else {
-                    panel.style.display = "block";
-                }
-            }
-        }
-
-    </script>
     <style>
         #contactusheader {
             padding-left: 30px;
@@ -55,6 +34,17 @@
             padding: 10px;
         }
     </style>
+
+
+    <script>
+        document.getElementById('emailusform').addEventListener('submit', submitemailform);
+        
+        function submitemailform(e) {
+            e.preventDefault();
+
+            console.log(123);
+        }
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -81,16 +71,16 @@
                     </p>
                 </div>
                 <div class="contactussection">
-                    <form action="" method="POST">
-                        <div id="name" class="form-group">
+                    <form id="" action="" method="POST">
+                        <div id="" class="form-group">
                             {{ render_field(form.name, class_="form-control") }}
                         </div>
 
-                        <div id="user_email" class="form-group">
+                        <div id="" class="form-group">
                             {{ render_field(form.user_email, class_="form-control") }}
                         </div>
 
-                        <div id="feedback" class="form-group">
+                        <div id="" class="form-group">
                             {{ render_field(form.feedback, class_="form-control") }}
                         </div>
 
@@ -106,41 +96,3 @@
         </div>
     </section>
 {% endblock %}
-<!-- Header -->
-
-
-<!-- Intro Section -->
-
-<!-- Content 1 -->
-
-
-<!-- Footer -->
-<footer class="page-footer">
-
-    <!-- Contact Us -->
-
-
-    <!-- Copyright etc -->
-    <div class="small-print">
-        <div class="container">
-            <p>Copyright &copy; myTrolley.tk 2017</p>
-        </div>
-    </div>
-
-</footer>
-
-<!-- jQuery -->
-<script src="../static/js/jquery-1.11.3.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="../static/js/bootstrap.min.js"></script>
-
-<!-- Plugin JavaScript -->
-<script src="../static/js/jquery.easing.min.js"></script>
-
-<!-- Custom Javascript -->
-<script src="../static/js/custom.js"></script>
-
-</body>
-
-</html>
