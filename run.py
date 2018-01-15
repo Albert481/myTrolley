@@ -393,9 +393,7 @@ def signup():
 def validity_signup(form, field):
     userbase = user_ref.get()
     list = []
-
-
-# for signup in userbase:
+#   for signup in userbase:
 #   eachentry = userbase[signup]
 #   entrybase = sp.Users(eachentry['username'], eachentry['email'], eachentry['password'])
 #   list.append(entrybase)
@@ -460,7 +458,7 @@ class AccountForm(Form):
     password = PasswordField('New Password (Optional)', [validators.Length(min=6, max=50)])
 
 
-@app.route('/modify', methods=['GET', 'POST'])
+@app.route('/modifyuser', methods=['GET', 'POST'])
 def modifyuser():
     form = AccountForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -496,10 +494,6 @@ def faq():
     return render_template('faq.html')
 
 
-# @app.route('/email')
-# def email():
-#    return render_template('email.html')
-
 class EmailForm(Form):
     name = StringField('Name:', [validators.Length(min=1, max=100, message="Please enter your name"),
                                  validators.DataRequired()])
@@ -523,7 +517,7 @@ def email():
             'email': eEmail.get_user_email(),
             'feedback': eEmail.get_email_comment(),
         })
-        flash('Thanks for emailing')
+        flash('Your email has been sent!')
 
         return render_template('email.html', form=form)
 
@@ -531,6 +525,7 @@ def email():
 
     # em_ref = db.reference('email')
     # print(em_ref.get())
+
 #class ForumCommentForm(Form):
 
 
