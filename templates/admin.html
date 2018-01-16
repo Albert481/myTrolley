@@ -147,38 +147,47 @@
                 </div>
                 <!-- /.row -->
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
-                                <canvas id="chart" width="600" height="400"></canvas>
+                                <i class="fa fa-bar-chart-o fa-fw"></i> Trolley Chart
+                                <canvas id="myChart" width="400" height="400"></canvas>
                             </div>
-                            <!-- /.col-lg-8 -->
-                            <div class="col-lg-4">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <i class="fa fa-bell fa-fw"></i> Statistics
-                                    </div>
-                                    <!-- /.panel-heading -->
-                                    <div class="panel-body">
-                                        <div class="list-group">
-                                            <a href="#" class="list-group-item">
-                                                <i class="fa fa-comment fa-fw"></i> Registered users
-                                            </a>
-                                        </div>
-                                        <!-- /.list-group -->
-                                    </div>
-                                    <!-- /.panel-body -->
-                                </div>
-                            </div>
-                            <!-- /.col-lg-4 -->
                         </div>
-                        <!-- /.row -->
                     </div>
-                    <!-- /#page-wrapper -->
+                    <div class="col-lg-4">
+                        <!-- /.panel-heading -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-comment fa-fw"></i> Notifications
+                                </a>
+                            </div>
+                            <!-- /.list-group -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <div class="col-lg-4">
+                        <!-- /.panel-heading -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-comment fa-fw"></i> Registered users
+                                </a>
+                            </div>
+                            <!-- /.list-group -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+                    <!-- /.col-lg-4 -->
+
+                    <!-- /.row -->
                 </div>
-                <!-- /#wrapper -->
-            </div>.
+                <!-- /#page-wrapper -->
+            </div>
+            <!-- /#wrapper -->
+            </div>
         {% else %}
             <div id="page-wrapper">
                 <div class="row">
@@ -210,26 +219,45 @@
     <script src="../static/js/adminpanel/startmin.js"></script>
 
     <script>
-        var pieData = [
-            {% for item,label,colors in set %}
+        var ctx = document.getElementById("myChart").getContext('2d');
+
+        var data = {
+            labels: ["Operational ", "Faulty"],
+            datasets: [
                 {
-                    value: {{item}},
-                    label: "{{label}}",
-                    color: "{{colors}}"
-                },
-            {% endfor %}
+                    fill: true,
+                    backgroundColor: [
+                        '#5cb85c',
+                        '#d9534f'],
+                    data: {{ values }},
+// Notice the borderColor
+                    borderColor: ['white', 'white'],
+                    borderWidth: [2, 2]
+                }
+            ]
+        };
 
+        var options = {
+            legend: {
+                display: true,
+                position: 'right'
+            },
+        };
 
-        ];
-
-        // get bar chart canvas
-        var mychart = document.getElementById("chart").getContext("2d");
-
-        steps = 10
-        max = 10
-        // draw pie chart
-        new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData);
-
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                }
+            }
+        });
     </script>
 
 {% endblock %}
