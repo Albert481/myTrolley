@@ -10,8 +10,7 @@ import recipe as recs
 import popularitem as pop
 import product as prodt
 import userFeedback as uf
-
-# import user_comment as co
+import forumComment as fo
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -30,7 +29,8 @@ pdt_veg = db.reference('vegetables')
 
 user_ref = db.reference('userbase')
 
-email_email = db.reference('email')
+email_email = db.reference('feedback')
+forum_forum = db.reference('forum')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
@@ -72,6 +72,7 @@ class ScannerForm(Form):
     location = StringField('Enter location:', [validators.DataRequired(), RequiredIf(reporttype='misuse')])
     comments = TextAreaField('Additional comments:')
     unlocksubmit = SubmitField('Submit')
+
 
 class ReportForm(Form):
     # Enter Trolley ID
@@ -198,6 +199,7 @@ def admin():
     return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
                            totmisused=tmisused, attention=attentionlist)
 
+
 @app.route('/trolleys', methods=['GET', 'POST'])
 def trolleys():
     trolleys = troll.get()
@@ -228,13 +230,14 @@ def trolleys():
                 })
             flash('Add Sucesss: New Trolley ID(s) has been added', 'success')
 
-    #Trolleys Overview
+    # Trolleys Overview
     for trolleyid in trolleys.items():
         findtrolley = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'],
                                      trolleyid[1]['flag_count'], trolleyid[1]['location'],
                                      trolleyid[1]['comments'])
         totaltrolleys.append(findtrolley)
     return render_template('trolleys.html', eachtrolley=totaltrolleys, form=form)
+
 
 @app.route('/repair_trolley/<string:id>', methods=['POST'])
 def repair_trolley(id):
@@ -243,6 +246,7 @@ def repair_trolley(id):
     flash('Trolley Repaired', 'success')
 
     return redirect(url_for('viewpublications'))
+
 
 @app.route('/accounts')
 def accounts():
@@ -284,11 +288,12 @@ def popularitem():
         eachpop = popular[pop_id]
         popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
         poplist.append(popBase)
-        #print(popBase)
+        # print(popBase)
 
     return render_template('popularitem.html', pop_list=poplist)
 
-@app.route('/healthyrecipe') #main recipe page
+
+@app.route('/healthyrecipe')  # main recipe page
 def healthyrecipe():
     rec = recipes.get()
     recipelist = []
@@ -302,15 +307,15 @@ def healthyrecipe():
     return render_template('healthyrecipe.html', recipe_list=recipelist)
 
 
-@app.route('/viewrecipe/<string:id>/', methods=['GET', 'POST']) #stop here 20180109
+@app.route('/viewrecipe/<string:id>/', methods=['GET', 'POST'])  # stop here 20180109
 def viewrecipe(id):
-    #mag_db = root.child('recipes/' + id)
+    # mag_db = root.child('recipes/' + id)
     rec = recipes.get()
     recipelist = []
     eachrecipe = rec[id]
     recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
-                                 eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
-                                 eachrecipe['link'], id)
+                             eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
+                             eachrecipe['link'], id)
     recipelist.append(recipeBase)
 
     # for recipe_id in rec:
@@ -319,7 +324,7 @@ def viewrecipe(id):
     #                              eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
     #                              eachrecipe['link'])
     #     recipelist.append(recipeBase)
-    return render_template('viewrecipe.html', recipe_toview=recipelist) #stop here 20180109
+    return render_template('viewrecipe.html', recipe_toview=recipelist)  # stop here 20180109
 
 
 @app.route('/healthevent')
@@ -329,37 +334,40 @@ def healthevent():
     for event_id in event:
         eachevent = event[event_id]
         eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'],
-                             eachevent['image'], eachevent['time'], eachevent['location'], eachevent['status'], eachevent['description'], event_id)
+                             eachevent['image'], eachevent['time'], eachevent['location'], eachevent['status'],
+                             eachevent['description'], event_id)
         list.append(eventBase)
 
     return render_template('healthevent.html', event_list=list)
 
-@app.route('/viewevent/<string:id>/', methods=['GET', 'POST']) #stop here 20180109
-def viewevent(id):
 
+@app.route('/viewevent/<string:id>/', methods=['GET', 'POST'])  # stop here 20180109
+def viewevent(id):
     event = events.get()
     eventlist = []
     eachevent = event[id]
     eventBase = ev.Event(eachevent['event_name'], eachevent['event_startDate'], eachevent['event_endDate'],
-                         eachevent['image'], eachevent['time'], eachevent['location'], eachevent['status'], eachevent['description'], id)
+                         eachevent['image'], eachevent['time'], eachevent['location'], eachevent['status'],
+                         eachevent['description'], id)
     eventlist.append(eventBase)
 
     return render_template('viewevent.html', event_toview=eventlist)
 
-@app.route('/search') #stop here 20180109
+
+@app.route('/search')  # stop here 20180109
 def search():
     items = root.child('products').get()
     list = []  # create a list to store all the publication objects
     for itemid in items:
         eachitem = items[itemid]
         item = prodt.Product(eachitem['name'], eachitem['category'], eachitem['price'],
-                        eachitem['origin'], eachitem['image_name'])
+                             eachitem['origin'], eachitem['image_name'])
 
         item.set_itemid(itemid)
-        #print(item.get_itemid())
+        # print(item.get_itemid())
         list.append(item)
 
-    return render_template('search.html', item_list=list) #stop here 20180109
+    return render_template('search.html', item_list=list)  # stop here 20180109
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -389,6 +397,8 @@ def signup():
 def validity_signup(form, field):
     userbase = user_ref.get()
     list = []
+
+
 #   for signup in userbase:
 #   eachentry = userbase[signup]
 #   entrybase = sp.Users(eachentry['username'], eachentry['email'], eachentry['password'])
@@ -473,17 +483,21 @@ def modifyuser():
 
     return render_template('modifyuser.html')
 
+
 @app.route('/credit')
 def creditpointsystem():
     return render_template('creditpointsystem.html')
+
 
 @app.route('/reward')
 def reward():
     return render_template('rewardsystem.html')
 
+
 @app.route('/help')
 def help():
     return render_template('help.html')
+
 
 @app.route('/faq')
 def faq():
@@ -507,7 +521,7 @@ def email():
         feedback = form.feedback.data
         eEmail = uf.userFeedback(name, user_email, feedback)
 
-        eEmail_db = root.child('email')
+        eEmail_db = root.child('feedback')
         eEmail_db.push({
             'name': eEmail.get_email_name(),
             'email': eEmail.get_user_email(),
@@ -519,23 +533,38 @@ def email():
 
     return render_template('email.html', form=form)
 
-    # em_ref = db.reference('email')
+    # em_ref = db.reference('response')
     # print(em_ref.get())
 
-#class ForumCommentForm(Form):
+
+class ForumCommentForm(Form):
+    comment = StringField('Comment', [validators.Length(min=1, max=9999999, message='Please enter your comment'),
+                                      validators.DataRequired()])
 
 
-@app.route('/forum')#, methods=["GET", "POST"])
+@app.route('/forum', methods=["GET", "POST"])
 def forum():
-    #form = ForumCommentForm(request.form)
-    #if request.method == "POST" and form.validate():
+    form = ForumCommentForm(request.form)
+    if request.method == "POST" and form.validate():
+        comment = form.comment.data
+        fForum = fo.forumComment(comment)
 
-    return render_template('forum.html')
+        fForum_db = root.child('forum')
+        fForum_db.push({
+            'comment': fForum.get_comment(),
+        })
+
+        flash('Your comment has been sent!')
+
+        return render_template('forum.html', form=form)
+
+    return render_template('forum.html', form=form)
 
 
 @app.route('/workout')
 def workout():
     return render_template('workout.html')
+
 
 if __name__ == '__main__':
     app.run(port='80')
