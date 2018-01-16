@@ -258,6 +258,55 @@ def accounts():
 
     return render_template('accounts.html', eachuser=totalaccounts)
 
+@app.route('/products', methods=['GET', 'POST']) #added 180116
+def products():
+    form = ProductForm(request.form)
+    if request.method == 'POST' and form.validate():
+        if  form.protype.data == 'sfruit': # remove this line , if else
+            name = form.name.data
+            category = form.protype.data
+            price = form.price.data
+            origin = form.origin.data
+            image_name = form.image_name.data
+
+            itemFruit = prodt.Product(name, category, price, origin, image_name)
+            itemFruit_db = root.child('products')
+            itemFruit_db.push({
+                    'name': itemFruit.get_name(),
+                    'category': itemFruit.get_category(),
+                    'price': itemFruit.get_price(),
+                    'origin': itemFruit.get_origin(),
+                    'image_name': itemFruit.get_image_name()
+
+            })
+
+            flash('Product Fruit Item Inserted Sucessfully.', 'success')
+
+        elif form.protype.data == 'sveg':
+            name = form.name.data
+            category = form.protype.data
+            price = form.price.data
+            origin = form.origin.data
+            image_name = form.image_name.data
+
+            itemVeg = prodt.Product(name, category, price, origin, image_name)
+            itemVeg_db = root.child('products')
+            itemVeg.push({
+                'name': itemVeg.get_name(),
+                'category': itemVeg.get_category(),
+                'price': itemVeg.get_price(),
+                'origin': itemVeg.get_origin(),
+                'image_name': itemVeg.get_image_name()
+            })
+
+            flash('Product Vegetable Item Inserted Sucessfully.', 'success')
+
+        return redirect(url_for('search'))
+
+
+    return render_template('create_product.html', form=form)
+
+
 
 @app.route('/ourproduct')
 def ourproduct():
@@ -364,6 +413,38 @@ def search():
         list.append(item)
 
     return render_template('search.html', item_list=list) #stop here 20180109
+
+class RequiredIf(object): #added 180116
+
+    def __init__(self, *args, **kwargs):
+        self.conditions = kwargs
+
+    def __call__(self, form, field):
+        for name, data in self.conditions.items():
+            if name not in form._fields:
+                validators.Optional()(field)
+            else:
+                condition_field = form._fields.get(name)
+                if condition_field.data == data:
+                    validators.DataRequired().__call__(form, field)
+                else:
+                    validators.Optional().__call__(form, field)
+
+class ProductForm(Form): #added 180116
+    name = StringField('Product Name', [
+        validators.Length(min=1, max=150),
+        validators.DataRequired()])
+    protype = RadioField('Category', choices=[('sfruit', 'Fruit'), ('sveg', 'Vegetable')], default='sfruit')
+    price = StringField('Price', [
+        validators.Length(min=1, max=100),
+        validators.DataRequired()])
+    origin = StringField('Origin', [
+        validators.Length(min=1, max=100),
+        validators.DataRequired()])
+    image_name = StringField('Image', [
+        validators.Length(min=1, max=100),
+        validators.DataRequired()])
+
 
 
 @app.route('/signup', methods=['GET', 'POST'])
