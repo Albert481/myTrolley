@@ -196,8 +196,13 @@ def admin():
                                        trolleyid[1]['location'], trolleyid[1]['comments'])
             attentionlist.append(attention)
 
+    # Charts
+    values = []
+
+    values.append(tnames-tfaults)
+    values.append(tfaults)
     return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
-                           totmisused=tmisused, attention=attentionlist)
+                           totmisused=tmisused, attention=attentionlist, values=values)
 
 
 @app.route('/trolleys', methods=['GET', 'POST'])
@@ -257,6 +262,97 @@ def accounts():
         totalaccounts.append(finduser)
 
     return render_template('accounts.html', eachuser=totalaccounts)
+
+@app.route('/add_product', methods=['GET', 'POST']) #added 180116
+def add_product():
+    form = ProductForm(request.form)
+    if request.method == 'POST' and form.validate():
+        name = form.name.data
+        category = form.protype.data
+        price = form.price.data
+        origin = form.origin.data
+        image_name = form.image_name.data
+
+        itemP = prodt.Product(name, category, price, origin, image_name)
+        itemP_db = root.child('products')
+        itemP_db.push({
+                'name': itemP.get_name(),
+                'category': itemP.get_category(),
+                'price': itemP.get_price(),
+                'origin': itemP.get_origin(),
+                'image_name': itemP.get_image_name()
+
+        })
+
+        flash('Product Item Inserted Sucessfully.', 'success')
+
+        return redirect(url_for('view_product'))
+
+
+    return render_template('create_product.html', form=form)
+
+@app.route('/delete_product/<string:id>', methods=['POST'])
+def delete_product(id):
+    itemP_db = root.child('products/' + id)
+    itemP_db.delete()
+    flash('Publication Deleted', 'success')
+
+    return redirect(url_for('view_product'))
+
+@app.route('/update_product/<string:id>/', methods=['GET', 'POST'])
+def update_product(id):
+    form = ProductForm(request.form)
+    if request.method == 'POST' and form.validate():
+
+        name = form.name.data
+        category = form.protype.data
+        price = form.price.data
+        origin = form.origin.data
+        image_name = form.image_name.data
+
+        itemP = prodt.Product(name, category, price, origin, image_name)
+        # create the product object
+        itemP_db = root.child('products/' + id)
+        itemP_db.set({
+                'name': itemP.get_name(),
+                'category': itemP.get_category(),
+                'price': itemP.get_price(),
+                'origin': itemP.get_origin(),
+                'image_name': itemP.get_image_name()
+        })
+
+        flash('Product Item Updated Sucessfully.', 'success')
+
+        return redirect(url_for('view_product'))
+    else:
+        url = 'products/' + id
+        eachprod = root.child(url).get()
+
+        uitem = prodt.Product(eachprod['name'], eachprod['category'], eachprod['price'],
+                              eachprod['origin'], eachprod['image_name'])
+
+        uitem.set_itemid(id)
+        form.name.data = uitem.get_name()
+        form.protype.data = uitem.get_category()
+        form.price.data = uitem.get_price()
+        form.origin.data = uitem.get_origin()
+        form.image_name.data = uitem.get_image_name()
+
+        return render_template('update_product.html', form=form)
+
+@app.route('/view_product') #20180116
+def view_product():
+    vitems = root.child('products').get()
+    list = []  # create a list to store all the product objects
+    for itemid in vitems:
+        eachitem = vitems[itemid]
+        vitem = prodt.Product(eachitem['name'], eachitem['category'], eachitem['price'],
+                        eachitem['origin'], eachitem['image_name'])
+
+        vitem.set_itemid(itemid)
+        list.append(vitem)
+
+    return render_template('view_product.html', vitem_list=list)
 
 
 @app.route('/ourproduct')
@@ -368,6 +464,38 @@ def search():
         list.append(item)
 
     return render_template('search.html', item_list=list)  # stop here 20180109
+
+class RequiredIf(object): #added 180116
+
+    def __init__(self, *args, **kwargs):
+        self.conditions = kwargs
+
+    def __call__(self, form, field):
+        for name, data in self.conditions.items():
+            if name not in form._fields:
+                validators.Optional()(field)
+            else:
+                condition_field = form._fields.get(name)
+                if condition_field.data == data:
+                    validators.DataRequired().__call__(form, field)
+                else:
+                    validators.Optional().__call__(form, field)
+
+class ProductForm(Form): #added 180116
+    name = StringField('Product Name', [
+        validators.Length(min=1, max=150),
+        validators.DataRequired()])
+    protype = RadioField('Category', choices=[('Fruit', 'Fruit'), ('Vegetable', 'Vegetable')], default='Fruit')
+    price = StringField('Price', [
+        validators.Length(min=1, max=100),
+        validators.DataRequired()])
+    origin = StringField('Origin', [
+        validators.Length(min=1, max=100),
+        validators.DataRequired()])
+    image_name = StringField('Image File', [
+        validators.Length(min=1, max=100),
+        validators.DataRequired()])
+
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -567,4 +695,4 @@ def workout():
 
 
 if __name__ == '__main__':
-    app.run(port='80')
+    app.run()

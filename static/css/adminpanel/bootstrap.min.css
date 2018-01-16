@@ -4473,7 +4473,8 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
     height: 50px;
     padding: 15px 15px;
     font-size: 18px;
-    line-height: 20px
+    line-height: 20px;
+    margin: 15px
 }
 
 .navbar-brand:focus, .navbar-brand:hover {
