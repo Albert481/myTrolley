@@ -263,44 +263,24 @@ def accounts():
 def products():
     form = ProductForm(request.form)
     if request.method == 'POST' and form.validate():
-        if  form.protype.data == 'sfruit': # remove this line , if else
-            name = form.name.data
-            category = form.protype.data
-            price = form.price.data
-            origin = form.origin.data
-            image_name = form.image_name.data
+        name = form.name.data
+        category = form.protype.data
+        price = form.price.data
+        origin = form.origin.data
+        image_name = form.image_name.data
 
-            itemFruit = prodt.Product(name, category, price, origin, image_name)
-            itemFruit_db = root.child('products')
-            itemFruit_db.push({
-                    'name': itemFruit.get_name(),
-                    'category': itemFruit.get_category(),
-                    'price': itemFruit.get_price(),
-                    'origin': itemFruit.get_origin(),
-                    'image_name': itemFruit.get_image_name()
+        itemP = prodt.Product(name, category, price, origin, image_name)
+        itemP_db = root.child('products')
+        itemP_db.push({
+                'name': itemP.get_name(),
+                'category': itemP.get_category(),
+                'price': itemP.get_price(),
+                'origin': itemP.get_origin(),
+                'image_name': itemP.get_image_name()
 
-            })
+        })
 
-            flash('Product Fruit Item Inserted Sucessfully.', 'success')
-
-        elif form.protype.data == 'sveg':
-            name = form.name.data
-            category = form.protype.data
-            price = form.price.data
-            origin = form.origin.data
-            image_name = form.image_name.data
-
-            itemVeg = prodt.Product(name, category, price, origin, image_name)
-            itemVeg_db = root.child('products')
-            itemVeg.push({
-                'name': itemVeg.get_name(),
-                'category': itemVeg.get_category(),
-                'price': itemVeg.get_price(),
-                'origin': itemVeg.get_origin(),
-                'image_name': itemVeg.get_image_name()
-            })
-
-            flash('Product Vegetable Item Inserted Sucessfully.', 'success')
+        flash('Product Item Inserted Sucessfully.', 'success')
 
         return redirect(url_for('search'))
 
@@ -435,14 +415,14 @@ class ProductForm(Form): #added 180116
     name = StringField('Product Name', [
         validators.Length(min=1, max=150),
         validators.DataRequired()])
-    protype = RadioField('Category', choices=[('sfruit', 'Fruit'), ('sveg', 'Vegetable')], default='sfruit')
+    protype = RadioField('Category', choices=[('Fruit', 'Fruit'), ('Vegetable', 'Vegetable')], default='Fruit')
     price = StringField('Price', [
         validators.Length(min=1, max=100),
         validators.DataRequired()])
     origin = StringField('Origin', [
         validators.Length(min=1, max=100),
         validators.DataRequired()])
-    image_name = StringField('Image', [
+    image_name = StringField('Image File', [
         validators.Length(min=1, max=100),
         validators.DataRequired()])
 
