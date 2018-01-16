@@ -295,6 +295,47 @@ def delete_product(id):
 
     return redirect(url_for('view_product'))
 
+@app.route('/update_product/<string:id>/', methods=['GET', 'POST'])
+def update_product(id):
+    form = ProductForm(request.form)
+    if request.method == 'POST' and form.validate():
+
+        name = form.name.data
+        category = form.protype.data
+        price = form.price.data
+        origin = form.origin.data
+        image_name = form.image_name.data
+
+        itemP = prodt.Product(name, category, price, origin, image_name)
+        # create the product object
+        itemP_db = root.child('products/' + id)
+        itemP_db.set({
+                'name': itemP.get_name(),
+                'category': itemP.get_category(),
+                'price': itemP.get_price(),
+                'origin': itemP.get_origin(),
+                'image_name': itemP.get_image_name()
+        })
+
+        flash('Product Item Updated Sucessfully.', 'success')
+
+        return redirect(url_for('view_product'))
+    else:
+        url = 'products/' + id
+        eachprod = root.child(url).get()
+
+        uitem = prodt.Product(eachprod['name'], eachprod['category'], eachprod['price'],
+                              eachprod['origin'], eachprod['image_name'])
+
+        uitem.set_itemid(id)
+        form.name.data = uitem.get_name()
+        form.protype.data = uitem.get_category()
+        form.price.data = uitem.get_price()
+        form.origin.data = uitem.get_origin()
+        form.image_name.data = uitem.get_image_name()
+
+        return render_template('update_product.html', form=form)
+
 @app.route('/view_product') #20180116
 def view_product():
     vitems = root.child('products').get()
