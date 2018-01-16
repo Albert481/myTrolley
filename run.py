@@ -259,8 +259,8 @@ def accounts():
 
     return render_template('accounts.html', eachuser=totalaccounts)
 
-@app.route('/products', methods=['GET', 'POST']) #added 180116
-def products():
+@app.route('/add_product', methods=['GET', 'POST']) #added 180116
+def add_product():
     form = ProductForm(request.form)
     if request.method == 'POST' and form.validate():
         name = form.name.data
@@ -282,11 +282,32 @@ def products():
 
         flash('Product Item Inserted Sucessfully.', 'success')
 
-        return redirect(url_for('search'))
+        return redirect(url_for('view_product'))
 
 
     return render_template('create_product.html', form=form)
 
+@app.route('/delete_product/<string:id>', methods=['POST'])
+def delete_product(id):
+    itemP_db = root.child('products/' + id)
+    itemP_db.delete()
+    flash('Publication Deleted', 'success')
+
+    return redirect(url_for('view_product'))
+
+@app.route('/view_product') #20180116
+def view_product():
+    vitems = root.child('products').get()
+    list = []  # create a list to store all the product objects
+    for itemid in vitems:
+        eachitem = vitems[itemid]
+        vitem = prodt.Product(eachitem['name'], eachitem['category'], eachitem['price'],
+                        eachitem['origin'], eachitem['image_name'])
+
+        vitem.set_itemid(itemid)
+        list.append(vitem)
+
+    return render_template('view_product.html', vitem_list=list)
 
 
 @app.route('/ourproduct')
