@@ -2,102 +2,53 @@
 {% block title %}Workout{% endblock %}
 
 {% block head %}
-    <style>
-    .same_row{
-        display:inline-block;
-        width:100%;
-        height:100%;
-    }
-.column-left{
-    float: left;
-    width: 33%;
-    text-align:justify;
-}
+<style>
+		.header {
+			background-color: white;
+			height: 100px;
+			width: 100%;
+		}
 
-.column-left img{
-    padding:10px;
-}
-
-.column-left h1{
-    text-align:center;
-}
-
-.column-right{
-    float: right;
-    width: 33%;
-    text-align:justify;
-}
-
-#move_right{
-    text-align:center;
-}
-.column-right img{
-    padding:10px;
-}
-.column-center{
-    display: inline-block;
-    text-align:center;
-    width: 33%;
-}
-.column-center img{
-    padding:10px;
-}
-#pic{
-    width:300px;
-    height:240px;
-    display: block;
-    margin: 0 auto;
-}
+		.header h1 {
+			margin-top: 0;
+			text-align: center;
+			color: pink;
+			height: 100px;
+			width: 100%;
+            line-height: 100px;
+		}
+        .form-arrangement{
+            margin:0 auto;
+            width:75%;
+            text-align:left;
+        }
 </style>
-
 {% endblock %}
 
 {% block body %}
-    <section class="content">
-        <div class="container">
-            <div class="row">
-                <!-- Workout Header -->
-                <header class="jumbotron my-4" style="background-image: url('../static/images/header_workout.png');">
-                    <h1 class="display-3" style="color:white; text-shadow: 0 0 3px black; font-weight:bold;">Workout</h1>
-                    <p style="color:white; text-shadow: 0 0 3px black; font-weight:bold;">Providing all the exercise information that you need to lead a healthy lifestyle! Get up and move! The only limit is you! </p>
-                    <a href="https://www.fitnessblender.com/videos" class="btn btn-primary">Types of Exercise</a>
-                </header>
-
-                <!-- Page Features -->
-                <div class="container">
-                    <div class="same_row">
-                    <div class="column-left">
-                        <img id="pic" src="../static/images/workout_nutrition.jpg">
-                        <h1>Workout nutrition</h1>
-                        <p>Your body needs fuel to have energy to move. By eating before workout, it helps you to perform efficiently,for example, able to workout for longer hours and doing workouts at a high intensity level.</p>
-                        <div id="move_right">
-                        <a href="https://www.myprotein.com/thezone/nutrition/pre-workout-foods/" class="btn btn-primary">Pre-workout snacks</a>
-                        <p>Besides eating before workout, you should also not forget to eat after workout to replenish the energy lost during workout. It can help you rebuild muscles too.</p>
-                        <a href="https://www.self.com/gallery/7-post-workout-snacks-you-can-stash-in-your-gym-bag" class="btn btn-primary">Post-Workout Snacks</a>
-                    </div>
-</div>
-
-                    <div class="column-center">
-                        <img id="pic" src="../static/images/freedomised_workout.jpg">
-                        <h1>Workout</h1>
-                        <p>There are various options to select from,including the amount of workout time, the calories burnt, the training type, the difficulty level and the part of body to choose to focus on. It is basically customised for the users to choose their desired workout.</p>
-                        <a href="https://www.fitnessblender.com/videos" class="btn btn-primary">Try Out!</a>
-                    </div>
-
-                    <div class="column-right">
-                        <img id="pic" src="../static/images/workout_motivational_quote.jpg">
-                        <h1>Workout motivation tips</h1>
-                        <p>As much as we like to keep our body fit and exercise, there are just sometimes that we feel lazy and find all sorts of excuses to stop going for exercises. Hence, these workout motivation tips are here to help us to get back on track and stop procrastinating.</p>
-                        <div id="move_right">
-                        <a href="http://dailyburn.com/life/fitness/workout-motivation-tips-exercise/" class="btn btn-primary">Read More!</a>
-                        </div>
-                    </div>
+    {% from "includes/_formhelper.html" import render_field %}
+    <div class="header">
+        <h1>3 simple questions to get you started</h1>
+    </div>
+    <div class="form-arrangement">
+        <form method="POST" action="">
+            <div class="form-group">
+                <!--time-->
+                {{ render_field(form.time, class_="form-control") }}
+            </div>
+            <div class="form-group">
+                <div class="form-row">
+                    <!--difficulty_level-->
+                    {{ render_field(form.difficulty_level, class_="radio-inline") }}
                 </div>
-
             </div>
-        </div>
+            <div class="form-group">
+                <!--body_focus-->
+                {{ render_field(form.body_focus, class_="form-control") }}
             </div>
-        </section>
+                <input type="submit" value="Submit" class="btn btn-info"/>
+        </form>
+    </div>
 {% endblock %}
 
             <!-- jQuery -->
