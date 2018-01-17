@@ -11,6 +11,7 @@ import popularitem as pop
 import product as prodt
 import userFeedback as uf
 import forumComment as fo
+from Workout import Workout
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -31,6 +32,8 @@ user_ref = db.reference('userbase')
 
 email_email = db.reference('feedback')
 forum_forum = db.reference('forum')
+
+workout = db.reference('workout')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
@@ -689,9 +692,161 @@ def forum():
     return render_template('forum.html', form=form)
 
 
-@app.route('/workout')
+class WorkoutForm(Form):
+    time_choices = [('10min', '0-10min'), ('20min', '0-20min'), ('30min', '0-30min')]
+    time = SelectField('Time', choices=time_choices, default='10min')
+    difficulty_level_choices = [('1', '1'), ('2', '2'), ('3', '3')]
+    difficulty_level = RadioField('Difficulty Level', choices=difficulty_level_choices, default='1')
+    body_focus_choices = [('core', 'Core'), ('whole_body', 'Total')]
+    body_focus = SelectField('Body Focus', choices=body_focus_choices, default='core')
+
+
+@app.route('/workout_type_1')
+def workout_type_1():
+    return render_template('workout_type_1.html')
+
+@app.route('/workout_type_2')
+def workout_type_2():
+    return render_template('workout_type_2.html')
+
+@app.route('/workout_type_3')
+def workout_type_3():
+    return render_template('workout_type_3.html')
+
+@app.route('/workout_type_4')
+def workout_type_4():
+    return render_template('workout_type_4.html')
+
+@app.route('/workout_type_5')
+def workout_type_5():
+    return render_template('workout_type_5.html')
+
+@app.route('/workout_type_6')
+def workout_type_6():
+    return render_template('workout_type_6.html')
+
+@app.route('/workout_type_7')
+def workout_type_7():
+    return render_template('workout_type_7.html')
+
+@app.route('/workout_type_8')
+def workout_type_8():
+    return render_template('workout_type_8.html')
+
+@app.route('/workout_type_9')
+def workout_type_9():
+    return render_template('workout_type_9.html')
+
+@app.route('/workout_type_10')
+def workout_type_10():
+    return render_template('workout_type_10.html')
+
+@app.route('/workout_type_11')
+def workout_type_11():
+    return render_template('workout_type_11.html')
+
+@app.route('/workout_type_12')
+def workout_type_12():
+    return render_template('workout_type_12.html')
+
+@app.route('/workout_type_13')
+def workout_type_13():
+    return render_template('workout_type_13.html')
+
+@app.route('/workout_type_14')
+def workout_type_14():
+    return render_template('workout_type_14.html')
+
+@app.route('/workout_type_15')
+def workout_type_15():
+    return render_template('workout_type_15.html')
+
+@app.route('/workout_type_16')
+def workout_type_16():
+    return render_template('workout_type_16.html')
+
+@app.route('/workout_type_17')
+def workout_type_17():
+    return render_template('workout_type_17.html')
+
+@app.route('/workout_type_18')
+def workout_type_18():
+    return render_template('workout_type_18.html')
+
+@app.route('/workout', methods=['GET', 'POST'])
 def workout():
-    return render_template('workout.html')
+    form = WorkoutForm(request.form)
+    if request.method == 'POST' and form.validate():
+        time = form.time.data
+        difficulty_level = form.difficulty_level.data
+        body_focus = form.body_focus.data
+
+        workout = Workout(time, difficulty_level, body_focus)
+
+        workout_db = root.child('workout')
+        workout_db.push({
+            'time': workout.get_time(),
+            'diff_level': workout.get_diff_level(),
+            'body_focus': workout.get_body_focus()
+        })
+
+        workout_type_dest = ''
+        #form2 = WorkoutTypeForm(request.form)
+
+        if body_focus == 'core':
+            if time == '10min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_1'
+                    #form2.videolink1 = 'some video link ...'
+                    #form2.duration = 'some value'
+                    #form2.calorieburn = 'some value'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_2'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_3'
+            elif time == '20min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_4'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_5'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_6'
+            elif time == '30min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_7'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_8'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_9'
+
+        elif body_focus == 'whole_body':
+            if time == '10min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_10'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_11'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_12'
+            elif time == '20min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_13'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_14'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_15'
+            elif time == '30min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_16'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_17'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_18'
+
+        return redirect(url_for(workout_type_dest))
+        #return redirect(url_for(workout_type_dest), form=form2)
+
+    return render_template('workout.html', form=form)
+
 
 
 if __name__ == '__main__':
