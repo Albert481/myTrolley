@@ -287,7 +287,7 @@ def add_product():
 
         })
 
-        flash('Product Item Inserted Sucessfully.', 'success')
+        flash('Product Item Added Sucessfully.', 'success')
 
         return redirect(url_for('view_product'))
 
@@ -298,7 +298,7 @@ def add_product():
 def delete_product(id):
     itemP_db = root.child('products/' + id)
     itemP_db.delete()
-    flash('Publication Deleted', 'success')
+    flash('Product Item Deleted', 'success')
 
     return redirect(url_for('view_product'))
 
