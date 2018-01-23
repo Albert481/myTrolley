@@ -178,8 +178,6 @@ def admin():
     form = AdminForm(request.form)
     foundlist = []
     attentionlist = []
-    trolleynumbers = form.trolleynumbers.data
-    calledname = form.trolleyid.data
     tnames = 0
     tfaults = 0
     tmisused = 0
@@ -255,16 +253,39 @@ def repair_trolley(id):
 
     return redirect(url_for('viewpublications'))
 
+class ChangeAdmin(Form):
+    username = StringField('Please enter Trolley ID:', render_kw={"placeholder": "Username"})
+    adminlvl = RadioField('Admin Level', choices=[('admin0','0'), ('admin1', '1'), ('admin2', '2')])
 
-@app.route('/accounts')
+@app.route('/accounts', methods=['GET', 'POST'])
 def accounts():
     userbase = user_ref.get()
     totalaccounts = []
+    form = ChangeAdmin(request.form)
+    calledusername = form.username.data
     for user in userbase.items():
         finduser = sp.Admin(user[1]['username'], user[1]['email'], user[1]['admin'])
         totalaccounts.append(finduser)
 
-    return render_template('accounts.html', eachuser=totalaccounts)
+    if request.method == 'POST':
+        for username in userbase.items():
+            if calledusername == username[1]['username']:
+                admin = sp.Admin(username[1]['username'], username[1]['email'], username[1]['admin'])
+                print(user_ref.child(username[0]))
+                user_admin = user_ref.child(username[0])
+                if form.adminlvl.data == 'admin0':
+                    user_admin.update({
+                        'admin': admin.set_admin('0'),
+                    })
+                elif form.adminlvl.data == 'admin1':
+                    user_admin.update({
+                        'admin': admin.set_admin('1'),
+                    })
+                elif form.adminlvl.data == 'admin2':
+                    user_admin.update({
+                        'admin': admin.set_admin('2'),
+                    })
+    return render_template('accounts.html', eachuser=totalaccounts, form=form)
 
 @app.route('/add_product', methods=['GET', 'POST']) #added 180116
 def add_product():
