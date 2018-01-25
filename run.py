@@ -3,6 +3,7 @@ from wtforms import Form, SelectMultipleField, StringField, PasswordField, valid
     ValidationError, FileField, SubmitField, TextAreaField, DateField
 import firebase_admin
 from firebase_admin import credentials, db, storage
+import json
 import signup as sp
 import trolleys as tr
 import event as ev
@@ -29,8 +30,8 @@ pdt_veg = db.reference('vegetables')
 
 user_ref = db.reference('userbase')
 
-email_email = db.reference('feedback')
-forum_forum = db.reference('forum')
+e_email = db.reference('feedback')
+f_forum = db.reference('forum')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
@@ -199,7 +200,7 @@ def admin():
     # Charts
     values = []
 
-    values.append(tnames-tfaults)
+    values.append(tnames - tfaults)
     values.append(tfaults)
     return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
                            totmisused=tmisused, attention=attentionlist, values=values)
@@ -263,7 +264,8 @@ def accounts():
 
     return render_template('accounts.html', eachuser=totalaccounts)
 
-@app.route('/add_product', methods=['GET', 'POST']) #added 180116
+
+@app.route('/add_product', methods=['GET', 'POST'])  # added 180116
 def add_product():
     form = ProductForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -276,11 +278,11 @@ def add_product():
         itemP = prodt.Product(name, category, price, origin, image_name)
         itemP_db = root.child('products')
         itemP_db.push({
-                'name': itemP.get_name(),
-                'category': itemP.get_category(),
-                'price': itemP.get_price(),
-                'origin': itemP.get_origin(),
-                'image_name': itemP.get_image_name()
+            'name': itemP.get_name(),
+            'category': itemP.get_category(),
+            'price': itemP.get_price(),
+            'origin': itemP.get_origin(),
+            'image_name': itemP.get_image_name()
 
         })
 
@@ -288,8 +290,8 @@ def add_product():
 
         return redirect(url_for('view_product'))
 
-
     return render_template('create_product.html', form=form)
+
 
 @app.route('/delete_product/<string:id>', methods=['POST'])
 def delete_product(id):
@@ -298,6 +300,7 @@ def delete_product(id):
     flash('Publication Deleted', 'success')
 
     return redirect(url_for('view_product'))
+
 
 @app.route('/update_product/<string:id>/', methods=['GET', 'POST'])
 def update_product(id):
@@ -314,11 +317,11 @@ def update_product(id):
         # create the product object
         itemP_db = root.child('products/' + id)
         itemP_db.set({
-                'name': itemP.get_name(),
-                'category': itemP.get_category(),
-                'price': itemP.get_price(),
-                'origin': itemP.get_origin(),
-                'image_name': itemP.get_image_name()
+            'name': itemP.get_name(),
+            'category': itemP.get_category(),
+            'price': itemP.get_price(),
+            'origin': itemP.get_origin(),
+            'image_name': itemP.get_image_name()
         })
 
         flash('Product Item Updated Sucessfully.', 'success')
@@ -340,14 +343,15 @@ def update_product(id):
 
         return render_template('update_product.html', form=form)
 
-@app.route('/view_product') #20180116
+
+@app.route('/view_product')  # 20180116
 def view_product():
     vitems = root.child('products').get()
     list = []  # create a list to store all the product objects
     for itemid in vitems:
         eachitem = vitems[itemid]
         vitem = prodt.Product(eachitem['name'], eachitem['category'], eachitem['price'],
-                        eachitem['origin'], eachitem['image_name'])
+                              eachitem['origin'], eachitem['image_name'])
 
         vitem.set_itemid(itemid)
         list.append(vitem)
@@ -465,7 +469,8 @@ def search():
 
     return render_template('search.html', item_list=list)  # stop here 20180109
 
-class RequiredIf(object): #added 180116
+
+class RequiredIf(object):  # added 180116
 
     def __init__(self, *args, **kwargs):
         self.conditions = kwargs
@@ -481,7 +486,8 @@ class RequiredIf(object): #added 180116
                 else:
                     validators.Optional().__call__(form, field)
 
-class ProductForm(Form): #added 180116
+
+class ProductForm(Form):  # added 180116
     name = StringField('Product Name', [
         validators.Length(min=1, max=150),
         validators.DataRequired()])
@@ -495,7 +501,6 @@ class ProductForm(Form): #added 180116
     image_name = StringField('Image File', [
         validators.Length(min=1, max=100),
         validators.DataRequired()])
-
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -633,11 +638,11 @@ def faq():
 
 
 class EmailForm(Form):
-    name = StringField('Name:', [validators.Length(min=1, max=100, message="Please enter your name"),
-                                 validators.DataRequired()])
-    user_email = StringField('Email:', [validators.Email(), validators.DataRequired()])
-    feedback = StringField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
-                                         validators.DataRequired()])
+    name = StringField('Name:', [validators.Length(min=1, max=100),
+                                 validators.DataRequired(message="Name is required.")])
+    user_email = StringField('Email:', [validators.Email(), validators.DataRequired(message="Email is required.")])
+    feedback = TextAreaField('Feedback:', [validators.Length(min=1, max=99999),
+                                           validators.DataRequired(message="Please enter your feedback")])
 
 
 @app.route('/email', methods=["GET", "POST"])
@@ -666,8 +671,8 @@ def email():
 
 
 class ForumCommentForm(Form):
-    comment = StringField('Comment', [validators.Length(min=1, max=9999999, message='Please enter your comment'),
-                                      validators.DataRequired()])
+    comment = TextAreaField('Post a comment!', [validators.Length(min=1, max=9999999),
+                                                validators.DataRequired(message='Please enter your comment.')])
 
 
 @app.route('/forum', methods=["GET", "POST"])
