@@ -319,7 +319,7 @@ def add_product():
 def delete_product(id):
     itemP_db = root.child('products/' + id)
     itemP_db.delete()
-    flash('Product Item Deleted', 'success')
+    flash('Product Item Deleted Sucessfully.', 'success')
 
     return redirect(url_for('view_product'))
 
@@ -404,13 +404,24 @@ def ourproduct():
 def popularitem():
     popular = popitem.get()
     poplist = []
+    name=[]
+    color=[]
+    quantity=[]
+
     for pop_id in popular:
         eachpop = popular[pop_id]
-        popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
-        poplist.append(popBase)
-        # print(popBase)
+        nameBase = eachpop['name']
+        quantityBase = eachpop['quantity']
+        name.append(nameBase)
+        quantity.append(quantityBase)
 
-    return render_template('popularitem.html', pop_list=poplist)
+    # for pop_id in popular:
+    #     eachpop = popular[pop_id]
+    #     popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
+    #     poplist.append(popBase)
+    #     # print(popBase)
+
+    return render_template('popularitem.html', name_list=name, quantity_list=quantity)
 
 
 @app.route('/healthyrecipe')  # main recipe page
@@ -438,13 +449,7 @@ def viewrecipe(id):
                              eachrecipe['link'], id)
     recipelist.append(recipeBase)
 
-    # for recipe_id in rec:
-    #     eachrecipe = rec[recipe_id]
-    #     recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
-    #                              eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
-    #                              eachrecipe['link'])
-    #     recipelist.append(recipeBase)
-    return render_template('viewrecipe.html', recipe_toview=recipelist)  # stop here 20180109
+    return render_template('viewrecipe.html', recipe_toview=recipelist)
 
 
 @app.route('/healthevent')
@@ -461,7 +466,7 @@ def healthevent():
     return render_template('healthevent.html', event_list=list)
 
 
-@app.route('/viewevent/<string:id>/', methods=['GET', 'POST'])  # stop here 20180109
+@app.route('/viewevent/<string:id>/', methods=['GET', 'POST'])
 def viewevent(id):
     event = events.get()
     eventlist = []
@@ -474,7 +479,7 @@ def viewevent(id):
     return render_template('viewevent.html', event_toview=eventlist)
 
 
-@app.route('/search')  # stop here 20180109
+@app.route('/search')
 def search():
     items = root.child('products').get()
     list = []  # create a list to store all the publication objects
@@ -487,9 +492,9 @@ def search():
         # print(item.get_itemid())
         list.append(item)
 
-    return render_template('search.html', item_list=list)  # stop here 20180109
+    return render_template('search.html', item_list=list)
 
-class RequiredIf(object): #added 180116
+class RequiredIf(object):
 
     def __init__(self, *args, **kwargs):
         self.conditions = kwargs
@@ -505,11 +510,11 @@ class RequiredIf(object): #added 180116
                 else:
                     validators.Optional().__call__(form, field)
 
-class ProductForm(Form): #added 180116
+class ProductForm(Form):
     name = StringField('Product Name', [
         validators.Length(min=1, max=150),
         validators.DataRequired()])
-    protype = RadioField('Category', choices=[('Fruit', 'Fruit'), ('Vegetable', 'Vegetable')], default='Fruit')
+    protype = RadioField('Category', choices=[('Fruits', 'Fruits'), ('Vegetables', 'Vegetables')], default='Fruits')
     price = StringField('Price', [
         validators.Length(min=1, max=100),
         validators.DataRequired()])
