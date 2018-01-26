@@ -1,0 +1,154 @@
+{% block title %}Admin - Dashboard{% endblock %}
+
+{% block head %}
+
+    <!-- Bootstrap Core CSS -->
+    <
+    <link href="../static/css/adminpanel/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/metisMenu.min.css">
+
+    <!-- Timeline CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/timeline.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/startmin.css">
+
+    <!-- Morris Charts CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/morris.css">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
+
+    <script src="../static/js/adminpanel/Chart.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+{% endblock %}
+
+{% block body %}
+    {% from "includes/_formhelper.html" import render_field %}
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <div class="container-fluid">
+            {% include 'includes/_anavbar.html' %}
+        </div>
+
+        {% if (session['logged_in'] and session['admin'] == 1) or (session['logged_in'] and session['admin'] == 2) %}
+            <div id="page-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Weekly Popular Items</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-bar-chart-o fa-fw"></i> Popular Items Chart Overview
+                                <canvas id="myChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <p>Browse through this week's Popular Items chart and we hope that you<br/> could purchase some of these items too!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /#page-wrapper -->
+            </div>
+            <!-- /#wrapper -->
+            </div>
+        {% else %}
+            <div id="page-wrapper">
+                <div class="row">
+                    <br>
+                    <br>
+                    <p>You do not have permission to view this page or perform this action</p>
+                </div>
+            </div>
+        {% endif %}
+
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="../static/js/adminpanel/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/js/adminpanel/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../static/js/adminpanel/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="../static/js/adminpanel/raphael.min.js"></script>
+    <script src="../static/js/adminpanel/morris.min.js"></script>
+    <script src="../static/js/adminpanel/morris-data.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../static/js/adminpanel/startmin.js"></script>
+
+    <script>
+        var ctx = document.getElementById("myChart").getContext('2d');
+
+        var data = {
+            labels: ["Apple ", "Pear", "Banana", "Orange", "Tomato ", "Carrot", "Cucumber", "Lettuce"],
+            datasets: [
+                {
+                    fill: true,
+                    backgroundColor: [
+                        '#14b852',
+                        '#2fb8b0',
+                        '#4f67b8',
+                        '#b86784',
+                        '#ab5800',
+                        '#b8ac00',
+                        '#ad00b8',
+                        '#b80a00'],
+                    data: {{ quantity_list }},
+// Notice the borderColor
+                    borderColor: ['white', 'white'],
+                    borderWidth: [2, 2]
+                }
+            ]
+        };
+
+        var options = {
+            legend: {
+                display: true,
+                position: 'right'
+            },
+        };
+
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                }
+            }
+        });
+    </script>
+
+
+{% endblock %}

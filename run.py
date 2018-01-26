@@ -403,7 +403,7 @@ def ourproduct():
 @app.route('/popularitem')
 def popularitem():
     popular = popitem.get()
-    poplist = []
+    #poplist = []
     name=[]
     color=[]
     quantity=[]
@@ -421,7 +421,7 @@ def popularitem():
     #     poplist.append(popBase)
     #     # print(popBase)
 
-    return render_template('popularitem.html', name_list=name, quantity_list=quantity)
+    return render_template('admin2.html', name_list=name, quantity_list=quantity, color_list=color)
 
 
 @app.route('/healthyrecipe')  # main recipe page
