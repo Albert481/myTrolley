@@ -3,7 +3,6 @@ from wtforms import Form, SelectMultipleField, StringField, PasswordField, valid
     ValidationError, FileField, SubmitField, TextAreaField, DateField
 import firebase_admin
 from firebase_admin import credentials, db, storage
-import json
 import signup as sp
 import trolleys as tr
 import event as ev
@@ -12,6 +11,7 @@ import popularitem as pop
 import product as prodt
 import userFeedback as uf
 import forumComment as fo
+from Workout import Workout
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -30,8 +30,10 @@ pdt_veg = db.reference('vegetables')
 
 user_ref = db.reference('userbase')
 
-e_email = db.reference('feedback')
-f_forum = db.reference('forum')
+email_email = db.reference('feedback')
+forum_forum = db.reference('forum')
+
+workout = db.reference('workout')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
@@ -176,8 +178,6 @@ def admin():
     form = AdminForm(request.form)
     foundlist = []
     attentionlist = []
-    trolleynumbers = form.trolleynumbers.data
-    calledname = form.trolleyid.data
     tnames = 0
     tfaults = 0
     tmisused = 0
@@ -200,7 +200,7 @@ def admin():
     # Charts
     values = []
 
-    values.append(tnames - tfaults)
+    values.append(tnames-tfaults)
     values.append(tfaults)
     return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
                            totmisused=tmisused, attention=attentionlist, values=values)
@@ -253,19 +253,41 @@ def repair_trolley(id):
 
     return redirect(url_for('viewpublications'))
 
+class ChangeAdmin(Form):
+    username = StringField('Please enter Trolley ID:', render_kw={"placeholder": "Username"})
+    adminlvl = RadioField('Admin Level', choices=[('admin0','0'), ('admin1', '1'), ('admin2', '2')])
 
-@app.route('/accounts')
+@app.route('/accounts', methods=['GET', 'POST'])
 def accounts():
     userbase = user_ref.get()
     totalaccounts = []
+    form = ChangeAdmin(request.form)
+    calledusername = form.username.data
     for user in userbase.items():
         finduser = sp.Admin(user[1]['username'], user[1]['email'], user[1]['admin'])
         totalaccounts.append(finduser)
 
-    return render_template('accounts.html', eachuser=totalaccounts)
+    if request.method == 'POST':
+        for username in userbase.items():
+            if calledusername == username[1]['username']:
+                admin = sp.Admin(username[1]['username'], username[1]['email'], username[1]['admin'])
+                print(user_ref.child(username[0]))
+                user_admin = user_ref.child(username[0])
+                if form.adminlvl.data == 'admin0':
+                    user_admin.update({
+                        'admin': admin.set_admin('0'),
+                    })
+                elif form.adminlvl.data == 'admin1':
+                    user_admin.update({
+                        'admin': admin.set_admin('1'),
+                    })
+                elif form.adminlvl.data == 'admin2':
+                    user_admin.update({
+                        'admin': admin.set_admin('2'),
+                    })
+    return render_template('accounts.html', eachuser=totalaccounts, form=form)
 
-
-@app.route('/add_product', methods=['GET', 'POST'])  # added 180116
+@app.route('/add_product', methods=['GET', 'POST']) #added 180116
 def add_product():
     form = ProductForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -278,29 +300,28 @@ def add_product():
         itemP = prodt.Product(name, category, price, origin, image_name)
         itemP_db = root.child('products')
         itemP_db.push({
-            'name': itemP.get_name(),
-            'category': itemP.get_category(),
-            'price': itemP.get_price(),
-            'origin': itemP.get_origin(),
-            'image_name': itemP.get_image_name()
+                'name': itemP.get_name(),
+                'category': itemP.get_category(),
+                'price': itemP.get_price(),
+                'origin': itemP.get_origin(),
+                'image_name': itemP.get_image_name()
 
         })
 
-        flash('Product Item Inserted Sucessfully.', 'success')
+        flash('Product Item Added Sucessfully.', 'success')
 
         return redirect(url_for('view_product'))
 
-    return render_template('create_product.html', form=form)
 
+    return render_template('create_product.html', form=form)
 
 @app.route('/delete_product/<string:id>', methods=['POST'])
 def delete_product(id):
     itemP_db = root.child('products/' + id)
     itemP_db.delete()
-    flash('Publication Deleted', 'success')
+    flash('Product Item Deleted Sucessfully.', 'success')
 
     return redirect(url_for('view_product'))
-
 
 @app.route('/update_product/<string:id>/', methods=['GET', 'POST'])
 def update_product(id):
@@ -317,11 +338,11 @@ def update_product(id):
         # create the product object
         itemP_db = root.child('products/' + id)
         itemP_db.set({
-            'name': itemP.get_name(),
-            'category': itemP.get_category(),
-            'price': itemP.get_price(),
-            'origin': itemP.get_origin(),
-            'image_name': itemP.get_image_name()
+                'name': itemP.get_name(),
+                'category': itemP.get_category(),
+                'price': itemP.get_price(),
+                'origin': itemP.get_origin(),
+                'image_name': itemP.get_image_name()
         })
 
         flash('Product Item Updated Sucessfully.', 'success')
@@ -343,15 +364,14 @@ def update_product(id):
 
         return render_template('update_product.html', form=form)
 
-
-@app.route('/view_product')  # 20180116
+@app.route('/view_product') #20180116
 def view_product():
     vitems = root.child('products').get()
     list = []  # create a list to store all the product objects
     for itemid in vitems:
         eachitem = vitems[itemid]
         vitem = prodt.Product(eachitem['name'], eachitem['category'], eachitem['price'],
-                              eachitem['origin'], eachitem['image_name'])
+                        eachitem['origin'], eachitem['image_name'])
 
         vitem.set_itemid(itemid)
         list.append(vitem)
@@ -384,13 +404,24 @@ def ourproduct():
 def popularitem():
     popular = popitem.get()
     poplist = []
+    name=[]
+    color=[]
+    quantity=[]
+
     for pop_id in popular:
         eachpop = popular[pop_id]
-        popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
-        poplist.append(popBase)
-        # print(popBase)
+        nameBase = eachpop['name']
+        quantityBase = eachpop['quantity']
+        name.append(nameBase)
+        quantity.append(quantityBase)
 
-    return render_template('popularitem.html', pop_list=poplist)
+    # for pop_id in popular:
+    #     eachpop = popular[pop_id]
+    #     popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
+    #     poplist.append(popBase)
+    #     # print(popBase)
+
+    return render_template('popularitem.html', name_list=name, quantity_list=quantity)
 
 
 @app.route('/healthyrecipe')  # main recipe page
@@ -418,13 +449,7 @@ def viewrecipe(id):
                              eachrecipe['link'], id)
     recipelist.append(recipeBase)
 
-    # for recipe_id in rec:
-    #     eachrecipe = rec[recipe_id]
-    #     recipeBase = recs.Recipe(eachrecipe['recipeName'], eachrecipe['image'], eachrecipe['serving'],
-    #                              eachrecipe['cooktime'], eachrecipe['ingredient'], eachrecipe['method'],
-    #                              eachrecipe['link'])
-    #     recipelist.append(recipeBase)
-    return render_template('viewrecipe.html', recipe_toview=recipelist)  # stop here 20180109
+    return render_template('viewrecipe.html', recipe_toview=recipelist)
 
 
 @app.route('/healthevent')
@@ -441,7 +466,7 @@ def healthevent():
     return render_template('healthevent.html', event_list=list)
 
 
-@app.route('/viewevent/<string:id>/', methods=['GET', 'POST'])  # stop here 20180109
+@app.route('/viewevent/<string:id>/', methods=['GET', 'POST'])
 def viewevent(id):
     event = events.get()
     eventlist = []
@@ -454,7 +479,7 @@ def viewevent(id):
     return render_template('viewevent.html', event_toview=eventlist)
 
 
-@app.route('/search')  # stop here 20180109
+@app.route('/search')
 def search():
     items = root.child('products').get()
     list = []  # create a list to store all the publication objects
@@ -467,10 +492,9 @@ def search():
         # print(item.get_itemid())
         list.append(item)
 
-    return render_template('search.html', item_list=list)  # stop here 20180109
+    return render_template('search.html', item_list=list)
 
-
-class RequiredIf(object):  # added 180116
+class RequiredIf(object):
 
     def __init__(self, *args, **kwargs):
         self.conditions = kwargs
@@ -486,12 +510,11 @@ class RequiredIf(object):  # added 180116
                 else:
                     validators.Optional().__call__(form, field)
 
-
-class ProductForm(Form):  # added 180116
+class ProductForm(Form):
     name = StringField('Product Name', [
         validators.Length(min=1, max=150),
         validators.DataRequired()])
-    protype = RadioField('Category', choices=[('Fruit', 'Fruit'), ('Vegetable', 'Vegetable')], default='Fruit')
+    protype = RadioField('Category', choices=[('Fruits', 'Fruits'), ('Vegetables', 'Vegetables')], default='Fruits')
     price = StringField('Price', [
         validators.Length(min=1, max=100),
         validators.DataRequired()])
@@ -501,6 +524,7 @@ class ProductForm(Form):  # added 180116
     image_name = StringField('Image File', [
         validators.Length(min=1, max=100),
         validators.DataRequired()])
+
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -638,11 +662,11 @@ def faq():
 
 
 class EmailForm(Form):
-    name = StringField('Name:', [validators.Length(min=1, max=100),
-                                 validators.DataRequired(message="Name is required.")])
-    user_email = StringField('Email:', [validators.Email(), validators.DataRequired(message="Email is required.")])
-    feedback = TextAreaField('Feedback:', [validators.Length(min=1, max=99999),
-                                           validators.DataRequired(message="Please enter your feedback")])
+    name = StringField('Name:', [validators.Length(min=1, max=100, message="Please enter your name"),
+                                 validators.DataRequired()])
+    user_email = StringField('Email:', [validators.Email(), validators.DataRequired()])
+    feedback = StringField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
+                                         validators.DataRequired()])
 
 
 @app.route('/email', methods=["GET", "POST"])
@@ -671,8 +695,8 @@ def email():
 
 
 class ForumCommentForm(Form):
-    comment = TextAreaField('Post a comment!', [validators.Length(min=1, max=9999999),
-                                                validators.DataRequired(message='Please enter your comment.')])
+    comment = StringField('Comment', [validators.Length(min=1, max=9999999, message='Please enter your comment'),
+                                      validators.DataRequired()])
 
 
 @app.route('/forum', methods=["GET", "POST"])
@@ -694,9 +718,161 @@ def forum():
     return render_template('forum.html', form=form)
 
 
-@app.route('/workout')
+class WorkoutForm(Form):
+    time_choices = [('10min', '0-10min'), ('20min', '0-20min'), ('30min', '0-30min')]
+    time = SelectField('Time', choices=time_choices, default='10min')
+    difficulty_level_choices = [('1', '1'), ('2', '2'), ('3', '3')]
+    difficulty_level = RadioField('Difficulty Level', choices=difficulty_level_choices, default='1')
+    body_focus_choices = [('core', 'Core'), ('whole_body', 'Total')]
+    body_focus = SelectField('Body Focus', choices=body_focus_choices, default='core')
+
+
+@app.route('/workout_type_1')
+def workout_type_1():
+    return render_template('workout_type_1.html')
+
+@app.route('/workout_type_2')
+def workout_type_2():
+    return render_template('workout_type_2.html')
+
+@app.route('/workout_type_3')
+def workout_type_3():
+    return render_template('workout_type_3.html')
+
+@app.route('/workout_type_4')
+def workout_type_4():
+    return render_template('workout_type_4.html')
+
+@app.route('/workout_type_5')
+def workout_type_5():
+    return render_template('workout_type_5.html')
+
+@app.route('/workout_type_6')
+def workout_type_6():
+    return render_template('workout_type_6.html')
+
+@app.route('/workout_type_7')
+def workout_type_7():
+    return render_template('workout_type_7.html')
+
+@app.route('/workout_type_8')
+def workout_type_8():
+    return render_template('workout_type_8.html')
+
+@app.route('/workout_type_9')
+def workout_type_9():
+    return render_template('workout_type_9.html')
+
+@app.route('/workout_type_10')
+def workout_type_10():
+    return render_template('workout_type_10.html')
+
+@app.route('/workout_type_11')
+def workout_type_11():
+    return render_template('workout_type_11.html')
+
+@app.route('/workout_type_12')
+def workout_type_12():
+    return render_template('workout_type_12.html')
+
+@app.route('/workout_type_13')
+def workout_type_13():
+    return render_template('workout_type_13.html')
+
+@app.route('/workout_type_14')
+def workout_type_14():
+    return render_template('workout_type_14.html')
+
+@app.route('/workout_type_15')
+def workout_type_15():
+    return render_template('workout_type_15.html')
+
+@app.route('/workout_type_16')
+def workout_type_16():
+    return render_template('workout_type_16.html')
+
+@app.route('/workout_type_17')
+def workout_type_17():
+    return render_template('workout_type_17.html')
+
+@app.route('/workout_type_18')
+def workout_type_18():
+    return render_template('workout_type_18.html')
+
+@app.route('/workout', methods=['GET', 'POST'])
 def workout():
-    return render_template('workout.html')
+    form = WorkoutForm(request.form)
+    if request.method == 'POST' and form.validate():
+        time = form.time.data
+        difficulty_level = form.difficulty_level.data
+        body_focus = form.body_focus.data
+
+        workout = Workout(time, difficulty_level, body_focus)
+
+        workout_db = root.child('workout')
+        workout_db.push({
+            'time': workout.get_time(),
+            'diff_level': workout.get_diff_level(),
+            'body_focus': workout.get_body_focus()
+        })
+
+        workout_type_dest = ''
+        #form2 = WorkoutTypeForm(request.form)
+
+        if body_focus == 'core':
+            if time == '10min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_1'
+                    #form2.videolink1 = 'some video link ...'
+                    #form2.duration = 'some value'
+                    #form2.calorieburn = 'some value'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_2'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_3'
+            elif time == '20min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_4'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_5'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_6'
+            elif time == '30min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_7'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_8'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_9'
+
+        elif body_focus == 'whole_body':
+            if time == '10min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_10'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_11'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_12'
+            elif time == '20min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_13'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_14'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_15'
+            elif time == '30min':
+                if difficulty_level == '1':
+                    workout_type_dest = 'workout_type_16'
+                elif difficulty_level == '2':
+                    workout_type_dest = 'workout_type_17'
+                elif difficulty_level == '3':
+                    workout_type_dest = 'workout_type_18'
+
+        return redirect(url_for(workout_type_dest))
+        #return redirect(url_for(workout_type_dest), form=form2)
+
+    return render_template('workout.html', form=form)
+
 
 
 if __name__ == '__main__':
