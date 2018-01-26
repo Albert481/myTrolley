@@ -52,7 +52,7 @@
                 </div>
                 <!-- /.row -->
                 <div class="row">
-                    <div class="col-lg-5">
+                    <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <i class="fa fa-bar-chart-o fa-fw"></i> Popular Items Chart Overview
@@ -60,10 +60,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-7">
+                    <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <p>Browse through this week's Popular Items chart and we hope that you<br/> could purchase some of these items too!</p>
+                                <p>Browse through this week's Popular Items chart and we hope that you could purchase some of these items too!</p>
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
         var ctx = document.getElementById("myChart").getContext('2d');
 
         var data = {
-            labels: ["Apple ", "Pear", "Banana", "Orange", "Tomato ", "Carrot", "Cucumber", "Lettuce"],
+            labels: {{ name_list|tojson }},
             datasets: [
                 {
                     fill: true,
