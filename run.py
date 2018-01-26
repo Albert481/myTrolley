@@ -414,7 +414,7 @@ def popularitem():
         name.append(nameBase)
         quantity.append(quantityBase)
 
-    return render_template('admin2.html', name_list=name, quantity_list=quantity)
+    return render_template('popularitem.html', name_list=name, quantity_list=quantity)
 
 
 @app.route('/healthyrecipe')  # main recipe page

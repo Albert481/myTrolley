@@ -1,78 +1,123 @@
 ﻿{% extends 'layout.html' %}
 {% block title %}Popular Item{% endblock %}
 
+{% block head %}
+
+    <!-- Bootstrap Core CSS -->
+
+    <script src="../static/js/jquery-1.11.3.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="../static/js/jquery.easing.min.js"></script>
+
+    <!-- Custom Javascript -->
+    <script src="../static/js/custom.js"></script>
+
+    <script src="../static/js/adminpanel/Chart.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+{% endblock %}
+
+
 {% block body %}
     <section class="content">
         <div class="container">
             <div class="row">
                 <!-- Jumbotron Header -->
-                <header class="jumbotron my-4" style="background-image: url(http://www.californiafootgolfclub.com/static/img/footgolf-1.jpg);">
+                <header class="jumbotron my-3" style="background-image: url(http://www.californiafootgolfclub.com/static/img/footgolf-1.jpg);">
                     <h1 class="display-3">Weekly Popular Items</h1>
-                    <p>See the popular items of this week!</p>
+                    <p>Browse through this week's Popular Items chart and we hope that you could purchase some of these items!</p>
 
                 </header>
-                <div class="row text-center">
-                    <div class="col-lg-12" style="text-align:center;">
-                            <p>As a customer of myTrolley, you play a generous part in keeping up our stocks of products.
-                            <br>This is a weekly graphical presentation of the popular items that our customers have bought within the week.
-                            <br>Browse through the Popular Items chart and we hope that you could purchase some popular items too!</p>
-                        <br/>
-                    </div>
-                </div>                    
-
-                <!-- Page Features -->
-
-                <div align="center" class="col-md-12" >
-
-                    <div id="graphItems">
-                        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-                        <script type="text/javascript">
-                            google.charts.load("current", { packages: ["corechart"] });
-                            google.charts.setOnLoadCallback(drawChart);
-                            function drawChart() {
-                                var data = google.visualization.arrayToDataTable([
-                                    ['Items', 'Number of times bought'],
-                                    ['Apple', 8],
-                                    ['Pear', 8],
-                                    ['Orange', 4],
-                                    ['Banana', 5],
-                                    ['Tomato', 14],
-                                    ['Carrot', 12],
-                                    ['Cucumber', 9],
-                                    ['Lettuce', 6],
-
-
-                                ]);
-
-                                var options = {
-                                    title: 'Weekly Popular Items',
-                                    is3D: true,
-                                };
-
-                                var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-                                chart.draw(data, options);
-                            }
-                        </script>
-
-                        <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-bar-chart-o fa-fw"></i> Popular Items Chart Overview
+                                <canvas id="myChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- /.row -->
-            </div>
+            <div class="col-lg-4"></div>
         </div>
-        </section>
- {% endblock %}
+    </section>
+<!-- jQuery -->
+    <script src="../static/js/adminpanel/jquery.min.js"></script>
 
-            <!-- jQuery -->
-            <script src="../static/js/jquery-1.11.3.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/js/adminpanel/bootstrap.min.js"></script>
 
-            <!-- Bootstrap Core JavaScript -->
-            <script src="../static/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../static/js/adminpanel/metisMenu.min.js"></script>
 
-            <!-- Plugin JavaScript -->
-            <script src="../static/js/jquery.easing.min.js"></script>
+    <!-- Morris Charts JavaScript -->
+    <script src="../static/js/adminpanel/raphael.min.js"></script>
+    <script src="../static/js/adminpanel/morris.min.js"></script>
+    <script src="../static/js/adminpanel/morris-data.js"></script>
 
-            <!-- Custom Javascript -->
-            <script src="../static/js/custom.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../static/js/adminpanel/startmin.js"></script>
+
+    <script>
+        var ctx = document.getElementById("myChart").getContext('2d');
+
+        var data = {
+            labels: {{ name_list|tojson }},
+            datasets: [
+                {
+                    fill: true,
+                    backgroundColor: [
+                        '#14b852',
+                        '#2fb8b0',
+                        '#4f67b8',
+                        '#b86784',
+                        '#ab5800',
+                        '#b8ac00',
+                        '#ad00b8',
+                        '#b80a00'],
+                    data: {{ quantity_list }},
+// Notice the borderColor
+                    borderColor: ['white', 'white'],
+                    borderWidth: [2, 2]
+                }
+            ]
+        };
+
+        var options = {
+            legend: {
+                display: true,
+                position: 'center'
+            },
+        };
+
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                }
+            }
+        });
+    </script>
+
+
+{% endblock %}
 
