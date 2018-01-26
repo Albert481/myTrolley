@@ -1,20 +1,25 @@
-﻿{% extends 'layout.html' %}
-{% block title %}Popular Item{% endblock %}
+{% block title %}Admin - Dashboard{% endblock %}
 
 {% block head %}
 
     <!-- Bootstrap Core CSS -->
+    <
+    <link href="../static/css/adminpanel/bootstrap.min.css" rel="stylesheet">
 
-    <script src="../static/js/jquery-1.11.3.min.js"></script>
+    <!-- MetisMenu CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/metisMenu.min.css">
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../static/js/bootstrap.min.js"></script>
+    <!-- Timeline CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/timeline.css">
 
-    <!-- Plugin JavaScript -->
-    <script src="../static/js/jquery.easing.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/startmin.css">
 
-    <!-- Custom Javascript -->
-    <script src="../static/js/custom.js"></script>
+    <!-- Morris Charts CSS -->
+    <link rel="stylesheet" href="../static/css/adminpanel/morris.css">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
 
     <script src="../static/js/adminpanel/Chart.min.js"></script>
 
@@ -27,21 +32,27 @@
 
 {% endblock %}
 
-
 {% block body %}
-    <section class="content">
-        <div class="container">
-            <div class="row">
-                <!-- Jumbotron Header -->
-                <header class="jumbotron my-3" style="background-image: url(http://www.californiafootgolfclub.com/static/img/footgolf-1.jpg);">
-                    <h1 class="display-3">Weekly Popular Items</h1>
-                    <p>Browse through this week's Popular Items chart and we hope that you could purchase some of these items!</p>
+    {% from "includes/_formhelper.html" import render_field %}
 
-                </header>
-            </div>
-            <div class="row">
-                <div class="col-lg-4"></div>
-                    <div class="col-lg-4">
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <div class="container-fluid">
+            {% include 'includes/_anavbar.html' %}
+        </div>
+
+        {% if (session['logged_in'] and session['admin'] == 1) or (session['logged_in'] and session['admin'] == 2) %}
+            <div id="page-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Weekly Popular Items</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <i class="fa fa-bar-chart-o fa-fw"></i> Popular Items Chart Overview
@@ -49,11 +60,32 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <p>Browse through this week's Popular Items chart and we hope that you could purchase some of these items too!</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            <div class="col-lg-4"></div>
-        </div>
-    </section>
-<!-- jQuery -->
+                <!-- /#page-wrapper -->
+            </div>
+            <!-- /#wrapper -->
+            </div>
+        {% else %}
+            <div id="page-wrapper">
+                <div class="row">
+                    <br>
+                    <br>
+                    <p>You do not have permission to view this page or perform this action</p>
+                </div>
+            </div>
+        {% endif %}
+
+
+    </div>
+
+    <!-- jQuery -->
     <script src="../static/js/adminpanel/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
@@ -98,7 +130,7 @@
         var options = {
             legend: {
                 display: true,
-                position: 'center'
+                position: 'right'
             },
         };
 
@@ -120,4 +152,3 @@
 
 
 {% endblock %}
-

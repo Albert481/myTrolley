@@ -287,7 +287,7 @@ def accounts():
                     })
     return render_template('accounts.html', eachuser=totalaccounts, form=form)
 
-@app.route('/add_product', methods=['GET', 'POST']) #added 180116
+@app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
     form = ProductForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -403,9 +403,8 @@ def ourproduct():
 @app.route('/popularitem')
 def popularitem():
     popular = popitem.get()
-    poplist = []
+    #poplist = []
     name=[]
-    color=[]
     quantity=[]
 
     for pop_id in popular:
@@ -414,12 +413,6 @@ def popularitem():
         quantityBase = eachpop['quantity']
         name.append(nameBase)
         quantity.append(quantityBase)
-
-    # for pop_id in popular:
-    #     eachpop = popular[pop_id]
-    #     popBase = pop.PopularItem(eachpop['name'], eachpop['quantity'])
-    #     poplist.append(popBase)
-    #     # print(popBase)
 
     return render_template('popularitem.html', name_list=name, quantity_list=quantity)
 
@@ -438,7 +431,7 @@ def healthyrecipe():
     return render_template('healthyrecipe.html', recipe_list=recipelist)
 
 
-@app.route('/viewrecipe/<string:id>/', methods=['GET', 'POST'])  # stop here 20180109
+@app.route('/viewrecipe/<string:id>/', methods=['GET', 'POST'])
 def viewrecipe(id):
     # mag_db = root.child('recipes/' + id)
     rec = recipes.get()
