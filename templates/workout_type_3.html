@@ -5,9 +5,26 @@ body_focus=Core-->
 {% block title %}Workout_Qn{% endblock %}
 
 {% block head %}
+    <style>
+    .show-header{
+        text-align: center;
+        padding-top: 1cm;
+        padding-bottom: 1cm;
+    }
+    .details-list {
+        display: inline-block;
+        width:200px;
+        margin:0 auto;
+        text-align:left;
+    }
+    .grey {
+        background-color: #E6E6FA;
+    }
+    </style>
 {% endblock %}
 
 {% block body %}
+    <div class="grey">
     <div class="show-header">
     <div class="container -flush">
       <div class="media">
@@ -124,5 +141,6 @@ body_focus=Core-->
       </div>
     </div>
     </div>
+</div>
 
 {% endblock %}

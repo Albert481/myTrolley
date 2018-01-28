@@ -3,36 +3,48 @@
 
 {% block head %}
 <style>
-		.header {
-			background-color: white;
-			height: 100px;
-			width: 100%;
-		}
-
-		.header h1 {
-			margin-top: 0;
+		h1 {
 			text-align: center;
-			color: pink;
-			height: 100px;
-			width: 100%;
-            line-height: 100px;
 		}
         .form-arrangement{
             margin:0 auto;
-            width:75%;
+            width: 50%;
             text-align:left;
+        }
+        h3{
+            margin-top: 0;
+			text-align: center;
+			height: 100px;
+			width: 100%;
+            line-height: 100px;
+            color:darkorange;
+        }
+        .grey{
+            background-color: #E6E6FA;
+            padding-top: 2cm;
+            padding-bottom: 3cm;
+        }
+        .btn{
+           width:15%;
+           float: right;
+        }
+        #time{
+            width:300px;
+        }
+        #body_focus{
+            width:300px;
         }
 </style>
 {% endblock %}
 
 {% block body %}
     {% from "includes/_formhelper.html" import render_field %}
-    <div class="header">
-        <h1>3 simple questions to get you started</h1>
-    </div>
+    <div class="grey">
+        <h1>Workout Generator</h1>
+        <h3>Answer 3 simple questions to find your ideal workout!</h3>
     <div class="form-arrangement">
         <form method="POST" action="">
-            <div class="form-group">
+            <div class="form-group" id="time">
                 <!--time-->
                 {{ render_field(form.time, class_="form-control") }}
             </div>
@@ -42,13 +54,19 @@
                     {{ render_field(form.difficulty_level, class_="radio-inline") }}
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="body_focus">
                 <!--body_focus-->
                 {{ render_field(form.body_focus, class_="form-control") }}
             </div>
-                <input type="submit" value="Submit" class="btn btn-info"/>
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
         </form>
     </div>
+    </div>
+
 {% endblock %}
 
             <!-- jQuery -->

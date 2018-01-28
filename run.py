@@ -13,6 +13,7 @@ import product as prodt
 import userFeedback as uf
 import forumComment as fo
 from Workout import Workout
+from workoutWorkshop import workoutProgram
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -35,6 +36,7 @@ email_email = db.reference('response')
 forum_forum = db.reference('forum')
 
 workout = db.reference('workout')
+workout_program = db.reference('workout_program')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
@@ -861,7 +863,36 @@ def workout():
 
     return render_template('workout.html', form=form)
 
+class ProgramRegistrationForm(Form):
+    weight = StringField('Weight', [validators.DataRequired()])
+    height = StringField('Height', [validators.DataRequired()])
+    medical_condition_choices = [('no','No'),('asthma', 'Asthma'), ('high blood pressure', 'High Blood Pressure')]
+    medical_condition = SelectField('Do you have any medical conditions?', [validators.DataRequired()], choices=medical_condition_choices)
+    allergy_choices= [('milk','Milk'),('peanuts','Peanuts'),('soy','Soy')]
+    allergy = SelectField('Do you have any food allergies?', [validators.DataRequired()], choices=allergy_choices)
 
+@app.route('/workoutProgram', methods=['GET', 'POST'])
+def workout_program():
+    form = ProgramRegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        weight = form.weight.data
+        height = form.height.data
+        medical_condition = form.medical_condition.data
+        allergy = form.allergy.data
+
+        workout_program = workoutProgram(weight,height,medical_condition, allergy)
+
+        workout_program_db = root.child('workout_program')
+        workout_program_db.push({
+            'weight': workout_program.get_weight(),
+            'height': workout_program.get_height(),
+            'medical_condition': workout_program.get_medical_condition(),
+            'allergy': workout_program.get_allergy()
+        })
+
+        flash('Thank you! The form was submitted successfully.', 'success')
+
+    return render_template('workshop_form.html', form=form)
 
 if __name__ == '__main__':
     app.run()
