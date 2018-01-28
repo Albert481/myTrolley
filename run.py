@@ -563,7 +563,7 @@ class LoginForm(Form):
     username = StringField('Username:', [validators.DataRequired()])
     password = PasswordField('Password:', [validators.DataRequired()])
 
-
+#
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
