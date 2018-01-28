@@ -707,6 +707,14 @@ def forum():
 
         flash('Your comment has been sent!')
 
+        print(forum_forum.get())
+        forums = forum_forum.get()
+        for comment_id in forums:
+            each_comment = forums[comment_id]
+            print(each_comment['comment'])
+
+
+
         return render_template('forum.html', form=form)
 
     return render_template('forum.html', form=form)
