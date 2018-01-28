@@ -546,17 +546,11 @@ def signup():
 
 def validity_signup(form, field):
     userbase = user_ref.get()
-    list = []
-
-
-#   for signup in userbase:
-#   eachentry = userbase[signup]
-#   entrybase = sp.Users(eachentry['username'], eachentry['email'], eachentry['password'])
-#   list.append(entrybase)
-#   if signup[1]['username'] == field.data:
-#       raise ValidationError('Username has already been used')
-#   elif signup[1]['email'] == field.data:
-#       raise ValidationError('Email has already been used')
+    for user in userbase.items():
+        if user[1]['username'] == field.data:
+            raise ValidationError('Username has already been used')
+        elif user[1]['email'] == field.data:
+            raise ValidationError('Email has already been used')
 
 class SignupForm(Form):
     username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
