@@ -1,0 +1,115 @@
+{% extends 'layout.html' %}
+{% block title %}Workout_Workshop_Registration_Form{% endblock %}
+
+{% block head %}
+<style>
+        .grey{
+            background-color: #E6E6FA;
+            padding-top: 2cm;
+            padding-bottom: 3cm;
+        }
+       .form-arrangement{
+            margin:0 auto;
+            width:50%;
+            text-align:left;
+        }
+       .btn{
+           width:15%;
+           float: right;
+       }
+        h1,h2{
+            color: darkorange;
+        }
+	    h2 {
+            padding-top: 0.5cm;
+	    }
+        .center{
+            text-align: center;
+        }
+        #weight{
+            width:300px;
+        }
+        #height{
+            width:300px;
+        }
+        #medical_condition{
+            width:300px;
+        }
+        #allergy{
+            width:300px;
+        }
+        .space{
+            padding-bottom: 0.5cm;
+        }
+        img{
+            width:500px;
+            height:294px;
+        }
+</style>
+{% endblock %}
+{% block body %}
+    <div class="grey">
+    <div class="center">
+    <h1>The Complete 4-Week Beginner's Workout Program</h1>
+    <img src="/static/images/workout_program_pic.jpg" title="Thin man on lad pull down machine thumbail">
+    <div class="space">
+        <p><strong>Aim:</strong> Strength Hypertrophy, Lose Weight</p>
+        <p><strong>Type:</strong> Muscle Endurance, Strength Training</p>
+        <p><strong>Duration:</strong> 3 - 6 days per week</p>
+        <p><strong>Level:</strong> Beginner Level</p>
+    </div>
+    <p align="center">It doesn’t necessarily take 8 or 12 weeks to get your feet wet in the gym. <br>
+        After four weeks you’ll not only be ready for the next challenge but <br>
+        you’ll have built a significant amount of quality muscle. <br>
+        In other words, one month from now you’ll look significantly better.</p>
+    <h2 >Beginner's workout preview</h2>
+    <div class="space">
+        <p><strong>Week 1:</strong> Full-body split</p>
+        <p><strong>Week 2:</strong> Two-day split: Upper body/Lower body</p>
+        <p><strong>Week 3:</strong> Three-day split: Push/Pull/Legs</p>
+        <p><strong>Week 4:</strong> Four-day split: Full body</p>
+    </div>
+        <h3>Workout Program Registration Form</h3>
+        </div>
+            {% from "includes/_formhelper.html" import render_field %}
+        <div class="form-arrangement">
+        <form method="POST" action="">
+            <div class="form-group" id="weight">
+                <!--weight-->
+                {{ render_field(form.weight, class_="form-control") }}
+                    <label>kg</label>
+            </div>
+            <div class="form-group" id="height">
+                <!--height-->
+                {{ render_field(form.height, class_="form-control") }}
+                <label>cm</label>
+            </div>
+            <div class="form-group" id="medical_condition">
+                <!--medical_condition-->
+                {{  render_field(form.medical_condition, class_="form-control") }}
+            </div>
+            <div class="form-group" id="allergy">
+                <!--medical_condition-->
+                {{  render_field(form.allergy, class_="form-control") }}
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+{% endblock %}
+
+            <!-- jQuery -->
+            <script src="../static/js/jquery-1.11.3.min.js"></script>
+
+            <!-- Bootstrap Core JavaScript -->
+            <script src="../static/js/bootstrap.min.js"></script>
+
+            <!-- Plugin JavaScript -->
+            <script src="../static/js/jquery.easing.min.js"></script>
+
+            <!-- Custom Javascript -->
+            <script src="../static/js/custom.js"></script>
