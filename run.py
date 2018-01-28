@@ -658,7 +658,7 @@ class EmailForm(Form):
     name = StringField('Name:', [validators.Length(min=1, max=100, message="Please enter your name"),
                                  validators.DataRequired()])
     user_email = StringField('Email:', [validators.Email(), validators.DataRequired()])
-    feedback = StringField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
+    feedback = TextAreaField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
                                          validators.DataRequired()])
 
 
@@ -688,7 +688,7 @@ def email():
 
 
 class ForumCommentForm(Form):
-    comment = StringField('Comment', [validators.Length(min=1, max=9999999, message='Please enter your comment'),
+    comment = TextAreaField('Comment', [validators.Length(min=1, max=9999999, message='Please enter your comment'),
                                       validators.DataRequired()])
 
 

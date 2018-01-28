@@ -8,18 +8,24 @@
         }
 
     </style>
-
-
     <script>
+        $(document).ready(function () {
+            var para = document.createElement("p");
+            var inputcomment = document.createTextNode("HI THERE");
+            para.appendChild(inputcomment);
+            var element = document.getElementById("commentsection");
+            element.appendChild(para);
+        });
 
-        var para = document.createElement("p")
-        var inputcomment = document.createTextNode("")
-
+        $(document).ready(function () {
+            console.log("ready!");
+        });
     </script>
 {% endblock %}
 
 {% block body %}
     {% from "includes/_formhelper.html" import render_field %}
+
 
     <section class="content">
         <div class="container">
@@ -43,39 +49,20 @@
                         <div id="user_comment" class="form-group">
                             {{ render_field(form.comment, row=7, class_="form-control") }}
                         </div>
-                        <input type="submit" value="submit" class="btn btn-default">
+                        <input type="submit" onclick="addComment()" value="submit" class="btn btn-default">
                     </form>
                 </div>
             </div>
 
-            <!--<div class="row">
-                <div class="col-sm-2">
-                    <img src="../static/images/usericon.png" class="img-responsive img center-block"
-                         style="height:100px;width:100px;">
-                </div>
-                <div class="col-sm-10 commentbox">
-                    <p class="commentbox">Great website!!!</p>
-                </div>
-            </div>
             <div class="row">
-                <div class="col-sm-2">
-                    <img src="../static/images/usericon.png" class="img-responsive img center-block"
-                         style="height:100px;width:100px;">
-                </div>
-                <div class="col-sm-10 commentbox">
-                    <p class="commentbox">Only a week for prototype?!?!</p>
+                <div class="col-sm-12">
+                    <div id="commentsection">
+
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-2">
-                    <img src="../static/images/usericon.png" class="img-responsive img center-block"
-                         style="height:100px;width:100px;">
-                </div>
-                <div class="col-sm-10 commentbox">
-                    <p class="commentbox">Cool page</p>
-                </div>
-            </div>
-        </div> -->
         </div>
     </section>
+
+
 {% endblock %}
