@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from wtforms import Form, SelectMultipleField, StringField, PasswordField, validators, RadioField, SelectField, \
     ValidationError, FileField, SubmitField, TextAreaField, DateField
+import json
 import firebase_admin
 from firebase_admin import credentials, db, storage
 import signup as sp
@@ -30,7 +31,7 @@ pdt_veg = db.reference('vegetables')
 
 user_ref = db.reference('userbase')
 
-email_email = db.reference('feedback')
+email_email = db.reference('response')
 forum_forum = db.reference('forum')
 
 workout = db.reference('workout')
@@ -652,7 +653,7 @@ class EmailForm(Form):
     name = StringField('Name:', [validators.Length(min=1, max=100, message="Please enter your name"),
                                  validators.DataRequired()])
     user_email = StringField('Email:', [validators.Email(), validators.DataRequired()])
-    feedback = StringField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
+    feedback = TextAreaField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
                                          validators.DataRequired()])
 
 
@@ -665,7 +666,7 @@ def email():
         feedback = form.feedback.data
         eEmail = uf.userFeedback(name, user_email, feedback)
 
-        eEmail_db = root.child('feedback')
+        eEmail_db = root.child('response')
         eEmail_db.push({
             'name': eEmail.get_email_name(),
             'email': eEmail.get_user_email(),
@@ -682,7 +683,7 @@ def email():
 
 
 class ForumCommentForm(Form):
-    comment = StringField('Comment', [validators.Length(min=1, max=9999999, message='Please enter your comment'),
+    comment = TextAreaField('', [validators.Length(min=1, max=9999999, message='Please enter your comment'),
                                       validators.DataRequired()])
 
 

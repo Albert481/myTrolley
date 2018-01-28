@@ -12,19 +12,19 @@
             border-bottom-style: solid;
         }
 
-        .contactussection {
+        .contactussection1 {
             padding: 50px 50px 50px 50px;
             border-color: black;
             border-style: solid;
             background-color: white;
         }
 
-        .content {
-            background-color: #E6E6FA;
+        .contactussection2 {
+            border-style: none !important;
         }
 
-        #feedback {
-            height: 250px;
+        .content {
+            background-color: #E6E6FA;
         }
 
         .contactusinfo {
@@ -32,6 +32,10 @@
             border-color: black;
             border-style: solid;
             padding: 10px;
+        }
+
+        .email_feedback {
+            height: 200px;
         }
     </style>
 
@@ -61,11 +65,11 @@
                         we will be in touch with you within 5 to 7 working days. For the list of commonly asked
                         questions,
                         please click <a href="faq"> here </a>. For urgent assistance, please call our hotline at
-                        1234 5678.
+                        61234567.
                     </p>
                 </div>
-                <div class="contactussection">
-                    <form id="" action="" method="POST">
+                <div class="contactussection1">
+                    <form class="contactussection2" id="" action="" method="POST">
                         <div id="" class="form-group">
                             {{ render_field(form.name, class_="form-control") }}
                         </div>
@@ -75,10 +79,10 @@
                         </div>
 
                         <div id="" class="form-group">
-                            {{ render_field(form.feedback, class_="form-control") }}
+                            {{ render_field(form.feedback, rows=8, class_="email_feedback form-control") }}
                         </div>
 
-                        <input type="submit" value="submit" class="btn btn-default"/>
+                        <input type="submit" value="submit" style="border: none" class="btn btn-default"/>
                     </form>
                 </div>
             </div>
