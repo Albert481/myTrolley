@@ -710,6 +710,7 @@ def forum():
 
         flash('Your comment has been sent!')
 
+
         forums = forum_forum.get()  # get database in format of dictionary
         forum_list = []
         forum_key_value = {}
@@ -719,7 +720,7 @@ def forum():
             each_comment_value = each_comment['comment']
             forum_list.append(each_comment_value)   # append value into list
 
-        for i in range(len(forum_list)):    # iterate depending of length of forum_list
+        for i in range(len(forum_list)):    # iterate depending on no. of elements in forum_list
             comment_no = "comment"
             comment_no += str(i + 1)
             forum_key_value.update({comment_no: forum_list[i]})     # setting key:value pairs in new dictionary
