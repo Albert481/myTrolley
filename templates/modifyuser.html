@@ -1,8 +1,19 @@
-{% extends 'layout2.html' %}
-{% block title %}Modify{% endblock %}
+{% extends 'layout.html' %}
+{% block title %}Modify User{% endblock %}
 
 {% block head %}
+    <style>
 
+    .selector {
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+        margin-bottom: -5px;
+        width: 200px;
+        height: 40px;
+    }
+
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -10,53 +21,26 @@
     <section class="content">
 
          <div class="container">
-             <h2>Edit Information</h2>
+             <div class="center">
+                 <h2 class="text-center">Edit Info</h2>
+             </div>
                  <div class="profile"><p align="left">Profile:
-                         <div class="image">
-                             <img src="../static/images/usericon.png" height="100px" width="100px"/>
-                                 <div class="profile-picture">
-                                     <a href="">Change profile picture</a><br><br>
-                                         <div class="name">{{ render_field(form.username, class_="form-control") }}<br>
-                                             <a href="">Change your username</a><br><br>
-                                                 <div class="email">{{render_field(form.email, class_="form-control")}}<br>
-                                                     <a href="">Change email address</a><br><br>
-                                                         <div class="password">{{ render_field(form.password, class_="form-control") }}<br>
-                                                             <a href="">Change password</a><br>
-                                                         </div>
+                                 <div class="name">{{ render_field(form.username, class_="form-control") }}<br>
+                                     <a href="">Change your username</a><br><br>
+                                         <div class="email">{{render_field(form.email, class_="form-control")}}<br>
+                                             <a href="">Change email address</a><br><br>
+                                                 <div class="password">{{ render_field(form.password, class_="form-control") }}<br>
+                                                     <a href="">Change password</a><br>
                                                  </div>
                                          </div>
                                  </div>
-                         </div>
+                             </div>
+                     </div>
                  </div>
          </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
     </section>
 
 {% endblock %}
-	<!-- Footer -->
-    <footer class="page-footer">
-    
-    	<!-- Contact Us -->
-        <div class="contact">
-        	<div class="container">
-				<h2 class="section-heading">Contact Us</h2>
-				<p><span class="glyphicon glyphicon-earphone"></span><br> +1(23) 456 7890</p>
-				<p><span class="glyphicon glyphicon-envelope"></span><br> info@example.com</p>
-        	</div>
-        </div>
-        	
-        <!-- Copyright etc -->
-        <div class="small-print">
-        	<div class="container">
-        		<p>Copyright &copy; myTrolley.tk 2017</p>
-        	</div>
-        </div>
-        
-    </footer>
 
     <!-- jQuery -->
     <script src="../static/js/jquery-1.11.3.min.js"></script>
