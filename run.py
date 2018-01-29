@@ -707,12 +707,22 @@ def forum():
 
         flash('Your comment has been sent!')
 
-        print(forum_forum.get())
+
+        #print(forum_forum.get())
         forums = forum_forum.get()
+        #print (forums)
+
         for comment_id in forums:
             each_comment = forums[comment_id]
-            print(each_comment['comment'])
+            #print(each_comment['comment'])
 
+        # open an existing script that is ready to use the my_js_data variable
+        # we are about to generate
+            js = open('static/js/help/forum.js', 'r')
+
+        # dynamically generate javascript code
+            javascript_out = "var my_js_data = JSON.parse('{}');".format(json.dumps(forums))
+            javascript_out += js.read()
 
 
         return render_template('forum.html', form=form)
