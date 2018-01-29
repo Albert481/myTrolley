@@ -203,7 +203,7 @@ def admin():
     # Charts
     values = []
 
-    values.append(tnames-tfaults)
+    values.append(tnames - tfaults)
     values.append(tfaults)
     return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
                            totmisused=tmisused, attention=attentionlist, values=values)
@@ -256,9 +256,11 @@ def repair_trolley(id):
 
     return redirect(url_for('viewpublications'))
 
+
 class ChangeAdmin(Form):
     username = StringField('', render_kw={"placeholder": "Username"})
-    adminlvl = RadioField('', choices=[('admin0','0'), ('admin1', '1'), ('admin2', '2')])
+    adminlvl = RadioField('', choices=[('admin0', '0'), ('admin1', '1'), ('admin2', '2')])
+
 
 @app.route('/accounts', methods=['GET', 'POST'])
 def accounts():
@@ -289,6 +291,7 @@ def accounts():
                 return redirect(url_for('accounts'))
     return render_template('accounts.html', eachuser=totalaccounts, form=form)
 
+
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
     form = ProductForm(request.form)
@@ -302,11 +305,11 @@ def add_product():
         itemP = prodt.Product(name, category, price, origin, image_name)
         itemP_db = root.child('products')
         itemP_db.push({
-                'name': itemP.get_name(),
-                'category': itemP.get_category(),
-                'price': itemP.get_price(),
-                'origin': itemP.get_origin(),
-                'image_name': itemP.get_image_name()
+            'name': itemP.get_name(),
+            'category': itemP.get_category(),
+            'price': itemP.get_price(),
+            'origin': itemP.get_origin(),
+            'image_name': itemP.get_image_name()
 
         })
 
@@ -314,8 +317,8 @@ def add_product():
 
         return redirect(url_for('view_product'))
 
-
     return render_template('create_product.html', form=form)
+
 
 @app.route('/delete_product/<string:id>', methods=['POST'])
 def delete_product(id):
@@ -324,6 +327,7 @@ def delete_product(id):
     flash('Product Item Deleted Sucessfully.', 'success')
 
     return redirect(url_for('view_product'))
+
 
 @app.route('/update_product/<string:id>/', methods=['GET', 'POST'])
 def update_product(id):
@@ -340,11 +344,11 @@ def update_product(id):
         # create the product object
         itemP_db = root.child('products/' + id)
         itemP_db.set({
-                'name': itemP.get_name(),
-                'category': itemP.get_category(),
-                'price': itemP.get_price(),
-                'origin': itemP.get_origin(),
-                'image_name': itemP.get_image_name()
+            'name': itemP.get_name(),
+            'category': itemP.get_category(),
+            'price': itemP.get_price(),
+            'origin': itemP.get_origin(),
+            'image_name': itemP.get_image_name()
         })
 
         flash('Product Item Updated Sucessfully.', 'success')
@@ -366,14 +370,15 @@ def update_product(id):
 
         return render_template('update_product.html', form=form)
 
-@app.route('/view_product') #20180116
+
+@app.route('/view_product')  # 20180116
 def view_product():
     vitems = root.child('products').get()
     list = []  # create a list to store all the product objects
     for itemid in vitems:
         eachitem = vitems[itemid]
         vitem = prodt.Product(eachitem['name'], eachitem['category'], eachitem['price'],
-                        eachitem['origin'], eachitem['image_name'])
+                              eachitem['origin'], eachitem['image_name'])
 
         vitem.set_itemid(itemid)
         list.append(vitem)
@@ -405,9 +410,9 @@ def ourproduct():
 @app.route('/popularitem')
 def popularitem():
     popular = popitem.get()
-    #poplist = []
-    name=[]
-    quantity=[]
+    # poplist = []
+    name = []
+    quantity = []
 
     for pop_id in popular:
         eachpop = popular[pop_id]
@@ -489,6 +494,7 @@ def search():
 
     return render_template('search.html', item_list=list)
 
+
 class RequiredIf(object):
 
     def __init__(self, *args, **kwargs):
@@ -505,6 +511,7 @@ class RequiredIf(object):
                 else:
                     validators.Optional().__call__(form, field)
 
+
 class ProductForm(Form):
     name = StringField('Product Name', [
         validators.Length(min=1, max=150),
@@ -519,7 +526,6 @@ class ProductForm(Form):
     image_name = StringField('Image File', [
         validators.Length(min=1, max=100),
         validators.DataRequired()])
-
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -554,6 +560,7 @@ def validity_signup(form, field):
         elif user[1]['email'] == field.data:
             raise ValidationError('Email has already been used')
 
+
 class SignupForm(Form):
     username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
     email = StringField('Email Address', [validators.Length(min=6, max=30), validators.DataRequired(), validity_signup])
@@ -563,6 +570,7 @@ class SignupForm(Form):
 class LoginForm(Form):
     username = StringField('Username:', [validators.DataRequired()])
     password = PasswordField('Password:', [validators.DataRequired()])
+
 
 #
 @app.route('/login', methods=['GET', 'POST'])
@@ -655,7 +663,7 @@ class EmailForm(Form):
                                  validators.DataRequired()])
     user_email = StringField('Email:', [validators.Email(), validators.DataRequired()])
     feedback = TextAreaField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
-                                         validators.DataRequired()])
+                                           validators.DataRequired()])
 
 
 @app.route('/email', methods=["GET", "POST"])
@@ -685,7 +693,7 @@ def email():
 
 class ForumCommentForm(Form):
     comment = TextAreaField('', [validators.Length(min=1, max=9999999, message='Please enter your comment'),
-                                      validators.DataRequired()])
+                                 validators.DataRequired()])
 
 
 @app.route('/forum', methods=["GET", "POST"])
@@ -702,23 +710,31 @@ def forum():
 
         flash('Your comment has been sent!')
 
+        forums = forum_forum.get()  # get database in format of dictionary
+        forum_list = []
+        forum_key_value = {}
 
-        #print(forum_forum.get())
-        forums = forum_forum.get()
-        #print (forums)
+        for key in forums:      # iterate through dictionary and get value of nested key "comment"
+            each_comment = forums[key]
+            each_comment_value = each_comment['comment']
+            forum_list.append(each_comment_value)   # append value into list
 
-        for comment_id in forums:
-            each_comment = forums[comment_id]
-            #print(each_comment['comment'])
+        for i in range(len(forum_list)):    # iterate depending of length of forum_list
+            comment_no = "comment"
+            comment_no += str(i + 1)
+            forum_key_value.update({comment_no: forum_list[i]})     # setting key:value pairs in new dictionary
 
-        # open an existing script that is ready to use the my_js_data variable
-        # we are about to generate
-            js = open('static/js/help/forum.js', 'r')
+        js = open('static/js/help/forum.js', 'r')   # open forum.js file
+        saved_data = js.read()      # read lines in file and save in variable
+        js.close()
 
-        # dynamically generate javascript code
-            javascript_out = "var my_js_data = JSON.parse('{}');".format(json.dumps(forums))
-            javascript_out += js.read()
+        js = open('static/js/help/forum.js', 'w')   # open forum.js in write mode
+        javascript_out = "var my_js_data = JSON.parse('{}');".format(
+            json.dumps(forum_key_value))    # dynamically generate javascript code
 
+        js.write(
+            javascript_out + "\n" + saved_data)     # writing new line(javascript_out), then writing saved lines(saved_data)
+        js.close()
 
         return render_template('forum.html', form=form)
 
@@ -738,73 +754,91 @@ class WorkoutForm(Form):
 def workout_type_1():
     return render_template('workout_type_1.html')
 
+
 @app.route('/workout_type_2')
 def workout_type_2():
     return render_template('workout_type_2.html')
+
 
 @app.route('/workout_type_3')
 def workout_type_3():
     return render_template('workout_type_3.html')
 
+
 @app.route('/workout_type_4')
 def workout_type_4():
     return render_template('workout_type_4.html')
+
 
 @app.route('/workout_type_5')
 def workout_type_5():
     return render_template('workout_type_5.html')
 
+
 @app.route('/workout_type_6')
 def workout_type_6():
     return render_template('workout_type_6.html')
+
 
 @app.route('/workout_type_7')
 def workout_type_7():
     return render_template('workout_type_7.html')
 
+
 @app.route('/workout_type_8')
 def workout_type_8():
     return render_template('workout_type_8.html')
+
 
 @app.route('/workout_type_9')
 def workout_type_9():
     return render_template('workout_type_9.html')
 
+
 @app.route('/workout_type_10')
 def workout_type_10():
     return render_template('workout_type_10.html')
+
 
 @app.route('/workout_type_11')
 def workout_type_11():
     return render_template('workout_type_11.html')
 
+
 @app.route('/workout_type_12')
 def workout_type_12():
     return render_template('workout_type_12.html')
+
 
 @app.route('/workout_type_13')
 def workout_type_13():
     return render_template('workout_type_13.html')
 
+
 @app.route('/workout_type_14')
 def workout_type_14():
     return render_template('workout_type_14.html')
+
 
 @app.route('/workout_type_15')
 def workout_type_15():
     return render_template('workout_type_15.html')
 
+
 @app.route('/workout_type_16')
 def workout_type_16():
     return render_template('workout_type_16.html')
+
 
 @app.route('/workout_type_17')
 def workout_type_17():
     return render_template('workout_type_17.html')
 
+
 @app.route('/workout_type_18')
 def workout_type_18():
     return render_template('workout_type_18.html')
+
 
 @app.route('/workout', methods=['GET', 'POST'])
 def workout():
@@ -824,15 +858,15 @@ def workout():
         })
 
         workout_type_dest = ''
-        #form2 = WorkoutTypeForm(request.form)
+        # form2 = WorkoutTypeForm(request.form)
 
         if body_focus == 'core':
             if time == '10min':
                 if difficulty_level == '1':
                     workout_type_dest = 'workout_type_1'
-                    #form2.videolink1 = 'some video link ...'
-                    #form2.duration = 'some value'
-                    #form2.calorieburn = 'some value'
+                    # form2.videolink1 = 'some video link ...'
+                    # form2.duration = 'some value'
+                    # form2.calorieburn = 'some value'
                 elif difficulty_level == '2':
                     workout_type_dest = 'workout_type_2'
                 elif difficulty_level == '3':
@@ -876,17 +910,20 @@ def workout():
                     workout_type_dest = 'workout_type_18'
 
         return redirect(url_for(workout_type_dest))
-        #return redirect(url_for(workout_type_dest), form=form2)
+        # return redirect(url_for(workout_type_dest), form=form2)
 
     return render_template('workout.html', form=form)
+
 
 class ProgramRegistrationForm(Form):
     weight = StringField('Weight', [validators.DataRequired()])
     height = StringField('Height', [validators.DataRequired()])
-    medical_condition_choices = [('no','No'),('asthma', 'Asthma'), ('high blood pressure', 'High Blood Pressure')]
-    medical_condition = SelectField('Do you have any medical conditions?', [validators.DataRequired()], choices=medical_condition_choices)
-    allergy_choices= [('milk','Milk'),('peanuts','Peanuts'),('soy','Soy')]
+    medical_condition_choices = [('no', 'No'), ('asthma', 'Asthma'), ('high blood pressure', 'High Blood Pressure')]
+    medical_condition = SelectField('Do you have any medical conditions?', [validators.DataRequired()],
+                                    choices=medical_condition_choices)
+    allergy_choices = [('milk', 'Milk'), ('peanuts', 'Peanuts'), ('soy', 'Soy')]
     allergy = SelectField('Do you have any food allergies?', [validators.DataRequired()], choices=allergy_choices)
+
 
 @app.route('/workoutProgram', methods=['GET', 'POST'])
 def workout_program():
@@ -897,7 +934,7 @@ def workout_program():
         medical_condition = form.medical_condition.data
         allergy = form.allergy.data
 
-        workout_program = workoutProgram(weight,height,medical_condition, allergy)
+        workout_program = workoutProgram(weight, height, medical_condition, allergy)
 
         workout_program_db = root.child('workout_program')
         workout_program_db.push({
@@ -910,6 +947,7 @@ def workout_program():
         flash('Thank you! The form was submitted successfully.', 'success')
 
     return render_template('workshop_form.html', form=form)
+
 
 if __name__ == '__main__':
     app.run()
