@@ -573,6 +573,7 @@ def login():
         username = form.username.data
         password = form.password.data
         userbase = user_ref.get()
+
         for user in userbase.items():
             if user[1]['username'] == username and user[1]['password'] == password:
                 session['user_data'] = user[1]
@@ -606,6 +607,7 @@ def logout():
 
 
 class AccountForm(Form):
+    username = StringField('New Username',[validators.Length(min=6, max=10)])
     email = StringField('New Email', [validators.Length(min=6, max=30)])
     password = PasswordField('New Password (Optional)', [validators.Length(min=6, max=50)])
 
@@ -618,20 +620,20 @@ def modifyuser():
         password = form.password.data
         user = sp.Users(username, email, password)
 
-        user_db = root.child('modify/' + id)
+        user_db = root.child('modify/')
         user_db.set({
             'username': user.get_username(),
-            'email': user.get_type(),
-            'password': user.get_category(),
+            'email': user.get_email(),
+            'password': user.get_password(),
         })
 
         flash('Profile Updated Sucessfully.', 'success')
 
-    return render_template('modifyuser.html')
+    return render_template('modifyuser.html', form=form)
 
 
 @app.route('/credit')
-def creditpointsystem():
+def credit():
     return render_template('creditpointsystem.html')
 
 
@@ -701,24 +703,6 @@ def forum():
         })
 
         flash('Your comment has been sent!')
-
-
-        #print(forum_forum.get())
-        forums = forum_forum.get()
-        #print (forums)
-
-        for comment_id in forums:
-            each_comment = forums[comment_id]
-            #print(each_comment['comment'])
-
-        # open an existing script that is ready to use the my_js_data variable
-        # we are about to generate
-            js = open('static/js/help/forum.js', 'r')
-
-        # dynamically generate javascript code
-            javascript_out = "var my_js_data = JSON.parse('{}');".format(json.dumps(forums))
-            javascript_out += js.read()
-
 
         return render_template('forum.html', form=form)
 
