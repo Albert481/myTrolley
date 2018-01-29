@@ -8,11 +8,12 @@ import signup as sp
 import trolleys as tr
 import event as ev
 import recipe as recs
-import popularitem as pop
+import popularitem as popg
 import product as prodt
 import userFeedback as uf
 import forumComment as fo
 from Workout import Workout
+from workoutWorkshop import workoutProgram
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -35,6 +36,7 @@ email_email = db.reference('response')
 forum_forum = db.reference('forum')
 
 workout = db.reference('workout')
+workout_program = db.reference('workout_program')
 
 app = Flask(__name__)
 app.config['SECRET KEY'] = 'secret123'
@@ -255,8 +257,8 @@ def repair_trolley(id):
     return redirect(url_for('viewpublications'))
 
 class ChangeAdmin(Form):
-    username = StringField('Please enter Trolley ID:', render_kw={"placeholder": "Username"})
-    adminlvl = RadioField('Admin Level', choices=[('admin0','0'), ('admin1', '1'), ('admin2', '2')])
+    username = StringField('', render_kw={"placeholder": "Username"})
+    adminlvl = RadioField('', choices=[('admin0','0'), ('admin1', '1'), ('admin2', '2')])
 
 @app.route('/accounts', methods=['GET', 'POST'])
 def accounts():
@@ -271,21 +273,20 @@ def accounts():
     if request.method == 'POST':
         for username in userbase.items():
             if calledusername == username[1]['username']:
-                admin = sp.Admin(username[1]['username'], username[1]['email'], username[1]['admin'])
-                print(user_ref.child(username[0]))
                 user_admin = user_ref.child(username[0])
                 if form.adminlvl.data == 'admin0':
                     user_admin.update({
-                        'admin': admin.set_admin('0'),
+                        'admin': '0',
                     })
                 elif form.adminlvl.data == 'admin1':
                     user_admin.update({
-                        'admin': admin.set_admin('1'),
+                        'admin': '1',
                     })
                 elif form.adminlvl.data == 'admin2':
                     user_admin.update({
-                        'admin': admin.set_admin('2'),
+                        'admin': '2',
                     })
+                return redirect(url_for('accounts'))
     return render_template('accounts.html', eachuser=totalaccounts, form=form)
 
 @app.route('/add_product', methods=['GET', 'POST'])
@@ -547,17 +548,11 @@ def signup():
 
 def validity_signup(form, field):
     userbase = user_ref.get()
-    list = []
-
-
-#   for signup in userbase:
-#   eachentry = userbase[signup]
-#   entrybase = sp.Users(eachentry['username'], eachentry['email'], eachentry['password'])
-#   list.append(entrybase)
-#   if signup[1]['username'] == field.data:
-#       raise ValidationError('Username has already been used')
-#   elif signup[1]['email'] == field.data:
-#       raise ValidationError('Email has already been used')
+    for user in userbase.items():
+        if user[1]['username'] == field.data:
+            raise ValidationError('Username has already been used')
+        elif user[1]['email'] == field.data:
+            raise ValidationError('Email has already been used')
 
 class SignupForm(Form):
     username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
@@ -569,7 +564,7 @@ class LoginForm(Form):
     username = StringField('Username:', [validators.DataRequired()])
     password = PasswordField('Password:', [validators.DataRequired()])
 
-
+#
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
@@ -885,7 +880,36 @@ def workout():
 
     return render_template('workout.html', form=form)
 
+class ProgramRegistrationForm(Form):
+    weight = StringField('Weight', [validators.DataRequired()])
+    height = StringField('Height', [validators.DataRequired()])
+    medical_condition_choices = [('no','No'),('asthma', 'Asthma'), ('high blood pressure', 'High Blood Pressure')]
+    medical_condition = SelectField('Do you have any medical conditions?', [validators.DataRequired()], choices=medical_condition_choices)
+    allergy_choices= [('milk','Milk'),('peanuts','Peanuts'),('soy','Soy')]
+    allergy = SelectField('Do you have any food allergies?', [validators.DataRequired()], choices=allergy_choices)
 
+@app.route('/workoutProgram', methods=['GET', 'POST'])
+def workout_program():
+    form = ProgramRegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        weight = form.weight.data
+        height = form.height.data
+        medical_condition = form.medical_condition.data
+        allergy = form.allergy.data
+
+        workout_program = workoutProgram(weight,height,medical_condition, allergy)
+
+        workout_program_db = root.child('workout_program')
+        workout_program_db.push({
+            'weight': workout_program.get_weight(),
+            'height': workout_program.get_height(),
+            'medical_condition': workout_program.get_medical_condition(),
+            'allergy': workout_program.get_allergy()
+        })
+
+        flash('Thank you! The form was submitted successfully.', 'success')
+
+    return render_template('workshop_form.html', form=form)
 
 if __name__ == '__main__':
     app.run()

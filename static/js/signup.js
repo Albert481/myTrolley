@@ -29,19 +29,8 @@ function submitForm(e) {
     saveMessage(username, email, password);
 }
 
-// Function to get get form values
-function getInputVal(id) {
-    return document.getElementById(id).value
-}
 
-// Save message to firebase
-function saveMessage(username, email, password) {
-    var newMessageRef = messagesRef.push();
-    newMessageRef.set({
-        username: username,
-        email: email,
-        password: password,
-    });
-}
+
+
 
 
