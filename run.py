@@ -681,7 +681,7 @@ def email():
             'email': eEmail.get_user_email(),
             'feedback': eEmail.get_email_comment(),
         })
-        flash('Your email has been sent!')
+        flash('Your email has been sent!', 'success')
 
         return render_template('email.html', form=form)
 
@@ -719,7 +719,7 @@ def forum():
     js.close()
 
     js = open('static/js/help/forum.js', 'w')  # open forum.js in write mode
-    javascript_out = "var my_js_data = JSON.parse('{}');".format(
+    javascript_out = "var my_js_data = JSON.parse('{}');".format(       #parse changes string to js obj
         json.dumps(forum_key_value))  # dynamically generate javascript code
 
     js.write(
@@ -738,7 +738,7 @@ def forum():
             'comment': fForum.get_comment(),
         })
 
-        flash('Your comment has been sent!')
+        flash('Your comment has been sent!', 'success')
 
 
         return render_template('forum.html', form=form)

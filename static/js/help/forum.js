@@ -1,11 +1,9 @@
-/*$(document).ready(function () {
-    var testpara = document.createElement("p");
-    var testinputcomment = document.createTextNode("HI THERE");
-    para.appendChild(testinputcomment);
-    var testelement = document.getElementById("commentsection");
-    testelement.appendChild(testpara);
-});
-*/
+var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
+var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
+var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
+var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
+var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
+var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
 //var dict_keys = Object.keys(my_js_data);
 //console.log(dict_keys);
 
