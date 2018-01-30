@@ -698,7 +698,37 @@ class ForumCommentForm(Form):
 
 @app.route('/forum', methods=["GET", "POST"])
 def forum():
+
+    # load existing comments
+    forums = forum_forum.get()  # get database in format of dictionary
+    forum_list = []
+    forum_key_value = {}
+
+    for key in forums:  # iterate through dictionary and get value of nested key "comment"
+        each_comment = forums[key]
+        each_comment_value = each_comment['comment']
+        forum_list.append(each_comment_value)  # append value into list
+
+    for i in range(len(forum_list)):  # iterate depending on no. of elements in forum_list
+        comment_no = "comment"
+        comment_no += str(i + 1)
+        forum_key_value.update({comment_no: forum_list[i]})  # setting key:value pairs in new dictionary
+
+    js = open('static/js/help/forum.js', 'r')  # open forum.js file
+    saved_data = js.read()  # read lines in file and save in variable
+    js.close()
+
+    js = open('static/js/help/forum.js', 'w')  # open forum.js in write mode
+    javascript_out = "var my_js_data = JSON.parse('{}');".format(
+        json.dumps(forum_key_value))  # dynamically generate javascript code
+
+    js.write(
+        javascript_out + "\n" + saved_data)  # writing new line(javascript_out), then writing saved lines(saved_data)
+    js.close()
+
+    # submit comment
     form = ForumCommentForm(request.form)
+
     if request.method == "POST" and form.validate():
         comment = form.comment.data
         fForum = fo.forumComment(comment)
@@ -711,35 +741,10 @@ def forum():
         flash('Your comment has been sent!')
 
 
-        forums = forum_forum.get()  # get database in format of dictionary
-        forum_list = []
-        forum_key_value = {}
-
-        for key in forums:      # iterate through dictionary and get value of nested key "comment"
-            each_comment = forums[key]
-            each_comment_value = each_comment['comment']
-            forum_list.append(each_comment_value)   # append value into list
-
-        for i in range(len(forum_list)):    # iterate depending on no. of elements in forum_list
-            comment_no = "comment"
-            comment_no += str(i + 1)
-            forum_key_value.update({comment_no: forum_list[i]})     # setting key:value pairs in new dictionary
-
-        js = open('static/js/help/forum.js', 'r')   # open forum.js file
-        saved_data = js.read()      # read lines in file and save in variable
-        js.close()
-
-        js = open('static/js/help/forum.js', 'w')   # open forum.js in write mode
-        javascript_out = "var my_js_data = JSON.parse('{}');".format(
-            json.dumps(forum_key_value))    # dynamically generate javascript code
-
-        js.write(
-            javascript_out + "\n" + saved_data)     # writing new line(javascript_out), then writing saved lines(saved_data)
-        js.close()
-
         return render_template('forum.html', form=form)
 
     return render_template('forum.html', form=form)
+
 
 
 class WorkoutForm(Form):
