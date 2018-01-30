@@ -27,16 +27,16 @@
             text-align: center;
         }
         #weight{
-            width:300px;
+            width:100px;
         }
         #height{
-            width:300px;
+            width:100px;
         }
-        #medical_condition{
-            width:300px;
+        #medical_history{
+            width:400px;
         }
         #allergy{
-            width:300px;
+            width:400px;
         }
         .space{
             padding-bottom: 0.5cm;
@@ -44,6 +44,12 @@
         img{
             width:500px;
             height:294px;
+        }
+        #age{
+            width: 100px;
+        }
+        #gender{
+            width: 200px;
         }
 </style>
 {% endblock %}
@@ -74,22 +80,34 @@
             {% from "includes/_formhelper.html" import render_field %}
         <div class="form-arrangement">
         <form method="POST" action="">
+            <!--name-->
+            <div class="form-group" id="name">
+                {{ render_field(form.name, class_="form-control") }}
+            </div>
+             <!--gender-->
+            <div class="form-group" id="gender">
+                {{ render_field(form.gender, class_="form-control") }}
+            </div>
+            <!--age-->
+            <div class="form-group" id="age">
+                {{ render_field(form.age, class_="form-control") }}
+            </div>
+            <!--weight-->
             <div class="form-group" id="weight">
-                <!--weight-->
                 {{ render_field(form.weight, class_="form-control") }}
                     <label>kg</label>
             </div>
+            <!--height-->
             <div class="form-group" id="height">
-                <!--height-->
                 {{ render_field(form.height, class_="form-control") }}
                 <label>cm</label>
             </div>
-            <div class="form-group" id="medical_condition">
-                <!--medical_condition-->
-                {{  render_field(form.medical_condition, class_="form-control") }}
+            <!--medical_history-->
+            <div class="form-group" id="medical_history">
+                {{  render_field(form.medical_history, class_="form-control") }}
             </div>
+            <!--allergy-->
             <div class="form-group" id="allergy">
-                <!--medical_condition-->
                 {{  render_field(form.allergy, class_="form-control") }}
             </div>
             <div class="form-group">
