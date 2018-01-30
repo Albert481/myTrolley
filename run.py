@@ -747,6 +747,7 @@ def forum():
 
 
 
+
 class WorkoutForm(Form):
     time_choices = [('10min', '0-10min'), ('20min', '0-20min'), ('30min', '0-30min')]
     time = SelectField('Time', choices=time_choices, default='10min')
