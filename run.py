@@ -865,29 +865,42 @@ def workout():
     return render_template('workout.html', form=form)
 
 class ProgramRegistrationForm(Form):
+    name = StringField('Name', [validators.DataRequired()])
+    gender_choices = [('female','Female'),('male','Male')]
+    gender = SelectField('Gender',[validators.DataRequired()], choices=gender_choices)
+    age = StringField('Age',[validators.DataRequired()])
     weight = StringField('Weight', [validators.DataRequired()])
     height = StringField('Height', [validators.DataRequired()])
-    medical_condition_choices = [('no','No'),('asthma', 'Asthma'), ('high blood pressure', 'High Blood Pressure')]
-    medical_condition = SelectField('Do you have any medical conditions?', [validators.DataRequired()], choices=medical_condition_choices)
-    allergy_choices= [('milk','Milk'),('peanuts','Peanuts'),('soy','Soy')]
+    medical_history_choices = [('no', 'No'), ('asthma', 'Asthma'), ('high blood pressure', 'High Blood Pressure'),
+                                 ('diabetes', 'Diabetes'), ('obesity', 'Obesity'),('heart attack','Heart Attack'),
+                                ('stroke','Stroke'),('chest pain','Extreme Chest Discomfort')]
+    medical_history = SelectField('Have you ever experienced any?', [validators.DataRequired()],
+                                    choices=medical_history_choices)
+    allergy_choices= [('no','No'),('milk','Milk'),('eggs','Eggs'),('peanuts','Peanuts'),('soy','Soy'),('wheat','Wheat'),('fish','Fish')]
     allergy = SelectField('Do you have any food allergies?', [validators.DataRequired()], choices=allergy_choices)
 
 @app.route('/workoutProgram', methods=['GET', 'POST'])
 def workout_program():
     form = ProgramRegistrationForm(request.form)
     if request.method == 'POST' and form.validate():
+        name = form.name.data
+        gender = form.gender.data
+        age = form.age.data
         weight = form.weight.data
         height = form.height.data
-        medical_condition = form.medical_condition.data
+        medical_history= form.medical_history.data
         allergy = form.allergy.data
 
-        workout_program = workoutProgram(weight,height,medical_condition, allergy)
+        workout_program = workoutProgram(name, gender, age, weight, height, medical_history, allergy)
 
         workout_program_db = root.child('workout_program')
         workout_program_db.push({
+            'name': workout_program.get_name(),
+            'gender': workout_program.get_gender(),
+            'age': workout_program.get_age(),
             'weight': workout_program.get_weight(),
             'height': workout_program.get_height(),
-            'medical_condition': workout_program.get_medical_condition(),
+            'medical_history': workout_program.get_medical_history(),
             'allergy': workout_program.get_allergy()
         })
 
