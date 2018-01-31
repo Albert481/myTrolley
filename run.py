@@ -590,7 +590,7 @@ def login():
                 session['key'] = user[0]
                 session['admin'] = user[1]['admin']
 
-                if session['logged_in'] == True:        #JW
+                if session['logged_in'] == True:  # JW
                     global checkifuserlogin
                     checkifuserlogin = True
                     # print(checkifuserlogin)
@@ -598,7 +598,6 @@ def login():
                     # print (session['user_data'])
                     # print (session['logged_in'])
                     # print(session['id'])                  #JW
-
 
                 return redirect(url_for('home'))
         flash('Login is not valid!', 'danger')
@@ -714,49 +713,59 @@ checkifuserlogin = False
 def forum():
     if checkifuserlogin == False:  # if user is not logged in.
         form = ForumCommentForm(request.form)
-        if request.method == "POST" and form.validate():
-            flash('You must log in to post a comment!', 'danger')
 
-            return render_template('forum.html', form=form)
+        return render_template('forum.html', form=form)
 
-    else:   # if user is logged in
+    else:  # if user is logged in
         # load existing comments
         forums = forum_forum.get()  # get database in format of dictionary
-        forum_list = []
+        forum_comment_list = []  # store comments
+        forum_username_list = []
         forum_key_value = {}
 
-        for key in forums:  # iterate through dictionary and get value of nested key "comment"
+        for key in forums:  # iterate through dictionary and get value of "comment"
             each_comment = forums[key]
             each_comment_value = each_comment['comment']
-            forum_list.append(each_comment_value)  # append value into list
+            forum_comment_list.append(each_comment_value)  # append comment into list
 
-        for i in range(len(forum_list)):  # iterate depending on no. of elements in forum_list
+        for key in forums:  # iterate through dictionary and get value of "username"
+            each_username = forums[key]
+            each_username_value = each_username['username']
+            forum_username_list.append(each_username_value)  # append username into list
+
+        for i in range(len(forum_comment_list)):  # iterate depending on no. of elements in forum_comment_list
             comment_no = "comment"
             comment_no += str(i + 1)
-            forum_key_value.update({comment_no: forum_list[i]})  # setting key:value pairs in new dictionary
+            forum_key_value.update({comment_no: forum_comment_list[i]})  # setting key:value pairs in new dictionary
 
-        js = open('static/js/help/forum.js', 'r')  # open forum.js file
+        js = open('static/js/help/forum.js', 'r')
         saved_data = js.read()  # read lines in file and save in variable
         js.close()
 
-        js = open('static/js/help/forum.js', 'w')  # open forum.js in write mode
+        js = open('static/js/help/forum.js', 'w')
         javascript_out = "var my_js_data = JSON.parse('{}');".format(  # parse changes string to js obj
             json.dumps(forum_key_value))  # dynamically generate javascript code
 
+        javascript_username = "var username_js_data = JSON.parse('{}');".format(
+            json.dumps(forum_username_list))
+
         js.write(
-            javascript_out + "\n" + saved_data)  # writing new line(javascript_out), then writing saved lines(saved_data)
+            javascript_out + javascript_username + "\n" + saved_data)  # writing new line(javascript_out), then writing saved lines(saved_data)
         js.close()
+
 
         # submit comment
         form = ForumCommentForm(request.form)
 
         if request.method == "POST" and form.validate():
             comment = form.comment.data
+            username = (session['id'])
             fForum = fo.forumComment(comment)
 
             fForum_db = root.child('forum')
             fForum_db.push({
                 'comment': fForum.get_comment(),
+                'username': (session['id']),
             })
 
             flash('Your comment has been sent!', 'success')
