@@ -1,11 +1,13 @@
-var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
-var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
-var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
-var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
-var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
-var my_js_data = JSON.parse('{"comment1": "hi i like trolleys", "comment2": "Hello world!"}');
+
 //var dict_keys = Object.keys(my_js_data);
 //console.log(dict_keys);
+
+function disableComment() {
+    alert("Log in to post a comment!")
+}
+
+
+
 
 for (var i in my_js_data) {
     // check if the key is defined in the object itself, not in parent

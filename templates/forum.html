@@ -56,7 +56,7 @@
                         <div id="user_comment" class="form-group">
                             {{ render_field(form.comment, row=7, class_="form-control") }}
                         </div>
-                        <input type="submit" value="submit" class="btn btn-default">
+                        <input type="submit" value="submit" class="btn btn-default" id="forumcommentbut" onclick="disableComment()">
                     </form>
                 </div>
             </div>

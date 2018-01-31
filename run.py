@@ -590,6 +590,16 @@ def login():
                 session['key'] = user[0]
                 session['admin'] = user[1]['admin']
 
+                if session['logged_in'] == True:        #JW
+                    global checkifuserlogin
+                    checkifuserlogin = True
+                    # print(checkifuserlogin)
+
+                    # print (session['user_data'])
+                    # print (session['logged_in'])
+                    # print(session['id'])                  #JW
+
+
                 return redirect(url_for('home'))
         flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
@@ -696,56 +706,64 @@ class ForumCommentForm(Form):
                                  validators.DataRequired()])
 
 
+# declare global var used to verify if user is logged in
+checkifuserlogin = False
+
+
 @app.route('/forum', methods=["GET", "POST"])
 def forum():
+    if checkifuserlogin == False:  # if user is not logged in.
+        form = ForumCommentForm(request.form)
+        if request.method == "POST" and form.validate():
+            flash('You must log in to post a comment!', 'danger')
 
-    # load existing comments
-    forums = forum_forum.get()  # get database in format of dictionary
-    forum_list = []
-    forum_key_value = {}
+            return render_template('forum.html', form=form)
 
-    for key in forums:  # iterate through dictionary and get value of nested key "comment"
-        each_comment = forums[key]
-        each_comment_value = each_comment['comment']
-        forum_list.append(each_comment_value)  # append value into list
+    else:   # if user is logged in
+        # load existing comments
+        forums = forum_forum.get()  # get database in format of dictionary
+        forum_list = []
+        forum_key_value = {}
 
-    for i in range(len(forum_list)):  # iterate depending on no. of elements in forum_list
-        comment_no = "comment"
-        comment_no += str(i + 1)
-        forum_key_value.update({comment_no: forum_list[i]})  # setting key:value pairs in new dictionary
+        for key in forums:  # iterate through dictionary and get value of nested key "comment"
+            each_comment = forums[key]
+            each_comment_value = each_comment['comment']
+            forum_list.append(each_comment_value)  # append value into list
 
-    js = open('static/js/help/forum.js', 'r')  # open forum.js file
-    saved_data = js.read()  # read lines in file and save in variable
-    js.close()
+        for i in range(len(forum_list)):  # iterate depending on no. of elements in forum_list
+            comment_no = "comment"
+            comment_no += str(i + 1)
+            forum_key_value.update({comment_no: forum_list[i]})  # setting key:value pairs in new dictionary
 
-    js = open('static/js/help/forum.js', 'w')  # open forum.js in write mode
-    javascript_out = "var my_js_data = JSON.parse('{}');".format(       #parse changes string to js obj
-        json.dumps(forum_key_value))  # dynamically generate javascript code
+        js = open('static/js/help/forum.js', 'r')  # open forum.js file
+        saved_data = js.read()  # read lines in file and save in variable
+        js.close()
 
-    js.write(
-        javascript_out + "\n" + saved_data)  # writing new line(javascript_out), then writing saved lines(saved_data)
-    js.close()
+        js = open('static/js/help/forum.js', 'w')  # open forum.js in write mode
+        javascript_out = "var my_js_data = JSON.parse('{}');".format(  # parse changes string to js obj
+            json.dumps(forum_key_value))  # dynamically generate javascript code
 
-    # submit comment
-    form = ForumCommentForm(request.form)
+        js.write(
+            javascript_out + "\n" + saved_data)  # writing new line(javascript_out), then writing saved lines(saved_data)
+        js.close()
 
-    if request.method == "POST" and form.validate():
-        comment = form.comment.data
-        fForum = fo.forumComment(comment)
+        # submit comment
+        form = ForumCommentForm(request.form)
 
-        fForum_db = root.child('forum')
-        fForum_db.push({
-            'comment': fForum.get_comment(),
-        })
+        if request.method == "POST" and form.validate():
+            comment = form.comment.data
+            fForum = fo.forumComment(comment)
 
-        flash('Your comment has been sent!', 'success')
+            fForum_db = root.child('forum')
+            fForum_db.push({
+                'comment': fForum.get_comment(),
+            })
 
+            flash('Your comment has been sent!', 'success')
+
+            return render_template('forum.html', form=form)
 
         return render_template('forum.html', form=form)
-
-    return render_template('forum.html', form=form)
-
-
 
 
 class WorkoutForm(Form):
