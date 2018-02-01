@@ -150,12 +150,8 @@
                 <div>
                     <a href="#" class="list-group-item active list-group-item-success">Product Category</a>
                     <ul class="list-group">
-                        <li class="list-group-item">Fruits
-                        <span class="label label-primary pull-right">4</span>
-                        </li>
-                        <li class="list-group-item">Vegetables
-                    <span class="label label-primary pull-right">4</span>
-                        </li>
+                        <li class="list-group-item">Fruits</li>
+                        <li class="list-group-item">Vegetables</li>
                     </ul>
                 </div>
             </div>
@@ -181,7 +177,8 @@
                             <div class="col-md-7 col-sm-12 col-xs-12">
                                 <div class="product-detail">
                                     <h5 class="name">
-                                        <a href="#">{{ fruit.get_name() }}<span>{{ fruit.get_category() }}</span></a>
+                                        <h5><b>{{ fruit.get_name() }}</b></h5>
+                                        <h5><span>{{ fruit.get_category() }}</span></h5>
                                     </h5>
                                     <p class="price-container"><span>{{ fruit.get_price() }}</span></p>
                                     <span class="tag1"></span>
@@ -208,7 +205,8 @@
                             <div class="col-md-7 col-sm-12 col-xs-12">
                                 <div class="product-detail">
                                     <h5 class="name">
-                                        <a href="#">{{ veg.get_name() }}<span>{{ veg.get_category() }}</span></a>
+                                        <h5><b>{{ veg.get_name() }}</b></h5>
+                                        <h5><span>{{ veg.get_category() }}</span></h5>
                                     </h5>
                                     <p class="price-container"><span>{{ veg.get_price() }}</span></p>
                                     <span class="tag1"></span>
