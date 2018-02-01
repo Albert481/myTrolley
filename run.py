@@ -194,9 +194,9 @@ def admin():
         if trolleyid[1]['location'] != "":
             tmisused += 1
 
-    # Attention function   not implemented
+    # Attention function
     for trolleyid in trolleys.items():
-        if int(trolleyid[1]['flag_count']) >= 3:
+        if trolleyid[1]['location'] != '':
             attention = tr.FindTrolley(trolleyid[1]['name'], trolleyid[1]['status'], trolleyid[1]['flag_count'],
                                        trolleyid[1]['location'], trolleyid[1]['comments'])
             attentionlist.append(attention)
