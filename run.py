@@ -5,6 +5,8 @@ import json
 import firebase_admin
 from firebase_admin import credentials, db, storage
 import signup as sp
+import login as lo
+import modifyuser as mo
 import trolleys as tr
 import event as ev
 import recipe as recs
@@ -569,7 +571,6 @@ class LoginForm(Form):
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-
         username = form.username.data
         password = form.password.data
         userbase = user_ref.get()
@@ -607,30 +608,41 @@ def logout():
 
 
 class AccountForm(Form):
-    username = StringField('New Username',[validators.Length(min=6, max=10)])
-    email = StringField('New Email', [validators.Length(min=6, max=30)])
-    password = PasswordField('New Password (Optional)', [validators.Length(min=6, max=50)])
+    update_username = StringField('New Username', [validators.Length(min=6, max=10)], validity_signup)
+    update_email = StringField('New Email', [validators.Length(min=6, max=30)], validity_signup)
+    update_password = PasswordField('New Password', [validators.Length(min=6, max=50)])
 
+@app.route('/view')
+def view():
+    users = root.child('userbase').get()
+    list = []
+    for user in users:
+        eachuser = users[user]
+        profile = sp.Users(eachuser['username'], eachuser['email'], eachuser['password'])
+        profile.set_user(user)
+        print(profile.get_user())
+        list.append(profile)
+    return render_template('view_profile.html', user=list)
 
-@app.route('/modifyuser', methods=['GET', 'POST'])
-def modifyuser():
+@app.route('/modify')
+def modify():
     form = AccountForm(request.form)
     if request.method == 'POST' and form.validate():
-        username = form.username.data
-        password = form.password.data
-        user = sp.Users(username, email, password)
+        update_username = form.update_username.data
+        update_email = form.update_email.data
+        update_password = form.update_password.data
 
-        user_db = root.child('modify/')
+        user = mo.Users(update_username, update_email, update_password)
+        user_db = root.child('userbase/')
         user_db.set({
-            'username': user.get_username(),
-            'email': user.get_email(),
-            'password': user.get_password(),
+           'username': user.get_update_username(),
+           'email': user.get_update_email(),
+           'password': user.get_update_password(),
         })
 
         flash('Profile Updated Sucessfully.', 'success')
 
-    return render_template('modifyuser.html', form=form)
-
+        return render_template('modifyuser.html', form=form)
 
 @app.route('/credit')
 def credit():
