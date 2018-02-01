@@ -2,44 +2,38 @@
 {% block title %}Modify User{% endblock %}
 
 {% block head %}
-    <style>
 
-    .selector {
-        margin: 0;
-        padding: 0;
-        cursor: pointer;
-        margin-bottom: -5px;
-        width: 200px;
-        height: 40px;
-    }
-
-    </style>
 {% endblock %}
 
 {% block body %}
     {% from "includes/_formhelper.html" import render_field %}
-    <section class="content">
+    <form method="POST" action="">
+        <div class="form-group">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    {{ render_field(form.update_username, class_="form-control") }}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ render_field(form.update_email, class_="form-control") }}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ render_field(form.update_password, class_="form-control") }}
+                </div>
 
-         <div class="container">
-             <div class="center">
-                 <h2 class="text-center">Edit Info</h2>
-             </div>
-                 <div class="profile"><p align="left">Profile:
-                                 <div class="name">{{ render_field(form.username, class_="form-control") }}<br>
-                                     <a href="">Change your username</a><br><br>
-                                         <div class="email">{{render_field(form.email, class_="form-control")}}<br>
-                                             <a href="">Change email address</a><br><br>
-                                                 <div class="password">{{ render_field(form.password, class_="form-control") }}<br>
-                                                     <a href="">Change password</a><br>
-                                                 </div>
-                                         </div>
-                                 </div>
-                             </div>
-                     </div>
-                 </div>
-         </div>
-    </section>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <div class="form-row">
+                <div class="form-group col-md-11">
+                </div>
+                <div class="form-group col-md-1">
+                    <input type="submit" value="Update" class="btn btn-info"/>
+                </div>
+            </div>
+        </div>
+
+   </form>s
 {% endblock %}
 
     <!-- jQuery -->
