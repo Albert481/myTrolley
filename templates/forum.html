@@ -7,6 +7,24 @@
             border-style: none !important;
         }
 
+        #commentsection {
+            border-style: solid;
+            border-color: black;
+        }
+
+        .databasecomments {
+            border-style: solid;
+            border-bottom-color: #9aa7af;
+            border-top-color: transparent;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            padding-left: 15px;
+            padding-right: 15px;
+
+        }
+
     </style>
     <script>
 
@@ -41,7 +59,7 @@
                         <div id="user_comment" class="form-group">
                             {{ render_field(form.comment, row=7, class_="form-control") }}
                         </div>
-                        <input type="submit" value="submit" class="btn btn-default">
+                        <input type="submit" value="submit" class="btn btn-default" id="forumcommentbut" onclick="disableComment()">
                     </form>
                 </div>
             </div>
@@ -56,6 +74,6 @@
         </div>
     </section>
 
-<script src="static/js/help/forum.js"></script>
+    <script src="static/js/help/forum.js"></script>
 
 {% endblock %}
