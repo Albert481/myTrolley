@@ -523,7 +523,6 @@ class ProductForm(Form):
         validators.DataRequired()])
 
 
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm(request.form)
@@ -556,6 +555,7 @@ def validity_signup(form, field):
         elif user[1]['email'] == field.data:
             raise ValidationError('Email has already been used')
 
+
 class SignupForm(Form):
     username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
     email = StringField('Email Address', [validators.Length(min=6, max=30), validators.DataRequired(), validity_signup])
@@ -566,7 +566,7 @@ class LoginForm(Form):
     username = StringField('Username:', [validators.DataRequired()])
     password = PasswordField('Password:', [validators.DataRequired()])
 
-#
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
@@ -612,6 +612,7 @@ class AccountForm(Form):
     update_email = StringField('New Email', [validators.Length(min=6, max=30)], validity_signup)
     update_password = PasswordField('New Password', [validators.Length(min=6, max=50)])
 
+
 @app.route('/view')
 def view():
     users = root.child('userbase').get()
@@ -624,8 +625,9 @@ def view():
         list.append(profile)
     return render_template('view_profile.html', user=list)
 
+
 @app.route('/modify')
-def modify():
+def modify(id):
     form = AccountForm(request.form)
     if request.method == 'POST' and form.validate():
         update_username = form.update_username.data
@@ -633,7 +635,7 @@ def modify():
         update_password = form.update_password.data
 
         user = mo.Users(update_username, update_email, update_password)
-        user_db = root.child('userbase/')
+        user_db = root.child('userbase/' + id )
         user_db.set({
            'username': user.get_update_username(),
            'email': user.get_update_email(),
@@ -642,7 +644,8 @@ def modify():
 
         flash('Profile Updated Sucessfully.', 'success')
 
-        return render_template('modifyuser.html', form=form)
+        return redirect(url_for('view'))
+
 
 @app.route('/credit')
 def credit():
