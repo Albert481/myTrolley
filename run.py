@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from wtforms import Form, SelectMultipleField, StringField, PasswordField, validators, RadioField, SelectField, \
     ValidationError, FileField, SubmitField, TextAreaField, DateField
 import json
+import js2py
 import firebase_admin
 from firebase_admin import credentials, db, storage
 import signup as sp
@@ -705,6 +706,67 @@ class ForumCommentForm(Form):
                                  validators.DataRequired()])
 
 
+# function to load comments
+def load_comments():
+    forums = forum_forum.get()  # get database in format of dictionary
+    forum_comment_list = []  # store comments
+    forum_username_list = []
+    # forum_key_value = {}
+    username_comment_dict = {}
+
+    for key in forums:  # iterate through dictionary and get value of "comment"
+        each_comment = forums[key]
+        each_comment_value = each_comment['comment']
+        forum_comment_list.append(each_comment_value)  # append comment into list
+        # print(forum_comment_list)
+
+    for key in forums:  # iterate through dictionary and get value of "username"
+        each_username = forums[key]
+        each_username_value = each_username['username']
+        forum_username_list.append(each_username_value)  # append username into list
+        # print(forum_username_list)
+
+    for z in range(len(forum_comment_list)):
+        # username_comment_dict.update({forum_username_list[z]: forum_comment_list[z]})
+        username_comment_dict[forum_username_list[z]] = forum_comment_list[z]
+        print(username_comment_dict)
+
+    '''
+    for i in range(len(forum_comment_list)):  # iterate depending on no. of elements in forum_comment_list
+        comment_no = "comment"
+        comment_no += str(i + 1)
+        forum_key_value.update({comment_no: forum_comment_list[i]})  # setting key:value pairs in new dictionary
+    '''
+
+    js = open('static/js/help/forum.js', 'r')
+    saved_data = js.read()  # read lines in file and save in variable
+    js.close()
+
+    js = open('static/js/help/forum.js', 'w')
+    javascript_out = "var my_js_data = JSON.parse('{}');".format(  # parse changes string to js obj
+        json.dumps(username_comment_dict))  # dynamically generate javascript code
+
+    '''
+    javascript_username = "var username_js_data = JSON.parse('{}');".format(
+        json.dumps(forum_username_list))
+    '''
+
+    js.write(
+        javascript_out + "\n" + saved_data)  # writing new line(javascript_out), then writing saved lines(saved_data)
+    js.close()
+
+    '''
+    # this will translate example.js to example.py
+    js2py.translate_file('static/js/help/forum.js', 'forumjs.py')
+    # example.py can be now imported and used!
+    from forumjs import forumjs
+    forumjs.js_load_comments()
+
+    js = open('static/js/help/forum.js', 'w')
+    js.write(saved_data)
+    js.close()
+    '''
+
 # declare global var used to verify if user is logged in
 checkifuserlogin = False
 
@@ -713,46 +775,12 @@ checkifuserlogin = False
 def forum():
     if checkifuserlogin == False:  # if user is not logged in.
         form = ForumCommentForm(request.form)
+        load_comments()
 
         return render_template('forum.html', form=form)
 
     else:  # if user is logged in
-        # load existing comments
-        forums = forum_forum.get()  # get database in format of dictionary
-        forum_comment_list = []  # store comments
-        forum_username_list = []
-        forum_key_value = {}
-
-        for key in forums:  # iterate through dictionary and get value of "comment"
-            each_comment = forums[key]
-            each_comment_value = each_comment['comment']
-            forum_comment_list.append(each_comment_value)  # append comment into list
-
-        for key in forums:  # iterate through dictionary and get value of "username"
-            each_username = forums[key]
-            each_username_value = each_username['username']
-            forum_username_list.append(each_username_value)  # append username into list
-
-        for i in range(len(forum_comment_list)):  # iterate depending on no. of elements in forum_comment_list
-            comment_no = "comment"
-            comment_no += str(i + 1)
-            forum_key_value.update({comment_no: forum_comment_list[i]})  # setting key:value pairs in new dictionary
-
-        js = open('static/js/help/forum.js', 'r')
-        saved_data = js.read()  # read lines in file and save in variable
-        js.close()
-
-        js = open('static/js/help/forum.js', 'w')
-        javascript_out = "var my_js_data = JSON.parse('{}');".format(  # parse changes string to js obj
-            json.dumps(forum_key_value))  # dynamically generate javascript code
-
-        javascript_username = "var username_js_data = JSON.parse('{}');".format(
-            json.dumps(forum_username_list))
-
-        js.write(
-            javascript_out + javascript_username + "\n" + saved_data)  # writing new line(javascript_out), then writing saved lines(saved_data)
-        js.close()
-
+        load_comments()  # load existing comments
 
         # submit comment
         form = ForumCommentForm(request.form)
@@ -769,6 +797,9 @@ def forum():
             })
 
             flash('Your comment has been sent!', 'success')
+
+            # refresh comments
+            load_comments()
 
             return render_template('forum.html', form=form)
 
