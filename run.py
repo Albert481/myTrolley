@@ -14,7 +14,6 @@ import popularitem as pop
 import product as prodt
 import userFeedback as uf
 import forumComment as fo
-from Workout import Workout
 from workoutWorkshop import workoutProgram
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
@@ -37,7 +36,6 @@ user_ref = db.reference('userbase')
 email_email = db.reference('response')
 forum_forum = db.reference('forum')
 
-workout = db.reference('workout')
 workout_program = db.reference('workout_program')
 
 app = Flask(__name__)
@@ -812,15 +810,6 @@ def workout():
         time = form.time.data
         difficulty_level = form.difficulty_level.data
         body_focus = form.body_focus.data
-
-        workout = Workout(time, difficulty_level, body_focus)
-
-        workout_db = root.child('workout')
-        workout_db.push({
-            'time': workout.get_time(),
-            'diff_level': workout.get_diff_level(),
-            'body_focus': workout.get_body_focus()
-        })
 
         workout_type_dest = ''
         #form2 = WorkoutTypeForm(request.form)
