@@ -23,7 +23,7 @@
                                 {% if evt.get_startDate() == evt.get_endDate() %}
                                 <p class="card-text">{{ evt.get_startDate() }}</p>
                                 {% else %}
-                                <p class="card-text">{{ evt.get_startDate() }} - {{ evt.get_endDate() }}</p>
+                                <p class="card-text">{{ evt.get_startDate() }} to {{ evt.get_endDate() }}</p>
                                 {% endif %}
                             </div>
                             <div class="card-footer">
