@@ -10,16 +10,14 @@
                 <i class="fa fa-user fa-fw"></i> {{ session ['user_data']['username'] }} <b class="caret"></b>
             </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                </li>
-                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                <li><a href="/view"><i class="fa fa-user fa-fw"></i> User Profile</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
             </ul>
             {% else %}
-                <li><a href="login"><i class="fa fa-user fa-fw"></i> Login</a>
+                <li><a href="/login"><i class="fa fa-user fa-fw"></i> Login</a>
                 </li>
             {% endif %}
         </li>

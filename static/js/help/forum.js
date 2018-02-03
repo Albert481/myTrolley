@@ -1,16 +1,17 @@
+var my_js_data = JSON.parse('{"Albert": "Hi I like trolleys!", "junwei": "Wei xiang^is handsome", "testing": "Help me?"}');
 
 //var dict_keys = Object.keys(my_js_data);
 //console.log(dict_keys);
 
 function disableComment() {
     alert("Log in to post a comment!");
-    //var leavepage = confirm('Do you want to log in to your account?');
-    //if (leavepage === true){
-        //window.location = "login.html";
-        //return false;       //When a form is submitted, it cancels any ongoing HTTP requests
-    //} else {
+    var leavepage = confirm('Do you want to log in to your account?');
+    if (leavepage === true){
+        window.location = "login.html";
+        return false;       //When a form is submitted, it cancels any ongoing HTTP requests
+    } else {
         //nothing
-    //}
+    }
 }
 
 /*
@@ -68,6 +69,7 @@ for (var k in username_js_data) {
 }
 */
 
+
 for (var key in my_js_data) {
         if (my_js_data.hasOwnProperty(key)) {
             //console.log(key + " -> " + my_js_data[key]);
@@ -75,9 +77,12 @@ for (var key in my_js_data) {
             var userpara = document.createElement("div");
             var firebase_usernames = document.createTextNode(key);
             userpara.appendChild(firebase_usernames);
-            userpara.className = "databasenames"
+            userpara.className = "databasenames";
             var userelement = document.getElementById("commentsection");
             userelement.appendChild(userpara);
+
+            my_js_data[key] = my_js_data[key].replace("^", "\n");       // replace ^ with \n
+            //console.log(my_js_data[key]);
 
             var para = document.createElement("div");           // create div element
             var firebase_comments = document.createTextNode(my_js_data[key]);             // text node with values from database
@@ -88,7 +93,8 @@ for (var key in my_js_data) {
         }
     }
 
-/*
+
+
 function js_load_comments() {
     for (var key in my_js_data) {
         if (my_js_data.hasOwnProperty(key)) {
@@ -110,7 +116,7 @@ function js_load_comments() {
         }
     }
 }
-*/
+
 
 /*
 $( document ).ready(function() {
