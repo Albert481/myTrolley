@@ -14,7 +14,8 @@ import popularitem as pop
 import product as prodt
 import userFeedback as uf
 import forumComment as fo
-from workoutProgram import workoutProgram
+#from Workout import Workout
+#from workoutWorkshop import workoutProgram
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -36,6 +37,7 @@ user_ref = db.reference('userbase')
 email_email = db.reference('response')
 forum_forum = db.reference('forum')
 
+workout = db.reference('workout')
 workout_program = db.reference('workout_program')
 
 app = Flask(__name__)
@@ -544,21 +546,22 @@ def signup():
 
     return render_template('signup.html', form=form)
 
-
-def validity_signup(form, field):
-    userbase = user_ref.get()
-    for user in userbase.items():
-        if user[1]['username'] == field.data:
-            raise ValidationError('Username has already been used')
-        elif user[1]['email'] == field.data:
-            raise ValidationError('Email has already been used')
-
-
 class SignupForm(Form):
-    username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired(), validity_signup])
-    email = StringField('Email Address', [validators.Length(min=6, max=30), validators.DataRequired(), validity_signup])
+    username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired()])
+    email = StringField('Email Address', [validators.Length(min=6, max=30), validators.DataRequired()])
     password = PasswordField('Password', [validators.Length(min=6, max=50), validators.DataRequired()])
 
+    def validate_username(form, field):
+        users = user_ref.get('userbase')
+        for id, user in users.items():
+            if user['username'] == field.data:
+                raise ValidationError('Username has already been used')
+
+    def validate_email(form, field):
+        users = user_ref.get('userbase')
+        for id, user in users.items():
+            if user['email'] == field.data:
+                raise ValidationError('Email has already been used')
 
 class LoginForm(Form):
     username = StringField('Username:', [validators.DataRequired()])
@@ -605,35 +608,43 @@ def logout():
     return redirect(url_for('login'))
 
 
-class AccountForm(Form):
-    update_username = StringField('New Username', [validators.Length(min=6, max=10)], validity_signup)
-    update_email = StringField('New Email', [validators.Length(min=6, max=30)], validity_signup)
-    update_password = PasswordField('New Password', [validators.Length(min=6, max=50)])
-
-
 @app.route('/view')
 def view():
     users = root.child('userbase').get()
-    list = []
-    for user in users:
-        eachuser = users[user]
-        profile = sp.Users(eachuser['username'], eachuser['email'], eachuser['password'])
-        profile.set_user(user)
-        print(profile.get_user())
-        list.append(profile)
-    return render_template('view_profile.html', user=list)
+    for id, user in users.items():
+        profile = sp.Users(user['username'], user['email'], user['password'])
+        print(profile.get_id())
+    return render_template('view_profile.html', users=profile)
 
 
-@app.route('/modify')
-def modify(id):
+class AccountForm(Form):
+    update_username = StringField('New Username', [validators.Length(min=6, max=10)])
+    update_email = StringField('New Email', [validators.Length(min=6, max=30)])
+    update_password = PasswordField('New Password', [validators.Length(min=6, max=50)])
+
+    def validate_username(form, field):
+        users = user_ref.get('userbase')
+        for id, user in users.items():
+            if user['username'] == field.data:
+                raise ValidationError('Username has already been used')
+
+    def validate_email(form, field):
+        users = user_ref.get('userbase')
+        for id, user in users.items():
+            if user['email'] == field.data:
+                raise ValidationError('Email has already been used')
+
+
+@app.route('/modify', methods=['GET', 'POST'])
+def modify():
     form = AccountForm(request.form)
     if request.method == 'POST' and form.validate():
         update_username = form.update_username.data
         update_email = form.update_email.data
         update_password = form.update_password.data
 
-        user = mo.Users(update_username, update_email, update_password)
-        user_db = root.child('userbase/' + id )
+        user = mo.Users(update_username, update_email, update_password, id)
+        user_db = root.child('userbase/')
         user_db.set({
            'username': user.get_update_username(),
            'email': user.get_update_email(),
@@ -730,6 +741,7 @@ class WorkoutForm(Form):
     body_focus_choices = [('core', 'Core'), ('whole_body', 'Total')]
     body_focus = SelectField('Body Focus', choices=body_focus_choices, default='core')
 
+
 @app.route('/workout_type_1')
 def workout_type_1():
     return render_template('workout_type_1.html')
@@ -802,13 +814,22 @@ def workout_type_17():
 def workout_type_18():
     return render_template('workout_type_18.html')
 
-@app.route('/workoutGenerator', methods=['GET', 'POST'])
+@app.route('/workout', methods=['GET', 'POST'])
 def workout():
     form = WorkoutForm(request.form)
     if request.method == 'POST' and form.validate():
         time = form.time.data
         difficulty_level = form.difficulty_level.data
         body_focus = form.body_focus.data
+
+        workout = Workout(time, difficulty_level, body_focus)
+
+        workout_db = root.child('workout')
+        workout_db.push({
+            'time': workout.get_time(),
+            'diff_level': workout.get_diff_level(),
+            'body_focus': workout.get_body_focus()
+        })
 
         workout_type_dest = ''
         #form2 = WorkoutTypeForm(request.form)
@@ -865,7 +886,7 @@ def workout():
         return redirect(url_for(workout_type_dest))
         #return redirect(url_for(workout_type_dest), form=form2)
 
-    return render_template('workout_generator.html', form=form)
+    return render_template('workout.html', form=form)
 
 class ProgramRegistrationForm(Form):
     name = StringField('Name', [validators.DataRequired()])
@@ -909,7 +930,7 @@ def workout_program():
 
         flash('Thank you! The form was submitted successfully.', 'success')
 
-    return render_template('workout_program.html', form=form)
+    return render_template('workshop_form.html', form=form)
 
 if __name__ == '__main__':
     app.run()
