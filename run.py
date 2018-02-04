@@ -3,6 +3,8 @@ from wtforms import Form, SelectMultipleField, StringField, PasswordField, valid
     ValidationError, FileField, SubmitField, TextAreaField, DateField
 import json
 import smtplib
+import base64
+import shutil
 import firebase_admin
 from firebase_admin import credentials, db, storage
 import signup as sp
@@ -596,6 +598,10 @@ def login():
                 session['key'] = user[0]
                 session['admin'] = user[1]['admin']
 
+                if session['logged_in'] == True:        # JW
+                    global checkifuserlogin
+                    checkifuserlogin = True             # JW
+
                 return redirect(url_for('home'))
         flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
@@ -730,7 +736,6 @@ class ForumCommentForm(Form):
                                  validators.DataRequired()])
 
 
-# 2 different list, use zip()
 # function to load comments
 def load_comments():
     forums = forum_forum.get()  # get database in format of dictionary
@@ -742,7 +747,10 @@ def load_comments():
     for key in forums:  # iterate through dictionary and get value of "comment"
         each_comment = forums[key]
         each_comment_value = each_comment['comment']
-        each_comment_value = each_comment_value.replace("\r\n", "^")  # repalce line breaks with ^
+        each_comment_value = str.replace(each_comment_value, "b'", "^")   # remove b'
+        each_comment_value = str.replace(each_comment_value, "'", "&")   # remove '
+        each_comment_value = str.replace(each_comment_value, '"', "")   # remove ""
+        # print(each_comment_value)
         forum_comment_list.append(each_comment_value)  # append comment into list
         # print(forum_comment_list)
 
@@ -757,6 +765,9 @@ def load_comments():
         username_comment_dict[forum_username_list[z]] = forum_comment_list[z]
         # print(username_comment_dict)
 
+    zipped = list(zip(forum_username_list, forum_comment_list))
+    # print(zipped)
+
     '''
     for i in range(len(forum_comment_list)):  # iterate depending on no. of elements in forum_comment_list
         comment_no = "comment"
@@ -764,38 +775,44 @@ def load_comments():
         forum_key_value.update({comment_no: forum_comment_list[i]})  # setting key:value pairs in new dictionary
     '''
 
+    '''
     js = open('static/js/help/forum.js', 'r')
     saved_data = js.read()  # read lines in file and save in variable
     js.close()
+    '''
 
-    js = open('static/js/help/forum.js', 'w')
+    # js = open('static/js/help/forum.js', 'w')
     javascript_out = "var my_js_data = JSON.parse('{}');".format(  # parse changes string to js obj
-        json.dumps(username_comment_dict))  # dynamically generate javascript code
+        json.dumps(zipped))  # dynamically generate javascript code
+
+
+    with open("static/js/help/forum.js") as f:
+        lines = f.readlines()
+    lines[0] = javascript_out + "\n"        # replace 1st line
+
+    with open("static/js/help/forum.js", "w") as f:
+        f.writelines(lines)
 
     '''
-    javascript_username = "var username_js_data = JSON.parse('{}');".format(
-        json.dumps(forum_username_list))
-    '''
-
     js.write(
         javascript_out + "\n" + saved_data)  # writing new line(javascript_out), then writing saved lines(saved_data)
     js.close()
-
     '''
-    # this will translate example.js to example.py
-    js2py.translate_file('static/js/help/forum.js', 'forumjs.py')
-    # example.py can be now imported and used!
-    from forumjs import forumjs
-    forumjs.js_load_comments()
+    '''
+    return "<script> console.log('Hi') </script>"
 
     js = open('static/js/help/forum.js', 'w')
     js.write(saved_data)
     js.close()
     '''
 
-    # js2py.eval_js('function js_load_comments() {for (var key in my_js_data) {if (my_js_data.hasOwnProperty(key)) {;var userpara = document.createElement("div");var firebase_usernames = document.createTextNode(key);userpara.appendChild(firebase_usernames);userpara.className = "databasenames";var userelement = document.getElementById("commentsection");userelement.appendChild(userpara);var para = document.createElement("div");var firebase_comments = document.createTextNode(my_js_data[key]);para.className = "databasecomments";var element = document.getElementById("commentsection");element.appendChild(para);}}}')
 
-    # return '<script> </script>'
+# code & decode to base64
+def stringToBase64(s):
+    return base64.b64encode(s.encode('utf-8'))
+
+def base64ToString(b):
+    return base64.b64decode(b).decode('utf-8')
 
 
 # declare global var used to verify if user is logged in
@@ -820,7 +837,12 @@ def forum():
         if request.method == "POST" and form.validate():
             comment = form.comment.data
             username = (session['id'])
-            fForum = fo.forumComment(comment)
+            comment64 = stringToBase64(comment)
+            # print(comment64)
+            comment64 = '"{}"'.format(comment64)        # add quotation marks
+            # print(comment64)
+
+            fForum = fo.forumComment(comment64)
 
             fForum_db = root.child('forum')
             fForum_db.push({
