@@ -3,37 +3,59 @@
 
 {% block head %}
 
+    <style>
+
+        .text-center {
+            width: 1170px;
+        }
+
+        #username {
+            width: 150px;
+        }
+
+        #email {
+            width: 300px;
+        }
+
+        #password {
+            width: 200px;
+        }
+
+        #container {
+            width: 500px;
+        }
+
+    </style>
+
 {% endblock %}
 
 {% block body %}
     {% from "includes/_formhelper.html" import render_field %}
+    <section class="content">
+    <h2 class="text-center">Change Particulars</h2>
+
     <form method="POST" action="">
-        <div class="form-group">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    {{ render_field(form.update_username, class_="form-control") }}
-                </div>
-                <div class="form-group col-md-4">
-                    {{ render_field(form.update_email, class_="form-control") }}
-                </div>
-                <div class="form-group col-md-4">
-                    {{ render_field(form.update_password, class_="form-control") }}
-                </div>
 
+        <div id="container" class="container">
+            <div id="username" class="form-group row-md-4">
+                {{ render_field(form.username, class_="form-control") }}
+            </div>
+
+            <div id="email" class="form-group row-md-4">
+                {{ render_field(form.email, class_="form-control") }}
+            </div>
+
+            <div id="password" class="form-group row-md-4">
+                {{ render_field(form.password, class_="form-control") }}
+            </div>
+
+            <div class="form-group row-md-1">
+                <input type="submit" value="Update" class="btn btn-info"/>
             </div>
         </div>
+    </form>
 
-        <div class="form-group">
-            <div class="form-row">
-                <div class="form-group col-md-11">
-                </div>
-                <div class="form-group col-md-1">
-                    <input type="submit" value="Update" class="btn btn-info"/>
-                </div>
-            </div>
-        </div>
-
-   </form>s
+    </section>
 {% endblock %}
 
     <!-- jQuery -->

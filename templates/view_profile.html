@@ -3,23 +3,39 @@
 
 {% block head %}
 
+    <style>
+           .heading {
+               font-size: 30px;
+           }
+    </style>
+
 {% endblock %}
 
 {% block body %}
     {% from "includes/_formhelper.html" import render_field %}
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <section class="content">
+    <h1 class="heading">View Profile</h1>
+    <hr/>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Username:</th>
+            <th>Email:</th>
+            <th>Password:</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ user.get_username() }}</td>
+            <td>{{ user.get_email() }}</td>
+            <td>{{ user.get_password() }}</td>
+        </tr>
+        <tr>
+        <tr><a href="/modify">Change particulars</a></tr>
+        </tr>
+        </tbody>
+    </table>
+    </section>
 
 {% endblock %}
 
