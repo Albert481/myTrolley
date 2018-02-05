@@ -23,6 +23,7 @@ class Users:
     def set_password(self, password):
         self.__password = password
 
+
 class Admin:
     def __init__(self, username, email, admin):
         self.__username = username
