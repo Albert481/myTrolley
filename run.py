@@ -734,77 +734,6 @@ class ForumCommentForm(Form):
                                  validators.DataRequired()])
 
 
-# function to load comments
-def load_comments():
-    forums = forum_forum.get()  # get database in format of dictionary
-    forum_comment_list = []  # store comments
-    forum_username_list = []  # store username
-    # forum_key_value = {}
-    username_comment_dict = {}  # store username & comment as key value pairs
-
-    for key in forums:  # iterate through dictionary and get value of "comment"
-        each_comment = forums[key]
-        each_comment_value = each_comment['comment']
-        each_comment_value = str.replace(each_comment_value, "b'", "^")   # remove b'
-        each_comment_value = str.replace(each_comment_value, "'", "&")   # remove '
-        each_comment_value = str.replace(each_comment_value, '"', "")   # remove ""
-        # print(each_comment_value)
-        forum_comment_list.append(each_comment_value)  # append comment into list
-        # print(forum_comment_list)
-
-    for key in forums:  # iterate through dictionary and get value of "username"
-        each_username = forums[key]
-        each_username_value = each_username['username']
-        forum_username_list.append(each_username_value)  # append username into list
-        # print(forum_username_list)
-
-    for z in range(len(forum_comment_list)):
-        # username_comment_dict.update({forum_username_list[z]: forum_comment_list[z]})
-        username_comment_dict[forum_username_list[z]] = forum_comment_list[z]
-        # print(username_comment_dict)
-
-    zipped = list(zip(forum_username_list, forum_comment_list))
-    # print(zipped)
-
-    '''
-    for i in range(len(forum_comment_list)):  # iterate depending on no. of elements in forum_comment_list
-        comment_no = "comment"
-        comment_no += str(i + 1)
-        forum_key_value.update({comment_no: forum_comment_list[i]})  # setting key:value pairs in new dictionary
-    '''
-
-    '''
-    js = open('static/js/help/forum.js', 'r')
-    saved_data = js.read()  # read lines in file and save in variable
-    js.close()
-    '''
-
-    # js = open('static/js/help/forum.js', 'w')
-    javascript_out = "var my_js_data = JSON.parse('{}');".format(  # parse changes string to js obj
-        json.dumps(zipped))  # dynamically generate javascript code
-
-
-    with open("static/js/help/forum.js") as f:
-        lines = f.readlines()
-    lines[0] = javascript_out + "\n"        # replace 1st line
-
-    with open("static/js/help/forum.js", "w") as f:
-        f.writelines(lines)
-
-    '''
-    js.write(
-        javascript_out + "\n" + saved_data)  # writing new line(javascript_out), then writing saved lines(saved_data)
-    js.close()
-    '''
-    '''
-    return "<script> console.log('Hi') </script>"
-
-    js = open('static/js/help/forum.js', 'w')
-    js.write(saved_data)
-    js.close()
-    '''
-
-
 # code & decode to base64
 def stringToBase64(s):
     return base64.b64encode(s.encode('utf-8'))
@@ -819,15 +748,35 @@ checkifuserlogin = False
 
 @app.route('/forum', methods=["GET", "POST"])
 def forum():
+    forum_comment_list = []  # store comments
+    forum_username_list = []  # store username
+    zipped = []
     if checkifuserlogin == False:  # if user is not logged in.
         form = ForumCommentForm(request.form)
-        load_comments()
-        return (render_template('forum.html', form=form))
-        # return '<script>alert("YO") ; window.location.href="/forum"; </script>')
-        # return render_template('forum.html', form=form)
+
+        forums = forum_forum.get()  # get database in format of dictionary
+
+        for key in forums:  # iterate through dictionary and get value of "comment"
+            each_comment = forums[key]
+            each_comment_value = each_comment['comment']
+            each_comment_value = each_comment_value.replace('"', '')
+            each_comment_value = each_comment_value.replace("b'", '')
+            each_comment_value = each_comment_value.replace("'", "")
+            print(each_comment_value)
+            each_comment_value = base64ToString(each_comment_value)
+            # print(each_comment_value)
+            forum_comment_list.append(each_comment_value)  # append comment into list
+            # print(forum_comment_list)
+
+        for key in forums:  # iterate through dictionary and get value of "username"
+            each_username = forums[key]
+            each_username_value = each_username['username']
+            forum_username_list.append(each_username_value)  # append username into list
+            # print(forum_username_list)
+
+        return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
 
     else:  # if user is logged in
-        load_comments()  # load existing comments
 
         # submit comment
         form = ForumCommentForm(request.form)
@@ -837,7 +786,7 @@ def forum():
             username = (session['id'])
             comment64 = stringToBase64(comment)
             # print(comment64)
-            comment64 = '"{}"'.format(comment64)        # add quotation marks
+            comment64 = "{}".format(comment64)        # add quotation marks
             # print(comment64)
 
             fForum = fo.forumComment(comment64)
@@ -851,11 +800,54 @@ def forum():
             flash('Your comment has been sent!', 'success')
 
             # refresh comments
-            load_comments()
 
-            return render_template('forum.html', form=form)
+            forums = forum_forum.get()  # get database in format of dictionary
 
-        return render_template('forum.html', form=form)
+            for key in forums:  # iterate through dictionary and get value of "comment"
+                each_comment = forums[key]
+                each_comment_value = each_comment['comment']
+                each_comment_value = each_comment_value.replace('"', '')
+                each_comment_value = each_comment_value.replace("b'", '')
+                each_comment_value = each_comment_value.replace("'", "")
+                # print(each_comment_value)
+                each_comment_value = base64ToString(each_comment_value)
+                # print(each_comment_value)
+                forum_comment_list.append(each_comment_value)  # append comment into list
+                # print(forum_comment_list)
+
+            for key in forums:  # iterate through dictionary and get value of "username"
+                each_username = forums[key]
+                each_username_value = each_username['username']
+                forum_username_list.append(each_username_value)  # append username into list
+                # print(forum_username_list)
+
+
+            return render_template('forum.html', form=form, usernames=forum_username_list , comments=forum_comment_list)
+
+        else:
+            forums = forum_forum.get()  # get database in format of dictionary
+
+            for key in forums:  # iterate through dictionary and get value of "comment"
+                each_comment = forums[key]
+                each_comment_value = each_comment['comment']
+                each_comment_value = each_comment_value.replace('"', '')
+                each_comment_value = each_comment_value.replace("b'", '')
+                each_comment_value = each_comment_value.replace("'", "")
+                # print(each_comment_value)
+                each_comment_value = base64ToString(each_comment_value)
+                # print(each_comment_value)
+                forum_comment_list.append(each_comment_value)  # append comment into list
+                # print(forum_comment_list)
+
+            for key in forums:  # iterate through dictionary and get value of "username"
+                each_username = forums[key]
+                each_username_value = each_username['username']
+                forum_username_list.append(each_username_value)  # append username into list
+                # print(forum_username_list)
+
+                return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
+
+        return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
 
 
 class WorkoutForm(Form):
