@@ -1,8 +1,6 @@
-var my_js_data = JSON.parse('{"Albert": "Hi I like trolleys!", "junwei": "Wei xiang^is handsome", "testing": "Help me?"}');
+var my_js_data = JSON.parse('[["albert", "^SSBsb3ZlIHRyb2xsZXlz&"], ["kahen", "^SGVsbG8gV29ybGQh&"], ["junwei", "^UHJvZ3JhbW1pbmcgaXMgZnVuDQpWZXJ5IGZ1bi4=&"], ["christy", "^SSBhZ3JlZSA6KQ==&"], ["weixiang", "^SSBkb24ndCA+Oig=&"], ["kahen", "^UGxlYXNlIGRvIG5vdCBzcGFtIGluIHRoZSBjb21tZW50IHNlY3Rpb24uIEFueSBmb3JtIG9mIHNwYW0sIGFkdmVydGlzZW1lbnRzLCBvciBmb3VsIGxhbmd1YWdlIGlzIG5vdCB0b2xlcmF0ZWQgYW5kIHVzZXJzIGNhdWdodCBzcGFtbWluZyB3aWxsIGJlIHBlcm1hbmVudGx5IGJhbm5lZC4gVGhhbmsgeW91IGZvciBjb29wZXJhdGluZyB3aXRoIHVzISA=&"]]');
 
-//var dict_keys = Object.keys(my_js_data);
-//console.log(dict_keys);
-
+/*
 function disableComment() {
     alert("Log in to post a comment!");
     var leavepage = confirm('Do you want to log in to your account?');
@@ -13,6 +11,67 @@ function disableComment() {
         //nothing
     }
 }
+*/
+
+for (var lists in my_js_data) {
+    //console.log(my_js_data);
+    //console.log(my_js_data[lists][0]);  //username
+    //console.log(my_js_data[lists][1]);  //comment
+
+    var userpara = document.createElement("div");
+    var firebase_usernames = document.createTextNode(my_js_data[lists][0] + ":");
+    userpara.appendChild(firebase_usernames);
+    userpara.className = "databasenames";
+    var userelement = document.getElementById("commentsection");
+    userelement.appendChild(userpara);
+
+    my_js_data[lists][1] = my_js_data[lists][1].replace("^", "");        //replace ^
+    my_js_data[lists][1] = my_js_data[lists][1].replace("&", "");        //replace &
+    var temp_data = my_js_data[lists][1];
+    // console.log(temp_data);
+
+    my_js_data[lists][1] = window.atob(temp_data);       //decode base64 to string
+    // console.log(my_js_data);
+
+    var para = document.createElement("div");           // create div element
+    var firebase_comments = document.createTextNode(my_js_data[lists][1]);             // text node with values from database
+    para.appendChild(firebase_comments);            // append text node into div element
+    para.className = "databasecomments";        // create class name for div element
+    var element = document.getElementById("commentsection");            // get ID: 'commentsection' in html page
+    element.appendChild(para);          // append var para into element
+}
+
+
+/*
+for (var key in my_js_data) {
+        if (my_js_data.hasOwnProperty(key)) {
+            //console.log(key + " -> " + my_js_data[key]);
+
+            var userpara = document.createElement("div");
+            var firebase_usernames = document.createTextNode(key);
+            userpara.appendChild(firebase_usernames);
+            userpara.className = "databasenames";
+            var userelement = document.getElementById("commentsection");
+            userelement.appendChild(userpara);
+
+            var temp_my_js_data = my_js_data[key].replace("^", "b");        //replace ^ with b'
+            var temp_my_js_data = my_js_data[key].replace("&", "'");        //replace ^ with b'
+            //my_js_data[key] = str.replace("^", "\n");       // replace ^ with \n
+            //console.log(my_js_data[key]);
+
+            window.atob(temp_my_js_data);       //decode base64 to string
+            print(temp_my_js_data);
+            print(my_js_data);
+
+            var para = document.createElement("div");           // create div element
+            var firebase_comments = document.createTextNode(my_js_data[key]);             // text node with values from database
+            para.appendChild(firebase_comments);            // append text node into div element
+            para.className = "databasecomments";        // create class name for div element
+            var element = document.getElementById("commentsection");            // get ID: 'commentsection' in html page
+            element.appendChild(para);          // append var para into element
+        }
+    }
+*/
 
 /*
 for (var y in my_js_data) {
@@ -28,16 +87,6 @@ for (var y in my_js_data) {
             console.log(new_dict);
         }
     }
-}
-*/
-
-/*
-for (z=0; z < Object.keys(my_js_data).length; z++){
-    var usernamevalue = username_js_data[z];
-    var new_dict = {}
-    new_dict[usernamevalue] = commentvalue;
-
-    console.log(new_dict);
 }
 */
 
@@ -68,55 +117,6 @@ for (var k in username_js_data) {
     }
 }
 */
-
-
-for (var key in my_js_data) {
-        if (my_js_data.hasOwnProperty(key)) {
-            //console.log(key + " -> " + my_js_data[key]);
-
-            var userpara = document.createElement("div");
-            var firebase_usernames = document.createTextNode(key);
-            userpara.appendChild(firebase_usernames);
-            userpara.className = "databasenames";
-            var userelement = document.getElementById("commentsection");
-            userelement.appendChild(userpara);
-
-            my_js_data[key] = my_js_data[key].replace("^", "\n");       // replace ^ with \n
-            //console.log(my_js_data[key]);
-
-            var para = document.createElement("div");           // create div element
-            var firebase_comments = document.createTextNode(my_js_data[key]);             // text node with values from database
-            para.appendChild(firebase_comments);            // append text node into div element
-            para.className = "databasecomments";        // create class name for div element
-            var element = document.getElementById("commentsection");            // get ID: 'commentsection' in html page
-            element.appendChild(para);          // append var para into element
-        }
-    }
-
-
-
-function js_load_comments() {
-    for (var key in my_js_data) {
-        if (my_js_data.hasOwnProperty(key)) {
-            //console.log(key + " -> " + my_js_data[key]);
-
-            var userpara = document.createElement("div");
-            var firebase_usernames = document.createTextNode(key);
-            userpara.appendChild(firebase_usernames);
-            userpara.className = "databasenames"
-            var userelement = document.getElementById("commentsection");
-            userelement.appendChild(userpara);
-
-            var para = document.createElement("div");           // create div element
-            var firebase_comments = document.createTextNode(my_js_data[key]);             // text node with values from database
-            para.appendChild(firebase_comments);            // append text node into div element
-            para.className = "databasecomments";        // create class name for div element
-            var element = document.getElementById("commentsection");            // get ID: 'commentsection' in html page
-            element.appendChild(para);          // append var para into element
-        }
-    }
-}
-
 
 /*
 $( document ).ready(function() {
