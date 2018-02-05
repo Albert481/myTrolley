@@ -1,108 +1,178 @@
 {% extends 'layout.html' %}
-{% block title %}Help{% endblock %}
+{#{% block title %}Help{% endblock %}#}
 
-{% block head %}
-    <style>
-        .helpboxes {
-            text-align: center;
-            padding: 50px 50px 50px 50px;
-            border-color: grey;
-            border-style: solid;
-            border-width: 2px;
-        }
 
-        .helpcontent {
-            border-color: grey;
-            border-style: solid;
-        }
-
-        .content{
-            background-color: #E6E6FA;
-        }
-
-        .col-sm-4{
-            border-style: none !important;
-        }
-    </style>
-{% endblock %}
 
 {% block body %}
 
-	<!-- Header -->
-   
-
-	<!-- Intro Section -->
- 
-    <!-- Content 1 -->
-<!--
-    <section class="content">
-        <div class="container helpcontent">
-            <div class="row">                
-                <div class="col-sm-3">
-                    <div class="helpboxes">
-                        <h3>Email Us</h3>
-                        <p>Having issues? Send us an email! We'll reply as soon as possible</p>
-                        <a href="email" class="btn btn-info">Go here!</a>
-                    </div>
-                </div>
-                    
-                <div class="col-sm-3">
-                    <div class="helpboxes">
-                        <h3>Feedback</h3>
-                        <p>Want to say something about our website? Comment here!</p>
-                        <a href="feedback" class="btn btn-info">Go here!</a>
-                    </div>
-                </div>
-                    
-                <div class="col-sm-3">
-                    <div class="helpboxes">
-                        <h3>FAQ</h3>
-                        <p>Here are the answers to some frequently asked questions</p>
-                        <a href="faq" class="btn btn-info">Go here!</a>
-                    </div>
-                </div>
-
-                <div class="col-sm-3">
-                    <div class="helpboxes">
-                        <h3>General Enquiry</h3>
-                        <p>Guidelines and step by step instructions</p>
-                        <a href="generalhelp" class="btn btn-info">Go here!</a>
-                    </div>
-                </div>
-                    
-            </div>
-        </div>
-    </section>
-    -->
-    <section class="content">
-        <div class="container helpcontent">
+    {#    <section class="content">#}
+    {#        <div class="container helpcontent">#}
+    {#            <div class="row">#}
+    {#                <div class="col-sm-12" id="view">Help</div>#}
+    {#                <div class="col-sm-4">#}
+    {#                    <div class="helpboxes">#}
+    {#                        <h3>Email Us</h3>#}
+    {#                        <p>Having issues? Send us an email! We'll reply as soon as possible</p>#}
+    {#                        <div>#}
+    {#                            <a href="email" class="btn btn-info">Go here!</a>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {##}
+    {#                <div class="col-sm-4">#}
+    {#                    <div class="helpboxes">#}
+    {#                        <h3>Feedback</h3>#}
+    {#                        <p>Want to say something about our website? Comment here!</p>#}
+    {#                        <a href="forum" class="btn btn-info">Go here!</a>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {##}
+    {#                <div class="col-sm-4">#}
+    {#                    <div class="helpboxes">#}
+    {#                        <h3>FAQ</h3>#}
+    {#                        <p>Here are the answers to some frequently asked questions</p>#}
+    {#                        <a href="faq" class="btn btn-info">Go here!</a>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {##}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </section>#}
+    <div id="container">
+        <div class="container">
             <div class="row">
+
                 <div class="col-sm-4">
-                    <div class="helpboxes">
-                        <h3>Email Us</h3>
-                        <p>Having issues? Send us an email! We'll reply as soon as possible</p>
-                        <a href="email" class="btn btn-info">Go here!</a>
+                    <div class="card effect__hover" id="cardblk">
+                        <div class="card__front">
+                        <span class="card__text" id="cardtxtFront">
+                            <h3>Email Us</h3>
+                        </span>
+                        </div>
+                        <div class="card__back">
+                        <span class="card__text" id="cardtxtBack">
+                             <p>Having issues? Send us an email! We'll reply as soon as possible</p>
+                            <a href="email">Email here!</a>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card effect__hover" id="cardblk">
+                        <div class="card__front">
+                        <span class="card__text" id="cardtxtFront">
+                            <h3>Feedback</h3>
+                        </span>
+                        </div>
+                        <div class="card__back">
+                        <span class="card__text" id="cardtxtBack">
+                            <p>Want to say something about our website?</p>
+                            <a href="forum">Comment here!</a>
+                        </span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-sm-4">
-                    <div class="helpboxes">
-                        <h3>Feedback</h3>
-                        <p>Want to say something about our website? Comment here!</p>
-                        <a href="forum" class="btn btn-info">Go here!</a>
+                    <div class="card effect__hover" id="cardblk">
+                        <div class="card__front">
+                        <span class="card__text" id="cardtxtFront">
+                            <h3>FAQ</h3>
+                        </span>
+                        </div>
+                        <div class="card__back">
+                        <span class="card__text" id="cardtxtBack">
+                            <p>Here are the answers to some frequently asked questions</p>
+                            <a href="faq">Go here!</a>
+                        </span>
+                        </div>
                     </div>
                 </div>
-
-                <div class="col-sm-4">
-                    <div class="helpboxes">
-                        <h3>FAQ</h3>
-                        <p>Here are the answers to some frequently asked questions</p>
-                        <a href="faq" class="btn btn-info">Go here!</a>
-                    </div>
-                </div>
-
             </div>
         </div>
-    </section>
+    </div>
+
+    <style>
+        #container {
+            background-color: #E6E6FA;
+        }
+
+        .col-sm-4 {
+            border-style: none !important;
+            align-content: center;
+        }
+
+        #cardblk {
+            width: 200px;
+            height: 200px;
+        }
+
+        #cardtxtFront {
+            margin-top: 80px;
+        }
+
+        #cardtxtBack {
+            margin-top: 70px;
+        }
+
+        {#-----------------------------Default Card Style-----------------------------#}
+
+        .card {
+            position: relative;
+            float: left;
+            padding-bottom: 25%;
+            width: 25%;
+            text-align: center;
+        }
+
+        .card__front, .card__back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card__front, .card__back {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transition: -webkit-transform 0.3s;
+            transition: transform 0.3s;
+        }
+
+        .card__front {
+            background-color: #ff5078;
+        }
+
+        .card__back {
+            background-color: #1e1e1e;
+            -webkit-transform: rotateY(-180deg);
+            transform: rotateY(-180deg);
+        }
+
+        .card__text {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            height: 20px;
+            color: #fff;
+            font-family: "Roboto Slab", serif;
+            line-height: 20px;
+        }
+
+        .card.effect__hover:hover .card__front {
+            -webkit-transform: rotateY(-180deg);
+            transform: rotateY(-180deg);
+        }
+
+        .card.effect__hover:hover .card__back {
+            -webkit-transform: rotateY(0);
+            transform: rotateY(0);
+        }
+    </style>
 
 {% endblock %}

@@ -8,23 +8,27 @@
         }
 
         #commentsection {
-            border-style: solid;
-            border-color: black;
+            border-style: none;
         }
 
         .databasecomments {
-            border-style: solid;
+            border-bottom-style: solid;
             border-bottom-color: #9aa7af;
-            border-top-color: transparent;
-            border-left-color: transparent;
-            border-right-color: transparent;
             padding-top: 15px;
             padding-bottom: 15px;
-            padding-left: 15px;
-            padding-right: 15px;
+            padding-left: 25px;
+            padding-right: 25px;
 
         }
 
+        .databasenames {
+            border-bottom-style: none;
+            padding-top: 10px;
+            padding-left: 15px;
+        }
+
+        #commentbutton {
+        }
     </style>
     <script>
 
@@ -59,7 +63,7 @@
                         <div id="user_comment" class="form-group">
                             {{ render_field(form.comment, row=7, class_="form-control") }}
                         </div>
-                        <input type="submit" value="submit" class="btn btn-default" id="forumcommentbut" onclick="disableComment()">
+                        <input type="submit" value="submit" id="commentbutton" class="btn btn-default" id="forumcommentbut" style="float: right" onclick="reload()">
                     </form>
                 </div>
             </div>
@@ -67,7 +71,12 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div id="commentsection">
-
+{#                        {% if (comments | length) <6 %}#}
+                        {% for i in range(comments |length) %}
+                            <div class="databasenames">{{ usernames[i] }}</div>
+                            <div class="databasecomments">{{ comments[i] }}</div>
+                        {% endfor %}
+{#                            {% endif %}#}
                     </div>
                 </div>
             </div>
