@@ -2,32 +2,22 @@
 {% block title %}Home{% endblock %}
 
 {% block head %}
-    <style>
-/* Heart of the matter */
-@media (min-width: 768px) {
-  .ten-columns > .col-sm-2 {
-    width: 20%;
-  }
-}
-
-/* Decorations */
-.col-sm-2 {
-  font-size: 28px;
-  font-weight: bold;
-  min-height: 150px;
-  padding-top: 6px;
-  width:218px;
-  height:231px;
-}
-
-.centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-    </style>
+<style>
+    .col-xs-6 {
+        height: 231px;
+        text-align: center;
+        font-size : 28px;
+    }
+    .col-xs-6 a{
+        padding-top: 1cm;
+    }
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
 {% endblock %}
 
 {% block body %}
@@ -86,53 +76,36 @@
         </div>
     </section>
 
-    <!-- Promos -->
+
 <div class="container-fluid">
-  <div class="row ten-columns">
-
-    <div class="col-sm-2" style="background-image:url('../static/images/credit.jpg'); background-size: auto 100%; ">
-        <a href="/credit">
-        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center">
-            Credit point system
-        </h2>
+  <div class="row">
+    <div class="col-xs-6 col-sm-3" style="background: url('../static/images/scanner_image.jpg'); background-size: auto 100%; ">
+        <a href="/scanner" class = "centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
+                    Scanner
         </a>
     </div>
-
-    <div class="col-sm-2" style="background: url('../static/images/scanner.jpg'); background-size: auto 100%; ">
-        <a href="/scanner">
-        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
-            Scanner
-        </h2>
-            </a>
-    </div>
-
-    <div class="col-sm-2" style="background: url('../static/images/Enable-store-NTUC-Fairprice-4.jpg'); background-size: auto 100%; ">
-        <a href="/ourproduct">
-        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
-            Products
-        </h2>
-            </a>
-    </div>
-
-    <div class="col-sm-2" style="background: url('../static/images/help.jpg'); background-size: auto 100%; ">
-        <a href="/help">
-        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
-            Help
-        </h2>
+    <div class="col-xs-6 col-sm-3" style="background: url('../static/images/Enable-store-NTUC-Fairprice-4.jpg'); background-size: auto 100%; ">
+        <a href="/ourproduct" class = "centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
+                    Products
         </a>
     </div>
-
-    <div class="col-sm-2" style="background: url('../static/images/row_workout.jpg'); background-size: auto 100%;">
-        <a href="/workoutGenerator">
-        <h2 class="centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
-            Workout
-        </h2>
+    <!-- Add clearfix for only the required viewport -->
+    <div class="clearfix visible-xs"></div>
+    <div class="col-xs-6 col-sm-3" style="background: url('../static/images/help_image.jpg'); background-size: auto 100%; ">
+        <a href="/help" class = "centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
+                    Help
+        </a>
+    </div>
+    <div class="col-xs-6 col-sm-3" style="background: url('../static/images/workout_nutrition.jpg'); background-size: auto 100%; ">
+        <a href="/workoutGenerator" class = "centered" style="color:white; text-shadow: 0 0 3px black; font-weight:bold; text-align: center;">
+                    Workout
         </a>
     </div>
   </div>
 </div>
 
-            <!-- /.container-fluid -->
+
+
 
     <!-- Content 3 -->
     <section class="content content-3">
@@ -157,5 +130,3 @@
 
     <!-- Custom Javascript -->
     <script src="../static/js/custom.js"></script>
-
-
