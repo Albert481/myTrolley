@@ -4,6 +4,9 @@
 
 
 {% block body %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
 
     {#    <section class="content">#}
     {#        <div class="container helpcontent">#}
@@ -41,138 +44,149 @@
     <div id="container">
         <div class="container">
             <div class="row">
+                <!-- Page Content -->
+                <div class="container">
 
-                <div class="col-sm-4">
-                    <div class="card effect__hover" id="cardblk">
-                        <div class="card__front">
-                        <span class="card__text" id="cardtxtFront">
-                            <h3>Email Us</h3>
-                        </span>
-                        </div>
-                        <div class="card__back">
-                        <span class="card__text" id="cardtxtBack">
-                             <p>Having issues? Send us an email! We'll reply as soon as possible</p>
-                            <a href="email">Email here!</a>
-                        </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="card effect__hover" id="cardblk">
-                        <div class="card__front">
-                        <span class="card__text" id="cardtxtFront">
-                            <h3>Feedback</h3>
-                        </span>
-                        </div>
-                        <div class="card__back">
-                        <span class="card__text" id="cardtxtBack">
-                            <p>Want to say something about our website?</p>
-                            <a href="forum">Comment here!</a>
-                        </span>
-                        </div>
-                    </div>
-                </div>
+                    <!-- Page Heading/Breadcrumbs -->
+                    <h1 class="mt-4 mb-3" id="helptitle">Help Section
 
-                <div class="col-sm-4">
-                    <div class="card effect__hover" id="cardblk">
-                        <div class="card__front">
-                        <span class="card__text" id="cardtxtFront">
-                            <h3>FAQ</h3>
-                        </span>
+                    </h1>
+
+                    <img class="img-fluid rounded mb-4" id="helpbanner" src="static/images/helpbanner.jpg" alt="">
+
+                    <!-- Marketing Icons Section -->
+                    <div class="row">
+                        <div class="col-lg-4 mb-4">
+                            <div class="card h-100" id="cardheaders">
+                                <h4 class="card-header">Email Developers</h4>
+                                <div class="card-body">
+                                    <p class="card-text" id="cardtext">Having issues with the website? Send us an email!
+                                        We will reply as soon as possible.</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="email" class="btn btn-primary">Email Us</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card__back">
-                        <span class="card__text" id="cardtxtBack">
-                            <p>Here are the answers to some frequently asked questions</p>
-                            <a href="faq">Go here!</a>
-                        </span>
+                        <div class="col-lg-4 mb-4">
+                            <div class="card h-100" id="cardheaders">
+                                <h4 class="card-header">Feedback</h4>
+                                <div class="card-body">
+                                    <p class="card-text" id="cardtext">Want to say something about our website? Leave us
+                                        a comment at our
+                                        comment section!</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="forum" class="btn btn-primary">Comment here</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-4">
+                            <div class="card h-100" id="cardheaders">
+                                <h4 class="card-header">General Help & FAQ</h4>
+                                <div class="card-body">
+                                    <p class="card-text" id="cardtext">Here are some information regarding the website
+                                        and answers to some frequently asked questions.</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="faq" class="btn btn-primary">Learn More</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!-- /.row -->
+
                 </div>
+                <!-- /.container -->
             </div>
-        </div>
-    </div>
+            <!--
+                            <div class="col-sm-4">
+                                <div class="card effect__hover" id="cardblk">
+                                    <div class="card__front">
+                                    <span class="card__text" id="cardtxtFront">
+                                        <h3>Email Us</h3>
+                                    </span>
+                                    </div>
+                                    <div class="card__back">
+                                    <span class="card__text" id="cardtxtBack">
+                                         <p>Having issues? Send us an email! We'll reply as soon as possible</p>
+                                        <a href="email">Email here!</a>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card effect__hover" id="cardblk">
+                                    <div class="card__front">
+                                    <span class="card__text" id="cardtxtFront">
+                                        <h3>Feedback</h3>
+                                    </span>
+                                    </div>
+                                    <div class="card__back">
+                                    <span class="card__text" id="cardtxtBack">
+                                        <p>Want to say something about our website?</p>
+                                        <a href="forum">Comment here!</a>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
 
-    <style>
-        #container {
-            background-color: #E6E6FA;
-        }
+                            <div class="col-sm-4">
+                                <div class="card effect__hover" id="cardblk">
+                                    <div class="card__front">
+                                    <span class="card__text" id="cardtxtFront">
+                                        <h3>FAQ</h3>
+                                    </span>
+                                    </div>
+                                    <div class="card__back">
+                                    <span class="card__text" id="cardtxtBack">
+                                        <p>Here are the answers to some frequently asked questions</p>
+                                        <a href="faq">Go here!</a>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            -->
+            <style>
+                #container {
+                    background-color: #E6E6FA;
+                }
 
-        .col-sm-4 {
-            border-style: none !important;
-            align-content: center;
-        }
+                .col-sm-4 {
+                    border-style: none !important;
+                }
 
-        #cardblk {
-            width: 200px;
-            height: 200px;
-        }
+                #cardtext {
+                    padding: 25px;
+                }
 
-        #cardtxtFront {
-            margin-top: 80px;
-        }
+                #helptitle {
+                    padding-top: 25px;
+                    padding-bottom: 25px;
 
-        #cardtxtBack {
-            margin-top: 70px;
-        }
+                }
 
-        {#-----------------------------Default Card Style-----------------------------#}
+                #cardheaders {
+                    margin-top: 30px;
+                }
 
-        .card {
-            position: relative;
-            float: left;
-            padding-bottom: 25%;
-            width: 25%;
-            text-align: center;
-        }
+                .card {
+                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                    transition: 0.3s;
+                    border-radius: 5px;
+                }
 
-        .card__front, .card__back {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+                .card:hover {
+                    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 
-        .card__front, .card__back {
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            -webkit-transition: -webkit-transform 0.3s;
-            transition: transform 0.3s;
-        }
+                }
 
-        .card__front {
-            background-color: #ff5078;
-        }
-
-        .card__back {
-            background-color: #1e1e1e;
-            -webkit-transform: rotateY(-180deg);
-            transform: rotateY(-180deg);
-        }
-
-        .card__text {
-            display: inline-block;
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            margin: auto;
-            height: 20px;
-            color: #fff;
-            font-family: "Roboto Slab", serif;
-            line-height: 20px;
-        }
-
-        .card.effect__hover:hover .card__front {
-            -webkit-transform: rotateY(-180deg);
-            transform: rotateY(-180deg);
-        }
-
-        .card.effect__hover:hover .card__back {
-            -webkit-transform: rotateY(0);
-            transform: rotateY(0);
-        }
-    </style>
+                #helpbanner {
+                    border-radius: 5px;
+                }
+            </style>
 
 {% endblock %}

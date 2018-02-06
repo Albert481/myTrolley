@@ -752,29 +752,54 @@ def forum():
     forum_username_list = []  # store username
     zipped = []
     if checkifuserlogin == False:  # if user is not logged in.
+
         form = ForumCommentForm(request.form)
 
-        forums = forum_forum.get()  # get database in format of dictionary
+        if request.method == "POST" and form.validate():
 
-        for key in forums:  # iterate through dictionary and get value of "comment"
-            each_comment = forums[key]
-            each_comment_value = each_comment['comment']
-            each_comment_value = each_comment_value.replace('"', '')
-            each_comment_value = each_comment_value.replace("b'", '')
-            each_comment_value = each_comment_value.replace("'", "")
-            print(each_comment_value)
-            each_comment_value = base64ToString(each_comment_value)
-            # print(each_comment_value)
-            forum_comment_list.append(each_comment_value)  # append comment into list
-            # print(forum_comment_list)
+            forums = forum_forum.get()  # get database in format of dictionary
 
-        for key in forums:  # iterate through dictionary and get value of "username"
-            each_username = forums[key]
-            each_username_value = each_username['username']
-            forum_username_list.append(each_username_value)  # append username into list
-            # print(forum_username_list)
+            for key in forums:  # iterate through dictionary and get value of "comment"
+                each_comment = forums[key]
+                each_comment_value = each_comment['comment']
+                each_comment_value = each_comment_value.replace('"', '')
+                each_comment_value = each_comment_value.replace("b'", '')
+                each_comment_value = each_comment_value.replace("'", "")
+                each_comment_value = base64ToString(each_comment_value)
+                # print(each_comment_value)
+                forum_comment_list.append(each_comment_value)  # append comment into list
+                # print(forum_comment_list)
 
-        return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
+            for key in forums:  # iterate through dictionary and get value of "username"
+                each_username = forums[key]
+                each_username_value = each_username['username']
+                forum_username_list.append(each_username_value)  # append username into list
+                # print(forum_username_list)
+
+            return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
+
+        else:
+
+            forums = forum_forum.get()  # get database in format of dictionary
+
+            for key in forums:  # iterate through dictionary and get value of "comment"
+                each_comment = forums[key]
+                each_comment_value = each_comment['comment']
+                each_comment_value = each_comment_value.replace('"', '')
+                each_comment_value = each_comment_value.replace("b'", '')
+                each_comment_value = each_comment_value.replace("'", "")
+                each_comment_value = base64ToString(each_comment_value)
+                # print(each_comment_value)
+                forum_comment_list.append(each_comment_value)  # append comment into list
+                # print(forum_comment_list)
+
+            for key in forums:  # iterate through dictionary and get value of "username"
+                each_username = forums[key]
+                each_username_value = each_username['username']
+                forum_username_list.append(each_username_value)  # append username into list
+                # print(forum_username_list)
+
+            return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
 
     else:  # if user is logged in
 

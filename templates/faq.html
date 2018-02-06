@@ -4,115 +4,285 @@
 {% block head %}
 
     <style>
-        #faq-header{
-            font-size: xx-large;
-            font-weight: bold;
-            font-color: black;
+        /*@import url(//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.4/paper/bootstrap.min.css);*/
+        @import url(//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css);
+
+        /* WHAT YOU NEED */
+
+        /* RECOMMENDED STYLING BUT NOT REQUIRED */
+        .fading-side-menu a {
+            color: rgb(102, 102, 102);
         }
 
-        .faq-item{
+        .fading-side-menu a .fa {
+            padding-right: 15px;
+        }
+
+        /* FOR DEMO ONLY */
+        body {
+            background-color: rgb(255, 255, 255);
+            font-size: 16px;
+        }
+
+        header {
+            background: url('https://unsplash.imgix.net/photo-1427955569621-3e494de2b1d2?fit=crop&fm=jpg&h=700&q=75&w=1050') no-repeat center bottom;
+            background-size: cover;
+            margin-bottom: 30px;
+            min-height: 320px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        header:after {
+            bottom: 0px;
+            box-shadow: 0px -0px 10px 10px rgb(255, 255, 255);
+            content: '';
+            height: 0px;
+            left: 0px;
+            width: 100%;
+            position: absolute;
+        }
+
+        header .col-xs-12 {
+            height: 320px;
+        }
+
+        header .alert-info {
+            background-color: rgba(156, 39, 176, 0.7);
+        }
+
+        .title {
+            font-weight: 700;
+            margin-top: 0px;
+        }
+
+        p.small.text-muted {
+            margin-bottom: 0px;
+        }
+
+        .lead {
+            font-style: italic;
+        }
+
+        .no-margin {
+            margin: 0px !important;
+        }
+
+        .vertical-center {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #fullscreen {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* */
+
+        .faq-item {
             padding-top: 25px;
             padding-bottom: 25px;
             border-bottom-style: dotted;
             border-bottom-color: grey;
         }
 
-        .faq-question{
+        .faq-question {
             font-weight: bold;
             font-size: medium;
         }
 
-        .faq-answer{
+        .faq-answer {
             font-size: medium;
         }
 
-        .faq-footer{
-            padding-top: 25px;
+        .faq-footer {
+            padding-top: 40px;
             padding-bottom: 25px;
         }
+
+        #maincontent {
+            padding-top: 40px;
+        }
+
+        #tablelinks {
+            padding-bottom: 5px;
+        }
+
+        #table {
+            padding-top: 40px;
+        }
     </style>
+
 {% endblock %}
 
 {% block body %}
+    <div class="container">
+        <div class="hidden-xs col-sm-3">
+            <div class="fading-side-menu" id="table" data-offset-top="350">
+                <h4>Table of Contents</h4>
+                <hr class="no-margin">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#intro" id="tablelinks">
+                            <span class="fa fa-angle-double-right text-primary"></span>Introduction
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#mission" id="tablelinks">
+                            <span class="fa fa-angle-double-right text-primary"></span>What is myTrolley's mission?
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#started" id="tablelinks">
+                            <span class="fa fa-angle-double-right text-primary"></span>Getting started
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#special" id="tablelinks">
+                            <span class="fa fa-angle-double-right text-primary"></span>What makes myTrolley speical?
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#operate" id="tablelinks">
+                            <span class="fa fa-angle-double-right text-primary"></span>Where does myTrolley operate?
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#faq" id="tablelinks">
+                            <span class="fa fa-angle-double-right text-primary"></span>Other FAQ
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- THIS IS NOT NEEDED, THIS IS JUST THE CONTENT OF THE DEMO -->
+        <div class="col-xs-12 col-sm-9" id="maincontent">
+            <h3 id="intro" class="title">Introduction</h3>
 
-    <section class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="faq-section">
-                        <div class="faq-header"><h3 id="faq-header">Frequently Asked Questions</h3></div>
+            <p>myTrolley is an Web App that allows everyone and anyone, to borrow a trolley at a supermarket with just
+                a click. This allows users who have access to the web to scan QR codes printed on the trolleys. Without
+                the
+                need for coins anymore, this method is faster, efficient, and also less time consuming. myTrolley is
+                part of
+                an initiative effort called Smart Nation, started by our Prime Minister, Lee Hsien Loong.</p>
+            <br>
 
-                        <div class="faq-item">
-                            <a class="faq-question" href="#answer1" data-toggle="collapse" aria-expanded="false">
-                                Q: How do I rent a trolley?
-                            </a>
-                            <div id="answer1" class="faq-answer collapse">
-                                <span>A: Register for an account</span>
-                            </div>
-                        </div>
+            <h3 id="mission" class="title">What is myTrolley's mission?</h3>
 
-                        <div class="faq-item">
-                            <a class="faq-question" href="#answer2" data-toggle="collapse" aria-expanded="false">
-                                Q: How do I rent a trolley?
-                            </a>
-                            <div id="answer2" class="faq-answer collapse">
-                                <span>A: Register for an account</span>
-                            </div>
-                        </div>
+            <p>To provide convenient, affordable, and efficient ways to borrow trolleys from your local supermarket</p>
+            <br>
 
-                        <div class="faq-item">
-                            <a class="faq-question" href="#answer3" data-toggle="collapse" aria-expanded="false">
-                                Q: How do I rent a trolley?
-                            </a>
-                            <div id="answer3" class="faq-answer collapse">
-                                <span>A: Register for an account</span>
-                            </div>
-                        </div>
+            <h3 id="started" class="title">Getting started</h3>
 
-                        <div class="faq-item">
-                            <a class="faq-question" href="#answer4" data-toggle="collapse" aria-expanded="false">
-                                Q: How do I rent a trolley?
-                            </a>
-                            <div id="answer4" class="faq-answer collapse">
-                                <span>A: Register for an account</span>
-                            </div>
-                        </div>
+            <p>You have to register for an account if you don't have one yet. Look for the scanner
+            option and allow the web app to use the camera. After that, simply scan the QR code on the handle of the
+            trolley and start using it!</p>
+            <br>
 
-                        <div class="faq-item">
-                            <a class="faq-question" href="#answer5" data-toggle="collapse" aria-expanded="false">
-                                Q: How do I rent a trolley?
-                            </a>
-                            <div id="answer5" class="faq-answer collapse">
-                                <span>A: Register for an account</span>
-                            </div>
-                        </div>
+            <h3 id="special" class="title">What makes myTrolley special?</h3>
 
-                        <div class="faq-item">
-                            <a class="faq-question" href="#answer6" data-toggle="collapse" aria-expanded="false">
-                                Q: How do I rent a trolley?
-                            </a>
-                            <div id="answer6" class="faq-answer collapse">
-                                <span>A: Register for an account</span>
-                            </div>
-                        </div>
+            <p>myTrolley is one of the first trolley rental web application and the first and only one in Singapore!
+            We thrive to improve whenever possible and maintain whatever neccesary.</p>
+            <br>
 
-                        <div class="faq-item">
-                            <a class="faq-question" href="#answer7" data-toggle="collapse" aria-expanded="false">
-                                Q: How do I rent a trolley?
-                            </a>
-                            <div id="answer7" class="faq-answer collapse">
-                                <span>A: Register for an account</span>
-                            </div>
-                        </div>
+            <h3 id="operate" class="title">Where does myTrolley operate?</h3>
+
+            <p>myTrolley is currently only surpported by NTUC Fairprice. But 'fraid not! Soon myTrolley will be
+            implemented throughout all local supermarkets in the country!</p>
+            <br>
+
+            <div class="faq-section">
+                <h3 id="faq" class="title">Other Frequently Asked Questions</h3>
+
+                <div class="faq-item">
+                    <a class="faq-question" href="#answer1" data-toggle="collapse" aria-expanded="false">
+                        Q: How do I rent a trolley?
+                    </a>
+                    <div id="answer1" class="faq-answer collapse">
+                        <span>A: Register for an account and your basic paymemt. Allow the web application to use the camera
+                        and scan the QR code on the handle of the trolley with the scanner and you are ready to go!</span>
                     </div>
+                </div>
 
-                    <div class="faq-footer">
-                        Still can't find what you are looking for?
-                        <a href="email" class="btn btn-primary text-uppercase text-center">Email Us</a>
+                <div class="faq-item">
+                    <a class="faq-question" href="#answer2" data-toggle="collapse" aria-expanded="false">
+                        Q: How do I lock the trolley?
+                    </a>
+                    <div id="answer2" class="faq-answer collapse">
+                        <span>A: Park your trolley at the correct position, and press the "End trip" button to lock</span>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <a class="faq-question" href="#answer3" data-toggle="collapse" aria-expanded="false">
+                        Q: The scanner is not working, what should I do?
+                    </a>
+                    <div id="answer3" class="faq-answer collapse">
+                        <span>A: Go to settings and allow use of camera.</span>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <a class="faq-question" href="#answer4" data-toggle="collapse" aria-expanded="false">
+                        Q: How are the fares calculated?
+                    </a>
+                    <div id="answer4" class="faq-answer collapse">
+                        <span>A: Everytime you unlock a trolley, there will be a $1 deduction from your balance. When you
+                        finish using the trolley, end the trip to get the deposit back!</span>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <a class="faq-question" href="#answer5" data-toggle="collapse" aria-expanded="false">
+                        Q: For how long can I rent the trolley?
+                    </a>
+                    <div id="answer5" class="faq-answer collapse">
+                        <span>A: There is no time limit to the rental of trolleys. Feel free to use them as long as you want
+                        to!</span>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <a class="faq-question" href="#answer6" data-toggle="collapse" aria-expanded="false">
+                        Q: How far can I use the trolley?
+                    </a>
+                    <div id="answer6" class="faq-answer collapse">
+                        <span>A: There are indicators marked either within the vicinity of the supermarket or the shopping
+                        mall. If you push them out of the boundary, a timer will start counting down and your points may be
+                        deducted!</span>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <a class="faq-question" href="#answer7" data-toggle="collapse" aria-expanded="false">
+                        Q: What should I not do with the trolley?
+                    </a>
+                    <div id="answer7" class="faq-answer collapse">
+                        <span>A: You should not push the trolleys out of the indicated boundaries. Do not damage the trolleys
+                        in whatever way and treat the equipment with care.</span>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <a class="faq-question" href="#answer8" data-toggle="collapse" aria-expanded="false">
+                        Q: What should I do when i find a damaged/misplaced trolley?
+                    </a>
+                    <div id="answer8" class="faq-answer collapse">
+                        <span>A: Simply go to the scanner, and click on the "report" button below. Fill in the details
+                        and earn some points!</span>
                     </div>
                 </div>
             </div>
+
+            <div class="faq-footer">
+                Still can't find what you are looking for? Email us your enquiries!
+                <a href="email" class="btn btn-primary text-uppercase text-center">Email Us</a>
+            </div>
         </div>
-    </section>
+    </div>
 
 {% endblock %}

@@ -27,8 +27,10 @@
             padding-left: 15px;
         }
 
-        #commentbutton {
+        .commentheader {
+            text-align: center;
         }
+
     </style>
     <script>
 
@@ -63,7 +65,7 @@
                         <div id="user_comment" class="form-group">
                             {{ render_field(form.comment, row=7, class_="form-control") }}
                         </div>
-                        <input type="submit" value="submit" id="commentbutton" class="btn btn-default" id="forumcommentbut" style="float: right" onclick="reload()">
+                        <input type="submit" value="submit" id="commentbutton" class="btn btn-default" id="forumcommentbut" style="float: right">
                     </form>
                 </div>
             </div>
