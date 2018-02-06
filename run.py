@@ -2,14 +2,10 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from wtforms import Form, SelectMultipleField, StringField, PasswordField, validators, RadioField, SelectField, \
     ValidationError, FileField, SubmitField, TextAreaField, DateField
 import json
-import smtplib
-import base64
-import shutil
 import firebase_admin
 from firebase_admin import credentials, db, storage
 import signup as sp
 import login as lo
-import modifyuser as mo
 import trolleys as tr
 import event as ev
 import recipe as recs
@@ -40,6 +36,7 @@ user_ref = db.reference('userbase')
 email_email = db.reference('response')
 forum_forum = db.reference('forum')
 
+workout = db.reference('workout')
 workout_program = db.reference('workout_program')
 
 app = Flask(__name__)
@@ -207,7 +204,7 @@ def admin():
     # Charts
     values = []
 
-    values.append(tnames - tfaults)
+    values.append(tnames-tfaults)
     values.append(tfaults)
     return render_template('admin.html', form=form, eachtrolley=foundlist, totnames=tnames, totfaults=tfaults,
                            totmisused=tmisused, attention=attentionlist, values=values)
@@ -260,11 +257,9 @@ def repair_trolley(id):
 
     return redirect(url_for('viewpublications'))
 
-
 class ChangeAdmin(Form):
     username = StringField('', render_kw={"placeholder": "Username"})
-    adminlvl = RadioField('', choices=[('admin0', '0'), ('admin1', '1'), ('admin2', '2')])
-
+    adminlvl = RadioField('', choices=[('admin0','0'), ('admin1', '1'), ('admin2', '2')])
 
 @app.route('/accounts', methods=['GET', 'POST'])
 def accounts():
@@ -295,7 +290,6 @@ def accounts():
                 return redirect(url_for('accounts'))
     return render_template('accounts.html', eachuser=totalaccounts, form=form)
 
-
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
     form = ProductForm(request.form)
@@ -309,11 +303,11 @@ def add_product():
         itemP = prodt.Product(name, category, price, origin, image_name)
         itemP_db = root.child('products')
         itemP_db.push({
-            'name': itemP.get_name(),
-            'category': itemP.get_category(),
-            'price': itemP.get_price(),
-            'origin': itemP.get_origin(),
-            'image_name': itemP.get_image_name()
+                'name': itemP.get_name(),
+                'category': itemP.get_category(),
+                'price': itemP.get_price(),
+                'origin': itemP.get_origin(),
+                'image_name': itemP.get_image_name()
 
         })
 
@@ -321,8 +315,8 @@ def add_product():
 
         return redirect(url_for('view_product'))
 
-    return render_template('create_product.html', form=form)
 
+    return render_template('create_product.html', form=form)
 
 @app.route('/delete_product/<string:id>', methods=['POST'])
 def delete_product(id):
@@ -331,7 +325,6 @@ def delete_product(id):
     flash('Product Item Deleted Sucessfully.', 'success')
 
     return redirect(url_for('view_product'))
-
 
 @app.route('/update_product/<string:id>/', methods=['GET', 'POST'])
 def update_product(id):
@@ -348,11 +341,11 @@ def update_product(id):
         # create the product object
         itemP_db = root.child('products/' + id)
         itemP_db.set({
-            'name': itemP.get_name(),
-            'category': itemP.get_category(),
-            'price': itemP.get_price(),
-            'origin': itemP.get_origin(),
-            'image_name': itemP.get_image_name()
+                'name': itemP.get_name(),
+                'category': itemP.get_category(),
+                'price': itemP.get_price(),
+                'origin': itemP.get_origin(),
+                'image_name': itemP.get_image_name()
         })
 
         flash('Product Item Updated Sucessfully.', 'success')
@@ -374,15 +367,14 @@ def update_product(id):
 
         return render_template('update_product.html', form=form)
 
-
-@app.route('/view_product')  # 20180116
+@app.route('/view_product') #20180116
 def view_product():
     vitems = root.child('products').get()
     list = []  # create a list to store all the product objects
     for itemid in vitems:
         eachitem = vitems[itemid]
         vitem = prodt.Product(eachitem['name'], eachitem['category'], eachitem['price'],
-                              eachitem['origin'], eachitem['image_name'])
+                        eachitem['origin'], eachitem['image_name'])
 
         vitem.set_itemid(itemid)
         list.append(vitem)
@@ -414,9 +406,9 @@ def ourproduct():
 @app.route('/popularitem')
 def popularitem():
     popular = popitem.get()
-    # poplist = []
-    name = []
-    quantity = []
+    #poplist = []
+    name=[]
+    quantity=[]
 
     for pop_id in popular:
         eachpop = popular[pop_id]
@@ -498,7 +490,6 @@ def search():
 
     return render_template('search.html', item_list=list)
 
-
 class RequiredIf(object):
 
     def __init__(self, *args, **kwargs):
@@ -515,7 +506,6 @@ class RequiredIf(object):
                 else:
                     validators.Optional().__call__(form, field)
 
-
 class ProductForm(Form):
     name = StringField('Product Name', [
         validators.Length(min=1, max=150),
@@ -531,6 +521,22 @@ class ProductForm(Form):
         validators.Length(min=1, max=100),
         validators.DataRequired()])
 
+def validate_signup(form, field):
+    userbase = user_ref.get()
+    for user in userbase.items():
+        if user[1]['username'] == field.data:
+            raise ValidationError('Username is already taken')
+        if user[1]['email'] == field.data:
+            raise ValidationError('Email has already been used')
+
+
+class SignupForm(Form):
+    username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired(), validate_signup])
+    email = StringField('Email Address', [validators.Length(min=6, max=30), validators.DataRequired(), validate_signup])
+    password = PasswordField('Password', [validators.Length(min=6, max=50), validators.DataRequired(),
+                             validators.EqualTo('confirm_pass', message='Your passwords do not match')])
+    confirm_pass = PasswordField('Confirm Password', [validators.Length(min=6, max=50), validators.DataRequired()])
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -539,13 +545,15 @@ def signup():
         username = form.username.data
         email = form.email.data
         password = form.password.data
+        confirm_pass = form.confirm_pass.data
 
-        user = sp.Users(username, email, password)
+        user = sp.Users(username, email, password, confirm_pass)
         user_db = root.child('userbase')
         user_db.push({
             'username': user.get_username(),
             'email': user.get_email(),
             'password': user.get_password(),
+            'confirm_pass': user.get_confirm_pass(),
             'admin': 0
         })
 
@@ -555,23 +563,6 @@ def signup():
 
     return render_template('signup.html', form=form)
 
-
-class SignupForm(Form):
-    username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired()])
-    email = StringField('Email Address', [validators.Length(min=6, max=30), validators.DataRequired()])
-    password = PasswordField('Password', [validators.Length(min=6, max=50), validators.DataRequired()])
-
-    def validate_username(form, field):
-        users = user_ref.get('userbase')
-        for id, user in users.items():
-            if user['username'] == field.data:
-                raise ValidationError('Username has already been used')
-
-    def validate_email(form, field):
-        users = user_ref.get('userbase')
-        for id, user in users.items():
-            if user['email'] == field.data:
-                raise ValidationError('Email has already been used')
 
 
 class LoginForm(Form):
@@ -596,10 +587,6 @@ def login():
                 session['key'] = user[0]
                 session['admin'] = user[1]['admin']
 
-                if session['logged_in'] == True:        # JW
-                    global checkifuserlogin
-                    checkifuserlogin = True             # JW
-
                 return redirect(url_for('home'))
         flash('Login is not valid!', 'danger')
         return render_template('login.html', form=form)
@@ -623,63 +610,47 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/view')
-def view():
-    users = root.child('userbase').get()
-    for id, user in users.items():
-        profile = sp.Users(user['username'], user['email'], user['password'])
-        print(profile.get_id())
-    return render_template('view_profile.html', users=profile)
-
-
 class AccountForm(Form):
-    update_username = StringField('New Username', [validators.Length(min=6, max=10)])
-    update_email = StringField('New Email', [validators.Length(min=6, max=30)])
-    update_password = PasswordField('New Password', [validators.Length(min=6, max=50)])
-
-    def validate_username(form, field):
-        users = user_ref.get('userbase')
-        for id, user in users.items():
-            if user['username'] == field.data:
-                raise ValidationError('Username has already been used')
-
-    def validate_email(form, field):
-        users = user_ref.get('userbase')
-        for id, user in users.items():
-            if user['email'] == field.data:
-                raise ValidationError('Email has already been used')
+    username = StringField('New Username', [validators.Length(min=6, max=10), validate_signup])
+    email = StringField('New Email', [validators.Length(min=6, max=30), validate_signup])
+    password = PasswordField('New Password', [validators.Length(min=6, max=50),
+                             validators.EqualTo('confirm_pass', message='Your passwords do not match')])
+    confirm_pass = PasswordField('Confirm New Password', [validators.Length(min=6, max=50), validators.DataRequired()])
 
 
 @app.route('/modify', methods=['GET', 'POST'])
 def modify():
     form = AccountForm(request.form)
     if request.method == 'POST' and form.validate():
-        update_username = form.update_username.data
-        update_email = form.update_email.data
-        update_password = form.update_password.data
+        users = root.child('userbase').get()
+        list = []
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
+        confirm_pass = form.confirm_pass.data
 
-        user = mo.Users(update_username, update_email, update_password, id)
-        user_db = root.child('userbase/')
-        user_db.set({
-            'username': user.get_update_username(),
-            'email': user.get_update_email(),
-            'password': user.get_update_password(),
-        })
+        for user in users.items():
+            each_user = users[user]
+            particulars = sp.Users(each_user['username'], each_user['email'], each_user['password'],
+                                each_user['confirm_pass'])
+            particulars.set_user(user)
+            print(particulars.get_user())
+            list.append(particulars)
+
+            user = sp.Users(username, email, password, confirm_pass)
+            user_db = root.child('userbase/')
+            user_db.update({
+               'username': user.get_username(),
+               'email': user.get_email(),
+               'password': user.get_password(),
+               'confirm_pass': user.get_confirm_pass(),
+            })
 
         flash('Profile Updated Sucessfully.', 'success')
 
-        return redirect(url_for('view'))
+        return redirect(url_for('modify'), particulars=particulars)
 
-
-@app.route('/credit')
-def credit():
-    return render_template('creditpointsystem.html')
-
-
-@app.route('/reward')
-def reward():
-    return render_template('rewardsystem.html')
-
+    return render_template('modifyuser.html', form=form)
 
 @app.route('/help')
 def help():
@@ -694,9 +665,9 @@ def faq():
 class EmailForm(Form):
     name = StringField('Name:', [validators.Length(min=1, max=100, message="Please enter your name"),
                                  validators.DataRequired()])
+    user_email = StringField('Email:', [validators.Email(), validators.DataRequired()])
     feedback = TextAreaField('Feedback:', [validators.Length(min=1, max=99999, message="Please enter your feedback"),
-                                           validators.DataRequired()])
-    submit_email = SubmitField('Submit')
+                                         validators.DataRequired()])
 
 
 @app.route('/email', methods=["GET", "POST"])
@@ -704,175 +675,48 @@ def email():
     form = EmailForm(request.form)
     if request.method == 'POST' and form.validate():
         name = form.name.data
-        # user_email = form.user_email.data
+        user_email = form.user_email.data
         feedback = form.feedback.data
-        # eEmail = uf.userFeedback(name, user_email, feedback)
-        try:
-            fromaddr = 'MyTrolley2018@gmail.com'
-            toaddrs = 'MyTrolley2018@gmail.com'
-            username = 'MyTrolley2018@gmail.com'
-            password = 'qwertyop'
-            server = smtplib.SMTP('smtp.gmail.com:587')
-            msg = name + feedback
+        eEmail = uf.userFeedback(name, user_email, feedback)
 
-            server.ehlo()
-            server.starttls()
-            server.login(username, password)
-            server.sendmail(fromaddr, toaddrs, msg)
-            server.quit()
+        eEmail_db = root.child('response')
+        eEmail_db.push({
+            'name': eEmail.get_email_name(),
+            'email': eEmail.get_user_email(),
+            'feedback': eEmail.get_email_comment(),
+        })
+        flash('Your email has been sent!')
 
-            flash('Your email has been sent!', 'success')
-
-        except:
-            print("An error occured while sending your email. Please try again later.")
+        return render_template('email.html', form=form)
 
     return render_template('email.html', form=form)
+
+    # em_ref = db.reference('response')
+    # print(em_ref.get())
 
 
 class ForumCommentForm(Form):
     comment = TextAreaField('', [validators.Length(min=1, max=9999999, message='Please enter your comment'),
-                                 validators.DataRequired()])
-
-
-# code & decode to base64
-def stringToBase64(s):
-    return base64.b64encode(s.encode('utf-8'))
-
-def base64ToString(b):
-    return base64.b64decode(b).decode('utf-8')
-
-
-# declare global var used to verify if user is logged in
-checkifuserlogin = False
+                                      validators.DataRequired()])
 
 
 @app.route('/forum', methods=["GET", "POST"])
 def forum():
-    forum_comment_list = []  # store comments
-    forum_username_list = []  # store username
-    zipped = []
-    if checkifuserlogin == False:  # if user is not logged in.
+    form = ForumCommentForm(request.form)
+    if request.method == "POST" and form.validate():
+        comment = form.comment.data
+        fForum = fo.forumComment(comment)
 
-        form = ForumCommentForm(request.form)
+        fForum_db = root.child('forum')
+        fForum_db.push({
+            'comment': fForum.get_comment(),
+        })
 
-        if request.method == "POST" and form.validate():
+        flash('Your comment has been sent!')
 
-            forums = forum_forum.get()  # get database in format of dictionary
+        return render_template('forum.html', form=form)
 
-            for key in forums:  # iterate through dictionary and get value of "comment"
-                each_comment = forums[key]
-                each_comment_value = each_comment['comment']
-                each_comment_value = each_comment_value.replace('"', '')
-                each_comment_value = each_comment_value.replace("b'", '')
-                each_comment_value = each_comment_value.replace("'", "")
-                each_comment_value = base64ToString(each_comment_value)
-                # print(each_comment_value)
-                forum_comment_list.append(each_comment_value)  # append comment into list
-                # print(forum_comment_list)
-
-            for key in forums:  # iterate through dictionary and get value of "username"
-                each_username = forums[key]
-                each_username_value = each_username['username']
-                forum_username_list.append(each_username_value)  # append username into list
-                # print(forum_username_list)
-
-            return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
-
-        else:
-
-            forums = forum_forum.get()  # get database in format of dictionary
-
-            for key in forums:  # iterate through dictionary and get value of "comment"
-                each_comment = forums[key]
-                each_comment_value = each_comment['comment']
-                each_comment_value = each_comment_value.replace('"', '')
-                each_comment_value = each_comment_value.replace("b'", '')
-                each_comment_value = each_comment_value.replace("'", "")
-                each_comment_value = base64ToString(each_comment_value)
-                # print(each_comment_value)
-                forum_comment_list.append(each_comment_value)  # append comment into list
-                # print(forum_comment_list)
-
-            for key in forums:  # iterate through dictionary and get value of "username"
-                each_username = forums[key]
-                each_username_value = each_username['username']
-                forum_username_list.append(each_username_value)  # append username into list
-                # print(forum_username_list)
-
-            return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
-
-    else:  # if user is logged in
-
-        # submit comment
-        form = ForumCommentForm(request.form)
-
-        if request.method == "POST" and form.validate():
-            comment = form.comment.data
-            username = (session['id'])
-            comment64 = stringToBase64(comment)
-            # print(comment64)
-            comment64 = "{}".format(comment64)        # add quotation marks
-            # print(comment64)
-
-            fForum = fo.forumComment(comment64)
-
-            fForum_db = root.child('forum')
-            fForum_db.push({
-                'comment': fForum.get_comment(),
-                'username': (session['id']),
-            })
-
-            flash('Your comment has been sent!', 'success')
-
-            # refresh comments
-
-            forums = forum_forum.get()  # get database in format of dictionary
-
-            for key in forums:  # iterate through dictionary and get value of "comment"
-                each_comment = forums[key]
-                each_comment_value = each_comment['comment']
-                each_comment_value = each_comment_value.replace('"', '')
-                each_comment_value = each_comment_value.replace("b'", '')
-                each_comment_value = each_comment_value.replace("'", "")
-                # print(each_comment_value)
-                each_comment_value = base64ToString(each_comment_value)
-                # print(each_comment_value)
-                forum_comment_list.append(each_comment_value)  # append comment into list
-                # print(forum_comment_list)
-
-            for key in forums:  # iterate through dictionary and get value of "username"
-                each_username = forums[key]
-                each_username_value = each_username['username']
-                forum_username_list.append(each_username_value)  # append username into list
-                # print(forum_username_list)
-
-
-            return render_template('forum.html', form=form, usernames=forum_username_list , comments=forum_comment_list)
-
-        else:
-            forums = forum_forum.get()  # get database in format of dictionary
-
-            for key in forums:  # iterate through dictionary and get value of "comment"
-                each_comment = forums[key]
-                each_comment_value = each_comment['comment']
-                each_comment_value = each_comment_value.replace('"', '')
-                each_comment_value = each_comment_value.replace("b'", '')
-                each_comment_value = each_comment_value.replace("'", "")
-                # print(each_comment_value)
-                each_comment_value = base64ToString(each_comment_value)
-                # print(each_comment_value)
-                forum_comment_list.append(each_comment_value)  # append comment into list
-                # print(forum_comment_list)
-
-            for key in forums:  # iterate through dictionary and get value of "username"
-                each_username = forums[key]
-                each_username_value = each_username['username']
-                forum_username_list.append(each_username_value)  # append username into list
-                # print(forum_username_list)
-
-                return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
-
-        return render_template('forum.html', form=form, usernames=forum_username_list, comments=forum_comment_list)
+    return render_template('forum.html', form=form)
 
 
 class WorkoutForm(Form):
@@ -888,91 +732,73 @@ class WorkoutForm(Form):
 def workout_type_1():
     return render_template('workout_type_1.html')
 
-
 @app.route('/workout_type_2')
 def workout_type_2():
     return render_template('workout_type_2.html')
-
 
 @app.route('/workout_type_3')
 def workout_type_3():
     return render_template('workout_type_3.html')
 
-
 @app.route('/workout_type_4')
 def workout_type_4():
     return render_template('workout_type_4.html')
-
 
 @app.route('/workout_type_5')
 def workout_type_5():
     return render_template('workout_type_5.html')
 
-
 @app.route('/workout_type_6')
 def workout_type_6():
     return render_template('workout_type_6.html')
-
 
 @app.route('/workout_type_7')
 def workout_type_7():
     return render_template('workout_type_7.html')
 
-
 @app.route('/workout_type_8')
 def workout_type_8():
     return render_template('workout_type_8.html')
-
 
 @app.route('/workout_type_9')
 def workout_type_9():
     return render_template('workout_type_9.html')
 
-
 @app.route('/workout_type_10')
 def workout_type_10():
     return render_template('workout_type_10.html')
-
 
 @app.route('/workout_type_11')
 def workout_type_11():
     return render_template('workout_type_11.html')
 
-
 @app.route('/workout_type_12')
 def workout_type_12():
     return render_template('workout_type_12.html')
-
 
 @app.route('/workout_type_13')
 def workout_type_13():
     return render_template('workout_type_13.html')
 
-
 @app.route('/workout_type_14')
 def workout_type_14():
     return render_template('workout_type_14.html')
-
 
 @app.route('/workout_type_15')
 def workout_type_15():
     return render_template('workout_type_15.html')
 
-
 @app.route('/workout_type_16')
 def workout_type_16():
     return render_template('workout_type_16.html')
-
 
 @app.route('/workout_type_17')
 def workout_type_17():
     return render_template('workout_type_17.html')
 
-
 @app.route('/workout_type_18')
 def workout_type_18():
     return render_template('workout_type_18.html')
-
 
 @app.route('/workoutGenerator', methods=['GET', 'POST'])
 def workout():
@@ -983,15 +809,15 @@ def workout():
         body_focus = form.body_focus.data
 
         workout_type_dest = ''
-        # form2 = WorkoutTypeForm(request.form)
+        #form2 = WorkoutTypeForm(request.form)
 
         if body_focus == 'core':
             if time == '10min':
                 if difficulty_level == '1':
                     workout_type_dest = 'workout_type_1'
-                    # form2.videolink1 = 'some video link ...'
-                    # form2.duration = 'some value'
-                    # form2.calorieburn = 'some value'
+                    #form2.videolink1 = 'some video link ...'
+                    #form2.duration = 'some value'
+                    #form2.calorieburn = 'some value'
                 elif difficulty_level == '2':
                     workout_type_dest = 'workout_type_2'
                 elif difficulty_level == '3':
@@ -1035,27 +861,24 @@ def workout():
                     workout_type_dest = 'workout_type_18'
 
         return redirect(url_for(workout_type_dest))
-        # return redirect(url_for(workout_type_dest), form=form2)
+        #return redirect(url_for(workout_type_dest), form=form2)
 
     return render_template('workout_generator.html', form=form)
 
-
 class ProgramRegistrationForm(Form):
     name = StringField('Name', [validators.DataRequired()])
-    gender_choices = [('female', 'Female'), ('male', 'Male')]
-    gender = SelectField('Gender', [validators.DataRequired()], choices=gender_choices)
-    age = StringField('Age', [validators.DataRequired()])
+    gender_choices = [('female','Female'),('male','Male')]
+    gender = SelectField('Gender',[validators.DataRequired()], choices=gender_choices)
+    age = StringField('Age',[validators.DataRequired()])
     weight = StringField('Weight', [validators.DataRequired()])
     height = StringField('Height', [validators.DataRequired()])
     medical_history_choices = [('no', 'No'), ('asthma', 'Asthma'), ('high blood pressure', 'High Blood Pressure'),
-                               ('diabetes', 'Diabetes'), ('obesity', 'Obesity'), ('heart attack', 'Heart Attack'),
-                               ('stroke', 'Stroke'), ('chest pain', 'Extreme Chest Discomfort')]
+                                 ('diabetes', 'Diabetes'), ('obesity', 'Obesity'),('heart attack','Heart Attack'),
+                                ('stroke','Stroke'),('chest pain','Extreme Chest Discomfort')]
     medical_history = SelectField('Have you ever experienced any?', [validators.DataRequired()],
-                                  choices=medical_history_choices)
-    allergy_choices = [('no', 'No'), ('milk', 'Milk'), ('eggs', 'Eggs'), ('peanuts', 'Peanuts'), ('soy', 'Soy'),
-                       ('wheat', 'Wheat'), ('fish', 'Fish')]
+                                    choices=medical_history_choices)
+    allergy_choices= [('no','No'),('milk','Milk'),('eggs','Eggs'),('peanuts','Peanuts'),('soy','Soy'),('wheat','Wheat'),('fish','Fish')]
     allergy = SelectField('Do you have any food allergies?', [validators.DataRequired()], choices=allergy_choices)
-
 
 @app.route('/workoutProgram', methods=['GET', 'POST'])
 def workout_program():
@@ -1066,7 +889,7 @@ def workout_program():
         age = form.age.data
         weight = form.weight.data
         height = form.height.data
-        medical_history = form.medical_history.data
+        medical_history= form.medical_history.data
         allergy = form.allergy.data
 
         workout_program = workoutProgram(name, gender, age, weight, height, medical_history, allergy)
@@ -1085,7 +908,6 @@ def workout_program():
         flash('Thank you! The form was submitted successfully.', 'success')
 
     return render_template('workout_program.html', form=form)
-
 
 if __name__ == '__main__':
     app.run()
