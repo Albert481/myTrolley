@@ -5,8 +5,12 @@
 
     <style>
 
-        .text-center {
-            width: 1170px;
+        body {
+            background-color: #E6E6FA;
+        }
+
+        h3 {
+            font-family: 'FontAwesome';
         }
 
         #username {
@@ -21,15 +25,32 @@
             width: 200px;
         }
 
+        #confirm_pass {
+            width: 200px;
+        }
+
+        .text-center {
+            width: 1200px;
+            font-style: normal;
+            font-stretch: expanded;
+            font-family: Algerian;
+            font-weight: bold;
+        }
+
         #container {
             width: 500px;
+            border-style: solid;
+        }
+
+        .btn btn-info {
+            background-color: #1ab7ea;
         }
 
     </style>
 
 {% endblock %}
 
-{% block body %}
+{% block content %}
     {% from "includes/_formhelper.html" import render_field %}
     <section class="content">
     <h2 class="text-center">Change Particulars</h2>
@@ -37,17 +58,37 @@
     <form method="POST" action="">
 
         <div id="container" class="container">
-            <div id="username" class="form-group row-md-4">
-                {{ render_field(form.username, class_="form-control") }}
-            </div>
+            {% for each_user in particulars %}
+                <table>
+                    <tr valign="top">
+                        <td><b>Your current username:></b>{{ each_user.username }}</td>
 
-            <div id="email" class="form-group row-md-4">
-                {{ render_field(form.email, class_="form-control") }}
-            </div>
+                        <td><b>Your current email:</b>{{ each_user.email }}</td>
 
-            <div id="password" class="form-group row-md-4">
-                {{ render_field(form.password, class_="form-control") }}
-            </div>
+                        <td><b>Your current password:</b>{{ each_user.password }}</td>
+                    </tr>
+                </table>
+            {% endfor %}
+
+                <div id="username" class="form-group row-md-4">
+                    {{ render_field(form.username, class_="form-control") }}
+                </div>
+
+                <div id="email" class="form-group row-md-4">
+                    {{ render_field(form.email, class_="form-control") }}
+                </div>
+
+                <div id="password" class="form-group row-md-4">
+                    {{ render_field(form.password, class_="form-control") }}
+                </div>
+
+
+
+                <div id="confirm_pass" class="form=group row-md-4">
+                    {{ render_field(form.confirm_pass, class_="form-control") }}
+                </div>
+
+
 
             <div class="form-group row-md-1">
                 <input type="submit" value="Update" class="btn btn-info"/>
@@ -56,6 +97,15 @@
     </form>
 
     </section>
+{% endblock %}
+{% block botscript %}
+
+    <script>
+        $(document).ready(function () {
+            $('#username').show();
+        });
+    </script>
+
 {% endblock %}
 
     <!-- jQuery -->

@@ -1,8 +1,9 @@
 class Users:
-    def __init__(self, username, email, password):
+    def __init__(self, username, email, password, confirm_pass):
         self.__username = username
         self.__email = email
         self.__password = password
+        self.__confirm_pass = confirm_pass
         self.__admin = 0
 
     def get_username(self):
@@ -14,6 +15,9 @@ class Users:
     def get_password(self):
         return self.__password
 
+    def get_confirm_pass(self):
+        return self.__confirm_pass
+
     def set_username(self, username):
         self.__username = username
 
@@ -22,6 +26,9 @@ class Users:
 
     def set_password(self, password):
         self.__password = password
+
+    def set_confirm_pass(self, confirm_pass):
+        self.__confirm_pass = confirm_pass
 
 
 class Admin:
