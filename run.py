@@ -13,8 +13,8 @@ import popularitem as pop
 import product as prodt
 import userFeedback as uf
 import forumComment as fo
-#from Workout import Workout
-#from workoutWorkshop import workoutProgram
+
+from workoutProgram import workoutProgram
 
 cred = credentials.Certificate('cred/smarttrolley-c024a-firebase-adminsdk-y9xqv-d051733405.json')
 default_app = firebase_admin.initialize_app(cred, {
@@ -782,22 +782,13 @@ def workout_type_17():
 def workout_type_18():
     return render_template('workout_type_18.html')
 
-@app.route('/workout', methods=['GET', 'POST'])
+@app.route('/workoutGenerator', methods=['GET', 'POST'])
 def workout():
     form = WorkoutForm(request.form)
     if request.method == 'POST' and form.validate():
         time = form.time.data
         difficulty_level = form.difficulty_level.data
         body_focus = form.body_focus.data
-
-        workout = Workout(time, difficulty_level, body_focus)
-
-        workout_db = root.child('workout')
-        workout_db.push({
-            'time': workout.get_time(),
-            'diff_level': workout.get_diff_level(),
-            'body_focus': workout.get_body_focus()
-        })
 
         workout_type_dest = ''
         #form2 = WorkoutTypeForm(request.form)
@@ -854,7 +845,7 @@ def workout():
         return redirect(url_for(workout_type_dest))
         #return redirect(url_for(workout_type_dest), form=form2)
 
-    return render_template('workout.html', form=form)
+    return render_template('workout_generator.html', form=form)
 
 class ProgramRegistrationForm(Form):
     name = StringField('Name', [validators.DataRequired()])
@@ -898,7 +889,7 @@ def workout_program():
 
         flash('Thank you! The form was submitted successfully.', 'success')
 
-    return render_template('workshop_form.html', form=form)
+    return render_template('workout_program.html', form=form)
 
 if __name__ == '__main__':
     app.run()
