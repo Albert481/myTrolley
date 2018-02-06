@@ -529,6 +529,15 @@ def validate_signup(form, field):
         if user[1]['email'] == field.data:
             raise ValidationError('Email has already been used')
 
+
+class SignupForm(Form):
+    username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired(), validate_signup])
+    email = StringField('Email Address', [validators.Length(min=6, max=30), validators.DataRequired(), validate_signup])
+    password = PasswordField('Password', [validators.Length(min=6, max=50), validators.DataRequired(),
+                             validators.EqualTo('confirm_pass', message='Your passwords do not match')])
+    confirm_pass = PasswordField('Confirm Password', [validators.Length(min=6, max=50), validators.DataRequired()])
+
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm(request.form)
@@ -536,13 +545,15 @@ def signup():
         username = form.username.data
         email = form.email.data
         password = form.password.data
+        confirm_pass = form.confirm_pass.data
 
-        user = sp.Users(username, email, password)
+        user = sp.Users(username, email, password, confirm_pass)
         user_db = root.child('userbase')
         user_db.push({
             'username': user.get_username(),
             'email': user.get_email(),
             'password': user.get_password(),
+            'confirm_pass': user.get_confirm_pass(),
             'admin': 0
         })
 
@@ -552,10 +563,6 @@ def signup():
 
     return render_template('signup.html', form=form)
 
-class SignupForm(Form):
-    username = StringField('Username', [validators.Length(min=6, max=10), validators.DataRequired(), validate_signup])
-    email = StringField('Email Address', [validators.Length(min=6, max=30), validators.DataRequired(), validate_signup])
-    password = PasswordField('Password', [validators.Length(min=6, max=50), validators.DataRequired()])
 
 
 class LoginForm(Form):
@@ -602,10 +609,13 @@ def logout():
     flash('You were logged out', 'success')
     return redirect(url_for('login'))
 
+
 class AccountForm(Form):
     username = StringField('New Username', [validators.Length(min=6, max=10), validate_signup])
     email = StringField('New Email', [validators.Length(min=6, max=30), validate_signup])
-    password = PasswordField('New Password', [validators.Length(min=6, max=50)])
+    password = PasswordField('New Password', [validators.Length(min=6, max=50),
+                             validators.EqualTo('confirm_pass', message='Your passwords do not match')])
+    confirm_pass = PasswordField('Confirm New Password', [validators.Length(min=6, max=50), validators.DataRequired()])
 
 
 @app.route('/modify', methods=['GET', 'POST'])
@@ -613,26 +623,34 @@ def modify():
     form = AccountForm(request.form)
     if request.method == 'POST' and form.validate():
         users = root.child('userbase').get()
+        list = []
         username = form.username.data
         email = form.email.data
         password = form.password.data
-        for user in users.items():
-            profile = sp.Users(user['username'], user['email'], user['password'])
-            print(profile.get_id())
+        confirm_pass = form.confirm_pass.data
 
-        user = sp.Users(username, email, password)
-        user_db = root.child('userbase/')
-        user_db.update({
-           'username': user.get_username(),
-           'email': user.get_email(),
-           'password': user.get_password(),
-        })
+        for user in users.items():
+            each_user = users[user]
+            particulars = sp.Users(each_user['username'], each_user['email'], each_user['password'],
+                                each_user['confirm_pass'])
+            particulars.set_user(user)
+            print(particulars.get_user())
+            list.append(particulars)
+
+            user = sp.Users(username, email, password, confirm_pass)
+            user_db = root.child('userbase/')
+            user_db.update({
+               'username': user.get_username(),
+               'email': user.get_email(),
+               'password': user.get_password(),
+               'confirm_pass': user.get_confirm_pass(),
+            })
 
         flash('Profile Updated Sucessfully.', 'success')
 
-        return render_template('modifyuser.html', form=form)
+        return redirect(url_for('modify'), particulars=particulars)
 
-
+    return render_template('modifyuser.html', form=form)
 
 @app.route('/help')
 def help():
